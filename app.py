@@ -7,8 +7,8 @@ def pages():
         '主页': 'main_page.py',
         '网页设计': 'Web_Design.md',
         'Fig_preservation': {
-            '项目信息': 'information.md',
-            '实验设计': 'experi_design.md'
+            '项目信息': os.path.join('fig_preservation','information.md'),
+            '实验设计': os.path.join('fig_preservation','experi_design.md')
         }
     }
 
