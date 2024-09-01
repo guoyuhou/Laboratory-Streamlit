@@ -6,7 +6,7 @@ def pages():
     pages = {
         '主页': 'main_page.py',
         '网页设计': 'Web_Design.md',
-        '无花果保鲜项目': {
+        'Fig_preservation': {
             '项目信息': 'information.md',
             '实验设计': 'experi_design.md'
         }
