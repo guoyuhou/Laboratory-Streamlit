@@ -36,41 +36,37 @@ def pages():
         st.write('所选页面不正确或文件类型不支持')  
   
 pages()
-    
+
 # Authenticator block
-def Authenticator_block():
-    # check the config file.
-    with open('config.yaml') as file:
-        config = yaml.load(file, Loader=SafeLoader)
+def Authenticator_block():  
+    with open('config.yaml') as file:  
+        config = yaml.load(file, Loader=SafeLoader)  
 
-    authenticator = stauth.Authenticate(
-        config['credentials'],
-        config['cookie']['name'],
-        config['cookie']['key'],
-        config['cookie']['expiry_days'],
-        config['pre-authorized']
-    )
+    authenticator = stauth.Authenticate(  
+        config['credentials'],  
+        config['cookie']['name'],  
+        config['cookie']['key'],  
+        config['cookie']['expiry_days'],  
+        config['pre-authorized']  
+    )  
 
-    # Create the login page
-    authenticator.login()
+    if not st.session_state.get('authentication_status'):  
+        authenticator.login()  
 
-    # Create the reflection of login or logout
-    if st.session_state['authentication_status']:
-        authenticator.logout()
-        st.write(f'Welcome *{st.session_state["name"]}*')
-        st.title('个人中心')
-    elif st.session_state['authentication_status'] is False:
-        st.error('Username/password is incorrect')
-    elif st.session_state['authentication_status'] is None:
-        st.warning('Please enter your username and password')
+    if st.session_state.get('authentication_status'):  
+        authenticator.logout()  
+        st.write(f'Welcome *{st.session_state["name"]}*')  
+        st.title('个人中心')  
+    elif st.session_state.get('authentication_status') is False:  
+        st.error('Username/password is incorrect')  
+    elif st.session_state.get('authentication_status') is None:  
+        st.warning('Please enter your username and password')  
 
-    # Reset passward widgt
-    if st.session_state['authentication_status']:
-        try:
-            if authenticator.reset_password(st.session_state['username']):
-                st.success('Password modified successfully')
-        except Exception as e:
+    if st.session_state.get('authentication_status'):  
+        try:  
+            if authenticator.reset_password(st.session_state['username']):  
+                st.success('Password modified successfully')  
+        except Exception as e:  
             st.error(e)
-
 
 Authenticator_block()
