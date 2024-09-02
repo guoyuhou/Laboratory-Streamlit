@@ -1,11 +1,14 @@
 import streamlit as st  
 import os  
-  
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
+
 def pages():  
     pages = {  
         '主页': 'main_page.py',  
         '网页设计': 'Web_Design.md',  
-        'Fig_preservation': {  
+        'Fig_preservation': { 
             '项目信息': os.path.join('Fig_preservation', 'information.md'),  
             '实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
             '实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
@@ -33,3 +36,19 @@ def pages():
         st.write('所选页面不正确或文件类型不支持')  
   
 pages()
+
+# Authenticator block
+
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+# Pre-hashing all plain text passwords once
+# Hasher.hash_passwords(config['credentials'])
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['pre-authorized']
+)
