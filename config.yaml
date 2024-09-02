@@ -3,9 +3,9 @@ credentials:
     Diary:
       email: 1452662640@qq.com
       failed_login_attempts: 0 # Will be managed automatically
-      logged_in: True # Will be managed automatically
+      logged_in: False # Will be managed automatically
       name: Diary
-      password: abc # Will be hashed automatically
+      password: abc123 # Will be hashed automatically
     Alexander:
       email: 17806067729@163.com
       failed_login_attempts: 0 # Will be managed automatically
