@@ -38,17 +38,39 @@ def pages():
 pages()
 
 # Authenticator block
+def Authenticator_block():
+    # check the config file.
+    with open('config.yaml') as file:
+        config = yaml.load(file, Loader=SafeLoader)
 
-with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+    authenticator = stauth.Authenticate(
+        config['credentials'],
+        config['cookie']['name'],
+        config['cookie']['key'],
+        config['cookie']['expiry_days'],
+        config['pre-authorized']
+    )
 
-# Pre-hashing all plain text passwords once
-# Hasher.hash_passwords(config['credentials'])
+    # Create the login page
+    authenticator.login()
 
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['pre-authorized']
-)
+    # Create the reflection of login or logout
+    if st.session_state['authentication_status']:
+        authenticator.logout()
+        st.write(f'Welcome *{st.session_state["name"]}*')
+        st.title('Some content')
+    elif st.session_state['authentication_status'] is False:
+        st.error('Username/password is incorrect')
+    elif st.session_state['authentication_status'] is None:
+        st.warning('Please enter your username and password')
+
+    # Reset passward widgt
+    if st.session_state['authentication_status']:
+        try:
+            if authenticator.reset_password(st.session_state['username']):
+                st.success('Password modified successfully')
+        except Exception as e:
+            st.error(e)
+
+
+Authenticator_block()
