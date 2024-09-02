@@ -40,9 +40,6 @@ def Authenticator_block():
             st.error(e)  
   
 def pages():  
-    # Check if the user is authenticated  
-    if not st.session_state.get('authentication_status'):  
-        st.stop()  # Stop the app if the user is not authenticated  
   
     pages = {  
         '主页': 'main_page.py',  
