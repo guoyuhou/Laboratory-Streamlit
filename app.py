@@ -35,7 +35,8 @@ def pages():
     if not page_file or (not page_file.endswith('.py') and not page_file.endswith('.md')):  
         st.write('所选页面不正确或文件类型不支持')  
   
-
+pages()
+    
 # Authenticator block
 def Authenticator_block():
     # check the config file.
@@ -71,5 +72,5 @@ def Authenticator_block():
         except Exception as e:
             st.error(e)
 
-pages()
+
 Authenticator_block()
