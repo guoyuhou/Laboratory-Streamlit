@@ -140,10 +140,26 @@ def batch_delete_files():
 def cloud_storage_page():
     """显示云存储页面"""
     st.title("云存储")
-    upload_files_with_progress()
-    download_file()
-    update_file()
-    delete_file()
-    preview_file()
-    search_files()
-    batch_delete_files()
+    st.sidebar.title("导航")
+    options = st.sidebar.radio("选择操作", ("上传文件", "下载文件", "更新文件", "删除文件", "预览文件", "搜索文件", "批量删除文件"))
+    
+    if options == "上传文件":
+        upload_files_with_progress()
+    elif options == "下载文件":
+        download_file()
+    elif options == "更新文件":
+        update_file()
+    elif options == "删除文件":
+        delete_file()
+    elif options == "预览文件":
+        preview_file()
+    elif options == "搜索文件":
+        search_files()
+    elif options == "批量删除文件":
+        batch_delete_files()
+
+    st.markdown("""
+    <style>
+        .css-1xarl7p { padding: 1rem; }
+    </style>
+    """, unsafe_allow_html=True)
