@@ -50,6 +50,7 @@ def Authenticator_block():
         config['pre-authorized']  
     )  
 
+    # Correct usage of location parameter
     name, authentication_status, username = authenticator.login('Login', 'main')
 
     if authentication_status:
@@ -69,6 +70,7 @@ def Authenticator_block():
         st.warning('Please enter your username and password')
 
     if authentication_status:
+        # Correct usage of logout
         authenticator.logout('Logout', 'main')
 
 Authenticator_block()
