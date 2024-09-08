@@ -1,5 +1,7 @@
 import streamlit as st
 import oss2
+import zipfile
+import io
 
 # 从Streamlit的Secrets中读取OSS的密钥和存储桶信息
 ACCESS_KEY_ID = st.secrets["oss"]["ACCESS_KEY_ID"]
@@ -15,13 +17,20 @@ def list_files():
     """列出OSS中的所有文件"""
     return [obj.key for obj in oss2.ObjectIterator(bucket)]
 
-def upload_file():
-    """处理文件上传"""
-    st.subheader('上传文件')
-    uploaded_file = st.file_uploader("选择要上传的文件", type=['csv', 'txt', 'pdf', 'png', 'jpg'])
+def upload_zip_file():
+    """处理ZIP文件上传和解压"""
+    st.subheader('上传文件夹（压缩为ZIP）')
+    uploaded_file = st.file_uploader("选择要上传的ZIP文件", type='zip')
     if uploaded_file:
-        bucket.put_object(uploaded_file.name, uploaded_file)
-        st.success(f'文件 {uploaded_file.name} 上传成功')
+        # 解压ZIP文件并上传到OSS
+        with zipfile.ZipFile(uploaded_file, 'r') as zip_ref:
+            for file_info in zip_ref.infolist():
+                # 读取文件数据
+                file_data = zip_ref.read(file_info.filename)
+                # 上传到OSS
+                bucket.put_object(file_info.filename, file_data)
+                st.write(f'文件 {file_info.filename} 上传成功')
+        st.success('所有文件已成功上传到 OSS')
 
 def download_file():
     """处理文件下载"""
@@ -40,5 +49,5 @@ def download_file():
 def cloud_storage_page():
     """显示云存储页面"""
     st.title("云存储")
-    upload_file()
+    upload_zip_file()
     download_file()
