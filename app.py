@@ -120,7 +120,6 @@ def main():
                 else:
                     st.error("用户名或密码无效")
     else:
-        st.title("Streamlit 身份验证应用")
         st.write(f"已登录为 {st.session_state['username']}。")
 
         menu = ["主页", "重置密码", "登出"]
