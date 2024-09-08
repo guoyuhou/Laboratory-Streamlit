@@ -1,7 +1,5 @@
 import streamlit as st
-import os
 import oss2
-st.title('实验室云服务')
 
 # 从Streamlit的Secrets中读取OSS的密钥和存储桶信息
 ACCESS_KEY_ID = st.secrets["oss"]["ACCESS_KEY_ID"]
@@ -41,7 +39,6 @@ def download_file():
 
 def cloud_storage_page():
     """显示云存储页面"""
+    st.title("云存储")
     upload_file()
     download_file()
-
-cloud_storage_page()

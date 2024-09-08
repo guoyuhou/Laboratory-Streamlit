@@ -1,8 +1,9 @@
 import streamlit as st
 import os
-import sqlite3
 from hashlib import sha256
-import oss2
+
+# 导入 Cloud_storage.py 中的 cloud_storage_page 函数
+from Cloud_storage import cloud_storage_page
 
 # 数据库连接
 def get_db_connection():
@@ -62,7 +63,7 @@ def display_pages():
     pages = {
         '主页': 'main_page.py',
         '网页设计': 'Web_Design.md',
-        '云服务': 'Cloud_storage.py',
+        '云服务': cloud_storage_page,  # 使用 cloud_storage_page 函数
         'Fig_preservation': {
             '项目信息': os.path.join('Fig_preservation', 'information.md'),
             '实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
@@ -72,24 +73,18 @@ def display_pages():
     }
 
     page_name = st.sidebar.radio('导航', list(pages.keys()))
-    page_file = None
-
-    if page_name == '主页':
-        page_file = pages[page_name]
+    if page_name == '云服务':
+        pages[page_name]()  # 调用 cloud_storage_page 函数
+    else:
+        page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
         if page_file.endswith('.py'):
             with open(page_file, encoding='utf-8') as file:
                 exec(file.read())
-    elif page_name == '网页设计' or page_name.startswith('Fig_preservation'):
-        page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
-        if page_file.endswith('.md'):
+        elif page_file.endswith('.md'):
             with open(page_file, encoding='utf-8') as file:
-                md_content = file.read()
-                st.markdown(md_content)
-
-    if not page_file or (not page_file.endswith('.py') and not page_file.endswith('.md')):
-        st.write('所选页面不正确或文件类型不支持')
-
-
+                st.markdown(file.read())
+        else:
+            st.write('所选页面不正确或文件类型不支持')
 
 # 主函数
 def main():
