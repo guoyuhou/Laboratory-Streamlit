@@ -140,16 +140,8 @@ def batch_delete_files():
 def cloud_storage_page():
     """显示云存储页面"""
     st.title("云存储")
-    
-    # 侧边栏导航
     st.sidebar.title("导航")
-    options = st.sidebar.radio("选择操作", 
-                               ("上传文件", "下载文件", "更新文件", 
-                                "删除文件", "预览文件", "搜索文件", "批量删除文件"))
-    
-    # 页面内容
-    st.markdown("<style> .stApp { background: linear-gradient(to right, #f5f7fa, #c3cfe2); } </style>", unsafe_allow_html=True)
-    st.markdown("<style> .stButton>button { background-color: #1f77b4; color: white; } </style>", unsafe_allow_html=True)
+    options = st.sidebar.radio("选择操作", ("上传文件", "下载文件", "更新文件", "删除文件", "预览文件", "搜索文件", "批量删除文件"))
     
     if options == "上传文件":
         upload_files_with_progress()
@@ -165,11 +157,9 @@ def cloud_storage_page():
         search_files()
     elif options == "批量删除文件":
         batch_delete_files()
-    
+
     st.markdown("""
     <style>
         .css-1xarl7p { padding: 1rem; }
-        .css-1y04bvi { font-size: 1.2rem; }
-        .css-1wa3hd3 { font-family: 'Comic Sans MS'; }
     </style>
     """, unsafe_allow_html=True)
