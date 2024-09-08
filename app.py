@@ -120,9 +120,7 @@ def main():
                 else:
                     st.error("用户名或密码无效")
     else:
-        st.write(f"已登录为 {st.session_state['username']}。")
-
-        menu = ["主页", "重置密码", "登出"]
+        menu = ["主页", "重置密码", "退出"]
         choice = st.sidebar.selectbox("选择操作", menu)
 
         if choice == "主页":
