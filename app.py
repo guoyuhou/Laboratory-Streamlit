@@ -78,6 +78,10 @@ def Authenticator_block():
 Authenticator_block()
 '''
 
+import streamlit as st
+import sqlite3
+from hashlib import sha256
+
 # 数据库连接
 def get_db_connection():
     conn = sqlite3.connect('user_db.sqlite')
@@ -130,54 +134,72 @@ def get_user_role(username):
     conn.close()
     return user['role'] if user else None
 
+# 登录检查
+def check_login():
+    if 'username' not in st.session_state:
+        st.session_state['username'] = None
+
 # 主函数
 def main():
-    st.title("Streamlit Authentication App")
+    check_login()
     
-    menu = ["Home", "Register", "Login", "Reset Password"]
-    choice = st.sidebar.selectbox("Select Activity", menu)
+    if st.session_state['username'] is None:
+        st.title("Login Required")
+        st.write("Please log in to access the app.")
+        
+        menu = ["Login", "Register"]
+        choice = st.sidebar.selectbox("Select Activity", menu)
+        
+        if choice == "Register":
+            st.subheader("Register")
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            role = st.selectbox("Role", ["user", "admin"])
+            if st.button("Register"):
+                register_user(username, password, role)
+                st.success("User registered successfully")
+        
+        elif choice == "Login":
+            st.subheader("Login")
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            if st.button("Login"):
+                user = authenticate_user(username, password)
+                if user:
+                    st.session_state['username'] = username
+                    st.session_state['role'] = get_user_role(username)
+                    st.success(f"Welcome {username}!")
+                else:
+                    st.error("Invalid username or password")
     
-    if choice == "Home":
-        st.subheader("Welcome to the app")
-        st.write("Please use the sidebar to navigate.")
-    
-    elif choice == "Register":
-        st.subheader("Register")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        role = st.selectbox("Role", ["user", "admin"])
-        if st.button("Register"):
-            register_user(username, password, role)
-            st.success("User registered successfully")
-    
-    elif choice == "Login":
-        st.subheader("Login")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        if st.button("Login"):
-            user = authenticate_user(username, password)
-            if user:
-                st.success(f"Welcome {username}!")
-                role = get_user_role(username)
-                st.write(f"Your role: {role}")
-                if role == "admin":
-                    st.write("You have admin privileges.")
-                # Add additional role-based functionality here
-            else:
-                st.error("Invalid username or password")
-    
-    elif choice == "Reset Password":
-        st.subheader("Reset Password")
-        username = st.text_input("Username")
-        new_password = st.text_input("New Password", type="password")
-        if st.button("Reset Password"):
-            conn = get_db_connection()
-            hashed_password = hash_password(new_password)
-            conn.execute('UPDATE users SET password = ? WHERE username = ?', 
-                         (hashed_password, username))
-            conn.commit()
-            conn.close()
-            st.success("Password reset successfully")
+    else:
+        st.title("Streamlit Authentication App")
+        st.write(f"Logged in as {st.session_state['username']}.")
+        
+        menu = ["Home", "Reset Password"]
+        choice = st.sidebar.selectbox("Select Activity", menu)
+        
+        if choice == "Home":
+            st.subheader("Welcome to the app")
+            st.write("You are now logged in. Please use the sidebar to navigate.")
+            if st.session_state.get('role') == "admin":
+                st.write("You have admin privileges.")
+                # Add additional admin functionality here
+        
+        elif choice == "Reset Password":
+            st.subheader("Reset Password")
+            new_password = st.text_input("New Password", type="password")
+            if st.button("Reset Password"):
+                if new_password:
+                    conn = get_db_connection()
+                    hashed_password = hash_password(new_password)
+                    conn.execute('UPDATE users SET password = ? WHERE username = ?', 
+                                 (hashed_password, st.session_state['username']))
+                    conn.commit()
+                    conn.close()
+                    st.success("Password reset successfully")
+                else:
+                    st.error("Please enter a new password")
 
 if __name__ == "__main__":
     main()
