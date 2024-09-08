@@ -71,7 +71,8 @@ def display_pages():
             '实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
             '实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
             '更新日志': os.path.join('Fig_preservation', 'update_log.md'),
-        }
+        },
+        '帮助': 'Help.py'
     }
 
     page_name = st.sidebar.radio('导航', list(pages.keys()))
