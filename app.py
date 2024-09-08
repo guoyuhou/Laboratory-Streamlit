@@ -34,9 +34,9 @@ def register_user(username, password, role):
         conn.execute('INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
                      (username, hashed_password, role))
         conn.commit()
-        st.success("User registered successfully")
+        st.success("用户注册成功")
     except sqlite3.IntegrityError:
-        st.error("Username already exists")
+        st.error("用户名已存在")
     finally:
         conn.close()
 
@@ -93,45 +93,45 @@ def main():
         st.session_state['username'] = None
 
     if st.session_state['username'] is None:
-        st.title("Login Required")
-        st.write("Please log in to access the app.")
+        st.title("登录要求")
+        st.write("请登录以访问应用程序。")
 
-        menu = ["Login", "Register"]
-        choice = st.sidebar.selectbox("Select Activity", menu)
+        menu = ["登录", "注册"]
+        choice = st.sidebar.selectbox("选择操作", menu)
 
-        if choice == "Register":
-            st.subheader("Register")
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            role = st.selectbox("Role", ["user", "admin"])
-            if st.button("Register"):
+        if choice == "注册":
+            st.subheader("注册")
+            username = st.text_input("用户名")
+            password = st.text_input("密码", type="password")
+            role = st.selectbox("角色", ["用户", "管理员"])
+            if st.button("注册"):
                 register_user(username, password, role)
         
-        elif choice == "Login":
-            st.subheader("Login")
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            if st.button("Login"):
+        elif choice == "登录":
+            st.subheader("登录")
+            username = st.text_input("用户名")
+            password = st.text_input("密码", type="password")
+            if st.button("登录"):
                 user = authenticate_user(username, password)
                 if user:
                     st.session_state['username'] = username
                     st.session_state['role'] = get_user_role(username)
-                    st.success(f"Welcome {username}!")
+                    st.success(f"欢迎回来, {username}!")
                 else:
-                    st.error("Invalid username or password")
+                    st.error("用户名或密码无效")
     else:
-        st.title("Streamlit Authentication App")
-        st.write(f"Logged in as {st.session_state['username']}.")
+        st.title("Streamlit 身份验证应用")
+        st.write(f"已登录为 {st.session_state['username']}。")
 
-        menu = ["Home", "Reset Password", "Logout"]
-        choice = st.sidebar.selectbox("Select Activity", menu)
+        menu = ["主页", "重置密码", "登出"]
+        choice = st.sidebar.selectbox("选择操作", menu)
 
-        if choice == "Home":
-            display_pages()  # Display pages only if logged in
-        elif choice == "Reset Password":
-            st.subheader("Reset Password")
-            new_password = st.text_input("New Password", type="password")
-            if st.button("Reset Password"):
+        if choice == "主页":
+            display_pages()  # 登录后才显示页面
+        elif choice == "重置密码":
+            st.subheader("重置密码")
+            new_password = st.text_input("新密码", type="password")
+            if st.button("重置密码"):
                 if new_password:
                     conn = get_db_connection()
                     hashed_password = hash_password(new_password)
@@ -139,16 +139,16 @@ def main():
                                  (hashed_password, st.session_state['username']))
                     conn.commit()
                     conn.close()
-                    st.success("Password reset successfully")
+                    st.success("密码重置成功")
                 else:
-                    st.error("Please enter a new password")
-        elif choice == "Logout":
+                    st.error("请输入新密码")
+        elif choice == "登出":
             st.session_state['username'] = None
             st.session_state['role'] = None
-            st.success("You have been logged out.")
-            # Redirect to login page by refreshing the app, but without using st.experimental_rerun()
-            st.write("Redirecting to login page...")
-            st.stop()  # Stop further execution and re-render the page
+            st.success("您已成功登出。")
+            # 通过刷新应用程序重定向到登录页面，但不使用 st.experimental_rerun()
+            st.write("正在重定向到登录页面...")
+            st.stop()  # 停止进一步执行并重新渲染页面
 
 if __name__ == "__main__":
     main()
