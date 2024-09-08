@@ -34,6 +34,7 @@ def register_user(username, password, role):
         conn.execute('INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
                      (username, hashed_password, role))
         conn.commit()
+        st.success("User registered successfully")
     except sqlite3.IntegrityError:
         st.error("Username already exists")
     finally:
@@ -56,7 +57,7 @@ def get_user_role(username):
     return user['role'] if user else None
 
 # 页面内容
-def pages():
+def display_pages():
     pages = {
         '主页': 'main_page.py',
         '网页设计': 'Web_Design.md',
@@ -88,13 +89,15 @@ def pages():
 
 # 主函数
 def main():
-    if 'username' not in st.session_state or st.session_state['username'] is None:
+    if 'username' not in st.session_state:
+        st.session_state['username'] = None
+    if st.session_state['username'] is None:
         st.title("Login Required")
         st.write("Please log in to access the app.")
-        
+
         menu = ["Login", "Register"]
         choice = st.sidebar.selectbox("Select Activity", menu)
-        
+
         if choice == "Register":
             st.subheader("Register")
             username = st.text_input("Username")
@@ -102,7 +105,6 @@ def main():
             role = st.selectbox("Role", ["user", "admin"])
             if st.button("Register"):
                 register_user(username, password, role)
-                st.success("User registered successfully")
         
         elif choice == "Login":
             st.subheader("Login")
@@ -116,16 +118,15 @@ def main():
                     st.success(f"Welcome {username}!")
                 else:
                     st.error("Invalid username or password")
-        
     else:
         st.title("Streamlit Authentication App")
         st.write(f"Logged in as {st.session_state['username']}.")
-        
+
         menu = ["Home", "Reset Password"]
         choice = st.sidebar.selectbox("Select Activity", menu)
-        
+
         if choice == "Home":
-            pages()  # Display pages only if logged in
+            display_pages()  # Display pages only if logged in
         elif choice == "Reset Password":
             st.subheader("Reset Password")
             new_password = st.text_input("New Password", type="password")
@@ -143,4 +144,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    pages()
