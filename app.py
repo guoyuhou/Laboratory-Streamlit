@@ -146,7 +146,9 @@ def main():
             st.session_state['username'] = None
             st.session_state['role'] = None
             st.success("You have been logged out.")
-            st.experimental_rerun()  # Refresh the page to show the login/register page
+            # Redirect to login page by refreshing the app, but without using st.experimental_rerun()
+            st.write("Redirecting to login page...")
+            st.stop()  # Stop further execution and re-render the page
 
 if __name__ == "__main__":
     main()
