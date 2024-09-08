@@ -122,6 +122,7 @@ def main():
                 else:
                     st.error("用户名或密码无效")
     else:
+        st.balloons()
         menu = ["🏠 主页", "🔒 重置密码", "🚪 退出"]
         choice = st.sidebar.selectbox("选择操作", menu)
 
