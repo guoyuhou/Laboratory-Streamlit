@@ -63,20 +63,20 @@ def get_user_role(username):
 # 页面内容
 def display_pages():
     pages = {
-        '主页': 'main_page.py',
-        '网页设计': 'Web_Design.md',
-        '云服务': cloud_storage_page,  # 使用 cloud_storage_page 函数
-        'Fig_preservation': {
-            '项目信息': os.path.join('Fig_preservation', 'information.md'),
-            '实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
-            '实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
-            '更新日志': os.path.join('Fig_preservation', 'update_log.md'),
+        '🏠 主页': 'main_page.py',
+        '🖥️ 网页设计': 'Web_Design.md',
+        '☁️ 云服务': cloud_storage_page,  # 使用 cloud_storage_page 函数
+        '📚 Fig_preservation': {
+            '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
+            '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
+            '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
+            '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
         },
-        '帮助': 'Help.py'
+        '❓ 帮助': 'Help.py'
     }
 
     page_name = st.sidebar.radio('导航', list(pages.keys()))
-    if page_name == '云服务':
+    if page_name == '☁️ 云服务':
         pages[page_name]()  # 调用 cloud_storage_page 函数
     else:
         page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
@@ -122,12 +122,12 @@ def main():
                 else:
                     st.error("用户名或密码无效")
     else:
-        menu = ["主页", "重置密码", "退出"]
+        menu = ["🏠 主页", "🔒 重置密码", "🚪 退出"]
         choice = st.sidebar.selectbox("选择操作", menu)
 
-        if choice == "主页":
+        if choice == "🏠 主页":
             display_pages()  # 登录后才显示页面
-        elif choice == "重置密码":
+        elif choice == "🔒 重置密码":
             st.subheader("重置密码")
             new_password = st.text_input("新密码", type="password")
             if st.button("重置密码"):
@@ -141,7 +141,7 @@ def main():
                     st.success("密码重置成功")
                 else:
                     st.error("请输入新密码")
-        elif choice == "登出":
+        elif choice == "🚪 退出":
             st.session_state['username'] = None
             st.session_state['role'] = None
             st.success("您已成功登出。")
