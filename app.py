@@ -91,6 +91,7 @@ def display_pages():
 def main():
     if 'username' not in st.session_state:
         st.session_state['username'] = None
+
     if st.session_state['username'] is None:
         st.title("Login Required")
         st.write("Please log in to access the app.")
@@ -122,7 +123,7 @@ def main():
         st.title("Streamlit Authentication App")
         st.write(f"Logged in as {st.session_state['username']}.")
 
-        menu = ["Home", "Reset Password"]
+        menu = ["Home", "Reset Password", "Logout"]
         choice = st.sidebar.selectbox("Select Activity", menu)
 
         if choice == "Home":
@@ -141,6 +142,11 @@ def main():
                     st.success("Password reset successfully")
                 else:
                     st.error("Please enter a new password")
+        elif choice == "Logout":
+            st.session_state['username'] = None
+            st.session_state['role'] = None
+            st.success("You have been logged out.")
+            st.experimental_rerun()  # Refresh the page to show the login/register page
 
 if __name__ == "__main__":
     main()
