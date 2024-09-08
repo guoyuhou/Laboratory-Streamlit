@@ -3,6 +3,8 @@ import os
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+import sqlite3
+from hashlib import sha256
 
 def pages():  
     pages = {  
@@ -36,7 +38,7 @@ def pages():
         st.write('所选页面不正确或文件类型不支持')  
   
 pages()
-
+'''
 # Authenticator block
 def Authenticator_block():  
     with open('config.yaml') as file:  
@@ -74,3 +76,108 @@ def Authenticator_block():
         authenticator.logout('Logout', 'main')
 
 Authenticator_block()
+'''
+
+# 数据库连接
+def get_db_connection():
+    conn = sqlite3.connect('user_db.sqlite')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+# 创建数据库和表
+def initialize_db():
+    conn = get_db_connection()
+    conn.execute('''CREATE TABLE IF NOT EXISTS users (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        username TEXT UNIQUE NOT NULL,
+                        password TEXT NOT NULL,
+                        role TEXT NOT NULL)''')
+    conn.commit()
+    conn.close()
+
+initialize_db()
+
+# 哈希密码
+def hash_password(password):
+    return sha256(password.encode()).hexdigest()
+
+# 用户注册
+def register_user(username, password, role):
+    conn = get_db_connection()
+    hashed_password = hash_password(password)
+    try:
+        conn.execute('INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
+                     (username, hashed_password, role))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        st.error("Username already exists")
+    finally:
+        conn.close()
+
+# 用户登录
+def authenticate_user(username, password):
+    conn = get_db_connection()
+    hashed_password = hash_password(password)
+    user = conn.execute('SELECT * FROM users WHERE username = ? AND password = ?',
+                        (username, hashed_password)).fetchone()
+    conn.close()
+    return user
+
+# 获取用户角色
+def get_user_role(username):
+    conn = get_db_connection()
+    user = conn.execute('SELECT role FROM users WHERE username = ?', (username,)).fetchone()
+    conn.close()
+    return user['role'] if user else None
+
+# 主函数
+def main():
+    st.title("Streamlit Authentication App")
+    
+    menu = ["Home", "Register", "Login", "Reset Password"]
+    choice = st.sidebar.selectbox("Select Activity", menu)
+    
+    if choice == "Home":
+        st.subheader("Welcome to the app")
+        st.write("Please use the sidebar to navigate.")
+    
+    elif choice == "Register":
+        st.subheader("Register")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        role = st.selectbox("Role", ["user", "admin"])
+        if st.button("Register"):
+            register_user(username, password, role)
+            st.success("User registered successfully")
+    
+    elif choice == "Login":
+        st.subheader("Login")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        if st.button("Login"):
+            user = authenticate_user(username, password)
+            if user:
+                st.success(f"Welcome {username}!")
+                role = get_user_role(username)
+                st.write(f"Your role: {role}")
+                if role == "admin":
+                    st.write("You have admin privileges.")
+                # Add additional role-based functionality here
+            else:
+                st.error("Invalid username or password")
+    
+    elif choice == "Reset Password":
+        st.subheader("Reset Password")
+        username = st.text_input("Username")
+        new_password = st.text_input("New Password", type="password")
+        if st.button("Reset Password"):
+            conn = get_db_connection()
+            hashed_password = hash_password(new_password)
+            conn.execute('UPDATE users SET password = ? WHERE username = ?', 
+                         (hashed_password, username))
+            conn.commit()
+            conn.close()
+            st.success("Password reset successfully")
+
+if __name__ == "__main__":
+    main()
