@@ -67,7 +67,7 @@ def display_pages():
         '☁️ 云服务': cloud_storage_page,  # 使用 cloud_storage_page 函数
         '工具包': {
             'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
-            'Storm Genie': os.path.join('工具包', 'Storm_Geine.py')
+            'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
         },
         '📚 Fig_preservation': {
             '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
