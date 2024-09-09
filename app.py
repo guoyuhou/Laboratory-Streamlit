@@ -1,12 +1,11 @@
 import streamlit as st
 import os
-from hashlib import sha256
+import pandas as pd
 import sqlite3
 from pygwalker.api.streamlit import StreamlitRenderer
-
 # 导入 Cloud_storage.py 中的 cloud_storage_page 函数
 from Cloud_storage import cloud_storage_page
-
+from hashlib import sha256
 # 数据库连接
 def get_db_connection():
     conn = sqlite3.connect('user_db.sqlite')
@@ -66,6 +65,10 @@ def display_pages():
         '🏠 主页': 'main_page.py',
         '🖥️ 网页设计': 'Web_Design.md',
         '☁️ 云服务': cloud_storage_page,  # 使用 cloud_storage_page 函数
+        '工具包': {
+            'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
+            'Storm Genie': os.path.join('工具包', 'Storm Geine.py')
+        },
         '📚 Fig_preservation': {
             '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
             '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
@@ -128,8 +131,7 @@ def main():
                         st.error("用户名或密码无效")
                 else:
                     st.error("用户名和密码不能为空")
-    else:
-        st.title("应用主页")
+    else:   
         menu = ["🏠 主页", "🔒 重置密码", "🚪 退出"]
         choice = st.sidebar.selectbox("选择操作", menu)
 
