@@ -21,7 +21,7 @@ def display_personal_center(username):
             with st.expander("更新个人信息", expanded=True):
                 new_email = st.text_input("新邮箱", value=user['email'])
                 new_phone = st.text_input("新电话", value=user['phone'])
-                if st.button("更新信息", key="update_info"):
+                if st.button("更新信息"):
                     if new_email and new_phone:
                         conn = get_db_connection()
                         conn.execute('UPDATE users SET email = ?, phone = ? WHERE username = ?',
@@ -36,7 +36,7 @@ def display_personal_center(username):
             with st.expander("更改密码", expanded=True):
                 new_password = st.text_input("新密码", type="password")
                 confirm_password = st.text_input("确认新密码", type="password")
-                if st.button("更新密码", key="update_password"):
+                if st.button("更新密码"):
                     if new_password and new_password == confirm_password:
                         hashed_password = hash_password(new_password)
                         conn = get_db_connection()
@@ -52,7 +52,7 @@ def display_personal_center(username):
 
             # 账户注销部分
             with st.expander("账户注销", expanded=True):
-                if st.button("注销账户", key="delete_account"):
+                if st.button("注销账户"):
                     if st.confirm("确定要注销账户吗？此操作不可撤销。"):
                         conn = get_db_connection()
                         conn.execute('DELETE FROM users WHERE username = ?', (username,))
