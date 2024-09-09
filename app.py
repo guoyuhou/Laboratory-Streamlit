@@ -43,29 +43,34 @@ def get_user_role(username):
     return user['role'] if user else None
 
 def display_pages(role):
-    pages = {
+    # Pages accessible without login
+    public_pages = {
         '🏠 主页': 'main_page.py',
         '🖥️ 网页设计': 'Web_Design.md',
         '🛠️ 工具包': {
             'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
             'Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
             'Papers': os.path.join('工具包', 'Papers.py')
-        },
-        '👤 个人中心': 'Personal_center.py',
+        }
     }
-
+    
+    # Pages accessible with login
+    protected_pages = {
+        '👤 个人中心': 'Personal_center.py',
+        '☁️ 云服务': None
+    }
+    
     if role == '管理员':
-        pages['📚 Fig_preservation'] = {
+        protected_pages['📚 Fig_preservation'] = {
             '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
             '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
             '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
             '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
         }
-    
-    # Always show cloud storage page if the user is logged in
-    if st.session_state.get('username') is not None:
-        pages['☁️ 云服务'] = None
 
+    # Combine public and protected pages based on login state
+    pages = {**public_pages, **(protected_pages if st.session_state.get('username') else {})}
+    
     page_name = st.sidebar.radio('导航', list(pages.keys()))
     
     if page_name == '☁️ 云服务':
@@ -119,6 +124,7 @@ def main():
                     st.error("用户名和密码不能为空")
         else:
             st.title("欢迎来到实验室应用")
+            display_pages(None)
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
                 st.experimental_rerun()  # Ensure the login page is displayed
