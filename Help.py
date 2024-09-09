@@ -27,7 +27,6 @@ st.markdown("""
 —— 刘曜畅
 """)
 
-
 # 帮助文档
 st.subheader('帮助文档')
 st.write('欢迎阅读实验室应用的使用文档和常见问题解答。')
@@ -66,32 +65,35 @@ with st.form(key='feedback_form'):
         if feedback_content.strip() == '':
             st.warning('请填写反馈内容。')
         else:
-            # 邮件设置
-            sender_email = '13562157226@163.com'
-            receiver_email = '13562157226@163.com'
-            password = '9426983..chang'
-            
+            # 配置邮箱信息
+            sender_email = '17806067729@163.com'  # 您的网易邮箱
+            receiver_email = '13562157226@163.com'  # 收件人邮箱
+            password = '9426983..chang'  # 您的网易邮箱密码或应用专用密码
+            smtp_server = 'smtp.163.com'
+            smtp_port = 465  # 使用SSL端口
+
             # 创建邮件内容
             msg = MIMEMultipart()
             msg['From'] = sender_email
             msg['To'] = receiver_email
             msg['Subject'] = '用户反馈'
 
-            body = f"""
+            body = f'''
             姓名: {name}
             电子邮件: {email}
             反馈类型: {feedback_type}
             反馈内容:
             {feedback_content}
-            """
+            '''
             msg.attach(MIMEText(body, 'plain'))
 
             # 发送邮件
             try:
-                with smtplib.SMTP('smtp.gmail.com', 587) as server:
-                    server.starttls()
+                with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
                     server.login(sender_email, password)
-                    server.send_message(msg)
-                st.success('感谢您的反馈！我们会认真考虑您的建议。')
+                    server.sendmail(sender_email, receiver_email, msg.as_string())
+                    st.success('感谢您的反馈！我们会认真考虑您的建议。')
+            except smtplib.SMTPAuthenticationError:
+                st.error('认证失败：请检查您的邮箱地址和密码。')
             except Exception as e:
-                st.error(f'邮件发送失败: {e}')
+                st.error(f'发送邮件时发生错误: {e}')
