@@ -77,74 +77,66 @@ def display_pages(role):
             '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
         }
 
-    # Display pages based on login status
-    if 'username' in st.session_state and st.session_state['username']:
-        page_name = st.sidebar.radio('导航', list(pages.keys()))
-        if page_name == '☁️ 云服务':
-            cloud_storage_page()  # 调用 cloud_storage_page 函数
-        else:
-            page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
-            if page_file.endswith('.py'):
-                with open(page_file, encoding='utf-8') as file:
-                    exec(file.read())
-            elif page_file.endswith('.md'):
-                with open(page_file, encoding='utf-8') as file:
-                    st.markdown(file.read())
-            else:
-                st.write('所选页面不正确或文件类型不支持')
+    page_name = st.sidebar.radio('导航', list(pages.keys()))
+    if page_name == '☁️ 云服务' and role:
+        cloud_storage_page()  # 调用 cloud_storage_page 函数
     else:
-        st.write("请登录以访问更多功能。")
-        st.sidebar.write("欢迎访问主页!")
-        # You can also show a subset of available pages here if desired
+        page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
+        if page_file.endswith('.py'):
+            with open(page_file, encoding='utf-8') as file:
+                exec(file.read())
+        elif page_file.endswith('.md'):
+            with open(page_file, encoding='utf-8') as file:
+                st.markdown(file.read())
+        else:
+            st.write('所选页面不正确或文件类型不支持')
 
 def main():
     if 'username' not in st.session_state:
         st.session_state['username'] = None
         st.session_state['role'] = None
 
+    # Display basic pages and login form
+    st.title("欢迎来到实验室应用")
+    display_pages(st.session_state.get('role'))
+
     if st.session_state['username'] is None:
-        st.title("登录要求")
-        st.write("请登录以访问应用程序。")
-
-        menu = ["登录", "注册"]
-        choice = st.sidebar.selectbox("选择操作", menu)
-
-        if choice == "注册":
-            st.subheader("注册")
-            username = st.text_input("用户名")
-            password = st.text_input("密码", type="password")
-            role = st.selectbox("角色", ["用户", "管理员"])
-            email = st.text_input("邮箱")
-            if st.button("注册"):
-                if username and password and email:
-                    register_user(username, password, role, email)
-                else:
-                    st.error("用户名、密码和邮箱不能为空")
-        
-        elif choice == "登录":
+        with st.sidebar.form(key='login_form'):
             st.subheader("登录")
             username = st.text_input("用户名")
             password = st.text_input("密码", type="password")
-            if st.button("登录"):
+            login_button = st.form_submit_button("登录")
+            if login_button:
                 if username and password:
                     user = authenticate_user(username, password)
                     if user:
                         st.session_state['username'] = username
                         st.session_state['role'] = get_user_role(username)
                         st.success(f"欢迎回来, {username}!")
-                        st.balloons()
-                        st.experimental_rerun()  # Refresh the page to show logged-in content
+                        st.experimental_rerun()
                     else:
                         st.error("用户名或密码无效")
                 else:
                     st.error("用户名和密码不能为空")
-    else:   
-        menu = ["🏠 主页", "🔒 重置密码", "🚪 退出"]
+
+        with st.sidebar.form(key='register_form'):
+            st.subheader("注册")
+            username = st.text_input("用户名", key='register_username')
+            password = st.text_input("密码", type="password", key='register_password')
+            role = st.selectbox("角色", ["用户", "管理员"], key='register_role')
+            email = st.text_input("邮箱", key='register_email')
+            register_button = st.form_submit_button("注册")
+            if register_button:
+                if username and password and email:
+                    register_user(username, password, role, email)
+                else:
+                    st.error("用户名、密码和邮箱不能为空")
+
+    else:
+        menu = ["🔒 重置密码", "🚪 退出"]
         choice = st.sidebar.selectbox("选择操作", menu)
 
-        if choice == "🏠 主页":
-            display_pages(st.session_state['role'])
-        elif choice == "🔒 重置密码":
+        if choice == "🔒 重置密码":
             st.subheader("重置密码")
             new_password = st.text_input("新密码", type="password")
             if st.button("重置密码"):
