@@ -110,7 +110,6 @@ def main():
             display_pages(None)
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
-                # Display the login page without rerun
                 st.experimental_rerun()  # Ensure the login page is displayed
     else:
         st.title("欢迎回来")
