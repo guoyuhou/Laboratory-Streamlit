@@ -1,5 +1,7 @@
 import streamlit as st
-import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # 实验室主页
 st.title('陈浩实验室')
@@ -64,17 +66,32 @@ with st.form(key='feedback_form'):
         if feedback_content.strip() == '':
             st.warning('请填写反馈内容。')
         else:
-            # 保存反馈到文件或发送邮件的逻辑（此处以保存到文件为例）
-            feedback_dir = 'feedback'
-            if not os.path.exists(feedback_dir):
-                os.makedirs(feedback_dir)
+            # 邮件设置
+            sender_email = '13562157226@163.com'
+            receiver_email = '13562157226@163.com'
+            password = '9426983..chang'
             
-            feedback_file = os.path.join(feedback_dir, 'feedback.txt')
-            with open(feedback_file, 'a') as f:
-                f.write(f'姓名: {name}\n')
-                f.write(f'电子邮件: {email}\n')
-                f.write(f'反馈类型: {feedback_type}\n')
-                f.write(f'反馈内容:\n{feedback_content}\n')
-                f.write('-' * 40 + '\n')
-            
-            st.success('感谢您的反馈！我们会认真考虑您的建议。')
+            # 创建邮件内容
+            msg = MIMEMultipart()
+            msg['From'] = sender_email
+            msg['To'] = receiver_email
+            msg['Subject'] = '用户反馈'
+
+            body = f"""
+            姓名: {name}
+            电子邮件: {email}
+            反馈类型: {feedback_type}
+            反馈内容:
+            {feedback_content}
+            """
+            msg.attach(MIMEText(body, 'plain'))
+
+            # 发送邮件
+            try:
+                with smtplib.SMTP('smtp.gmail.com', 587) as server:
+                    server.starttls()
+                    server.login(sender_email, password)
+                    server.send_message(msg)
+                st.success('感谢您的反馈！我们会认真考虑您的建议。')
+            except Exception as e:
+                st.error(f'邮件发送失败: {e}')

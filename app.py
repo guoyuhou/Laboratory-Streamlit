@@ -119,10 +119,11 @@ def main():
                     st.session_state['username'] = username
                     st.session_state['role'] = get_user_role(username)
                     st.success(f"欢迎回来, {username}!")
+                    st.balloons()  # 添加气球动画
                 else:
                     st.error("用户名或密码无效")
     else:
-        st.balloons()
+        
         menu = ["🏠 主页", "🔒 重置密码", "🚪 退出"]
         choice = st.sidebar.selectbox("选择操作", menu)
 
