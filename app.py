@@ -89,7 +89,6 @@ def main():
         st.session_state['login_page'] = False
 
     if st.session_state['username'] is None:
-        st.title("欢迎来到实验室应用")
         if st.session_state['login_page']:
             st.title("登录要求")
             st.write("请登录以访问更多内容。")
@@ -101,18 +100,18 @@ def main():
                     if user:
                         st.session_state['username'] = username
                         st.session_state['role'] = get_user_role(username)
-                        st.success(f"欢迎回来, {username}!")
                         st.session_state['login_page'] = False
-                        st.experimental_rerun()  # Ensure proper redirection
+                        st.experimental_rerun()  # Re-run to update page state
                     else:
                         st.error("用户名或密码无效")
                 else:
                     st.error("用户名和密码不能为空")
         else:
+            st.title("欢迎来到实验室应用")
             display_pages(None)
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
-                st.experimental_rerun()  # Ensure proper redirection
+                st.experimental_rerun()  # Re-run to switch to login page
     else:
         st.title("欢迎回来")
         display_pages(st.session_state['role'])
@@ -137,10 +136,10 @@ def main():
         elif choice == "🚪 退出":
             st.session_state['username'] = None
             st.session_state['role'] = None
+            st.session_state['login_page'] = False
             st.success("您已成功登出。")
             st.write("正在重定向到主页...")
-            st.session_state['login_page'] = False
-            st.experimental_rerun()  # Ensure proper redirection
+            st.experimental_rerun()  # Re-run to update state and redirect
 
 if __name__ == "__main__":
     main()
