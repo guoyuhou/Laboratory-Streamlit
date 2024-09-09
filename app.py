@@ -90,35 +90,29 @@ def main():
 
     if st.session_state['username'] is None:
         st.title("欢迎来到实验室应用")
-        display_pages(None)
-
-        if st.sidebar.button("登录以访问更多内容"):
-            st.session_state['login_page'] = True
-            st.write("正在跳转到登录页面...")
-            # Instead of st.experimental_rerun(), use a different approach to reset the state
-            st.session_state['username'] = None
-            st.session_state['role'] = None
-            st.session_state['login_page'] = True
-
-    elif st.session_state.get('login_page', False):
-        st.session_state['login_page'] = False
-        st.title("登录要求")
-        st.write("请登录以访问更多内容。")
-        username = st.text_input("用户名")
-        password = st.text_input("密码", type="password")
-        if st.button("登录"):
-            if username and password:
-                user = authenticate_user(username, password)
-                if user:
-                    st.session_state['username'] = username
-                    st.session_state['role'] = get_user_role(username)
-                    st.success(f"欢迎回来, {username}!")
-                    st.write("正在跳转到主页...")
-                    st.session_state['login_page'] = False
+        if st.session_state['login_page']:
+            st.title("登录要求")
+            st.write("请登录以访问更多内容。")
+            username = st.text_input("用户名")
+            password = st.text_input("密码", type="password")
+            if st.button("登录"):
+                if username and password:
+                    user = authenticate_user(username, password)
+                    if user:
+                        st.session_state['username'] = username
+                        st.session_state['role'] = get_user_role(username)
+                        st.success(f"欢迎回来, {username}!")
+                        st.session_state['login_page'] = False
+                        st.experimental_rerun()  # Ensure proper redirection
+                    else:
+                        st.error("用户名或密码无效")
                 else:
-                    st.error("用户名或密码无效")
-            else:
-                st.error("用户名和密码不能为空")
+                    st.error("用户名和密码不能为空")
+        else:
+            display_pages(None)
+            if st.sidebar.button("登录以访问更多内容"):
+                st.session_state['login_page'] = True
+                st.experimental_rerun()  # Ensure proper redirection
     else:
         st.title("欢迎回来")
         display_pages(st.session_state['role'])
@@ -146,6 +140,7 @@ def main():
             st.success("您已成功登出。")
             st.write("正在重定向到主页...")
             st.session_state['login_page'] = False
+            st.experimental_rerun()  # Ensure proper redirection
 
 if __name__ == "__main__":
     main()
