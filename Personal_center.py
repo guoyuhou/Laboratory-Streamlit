@@ -3,7 +3,7 @@ from app import get_db_connection, hash_password
 
 def display_personal_center(username):
     st.title("个人中心")
-    
+
     # 设定背景色
     st.markdown(
         """
@@ -37,14 +37,14 @@ def display_personal_center(username):
 
         if user:
             # 显示用户信息
-            st.markdown(f"## 个人信息")
+            st.markdown("## 个人信息")
             st.write(f"**用户名:** {user['username']}")
             st.write(f"**角色:** {user['role']}")
             st.write(f"**邮箱:** {user['email']}")
             st.write(f"**电话:** {user['phone']}")
             
             # 更新个人信息部分
-            with st.beta_expander("更新个人信息", expanded=True):
+            with st.expander("更新个人信息", expanded=True):
                 new_email = st.text_input("新邮箱", value=user['email'])
                 new_phone = st.text_input("新电话", value=user['phone'])
                 if st.button("更新信息", key="update_info"):
@@ -59,7 +59,7 @@ def display_personal_center(username):
                         st.error("邮箱和电话不能为空")
             
             # 更新密码部分
-            with st.beta_expander("更改密码", expanded=True):
+            with st.expander("更改密码", expanded=True):
                 new_password = st.text_input("新密码", type="password")
                 confirm_password = st.text_input("确认新密码", type="password")
                 if st.button("更新密码", key="update_password"):
@@ -77,7 +77,7 @@ def display_personal_center(username):
                         st.error("请输入新密码")
 
             # 账户注销部分
-            with st.beta_expander("账户注销", expanded=True):
+            with st.expander("账户注销", expanded=True):
                 if st.button("注销账户", key="delete_account"):
                     if st.confirm("确定要注销账户吗？此操作不可撤销。"):
                         conn = get_db_connection()
@@ -91,7 +91,7 @@ def display_personal_center(username):
                         st.experimental_rerun()
             
             # 用户日志（可选）
-            with st.beta_expander("活动日志", expanded=True):
+            with st.expander("活动日志", expanded=True):
                 # 假设有一个用户日志表
                 # logs = conn.execute('SELECT * FROM user_logs WHERE username = ?', (username,)).fetchall()
                 # for log in logs:
