@@ -55,14 +55,15 @@ def get_user_role(username):
 
 def display_pages(role):
     pages = {
-        '🏠 主页': 'main_page.py',
-        '🖥️ 网页设计': 'Web_Design.md',
-        '☁️ 云服务': cloud_storage_page,
-        '工具包': {
-            'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
-            'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
-        }
+    '🏠 主页': 'main_page.py',
+    '🖥️ 网页设计': 'Web_Design.md',
+    '☁️ 云服务': cloud_storage_page,
+    '🛠️ 工具包': {
+        'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
+        'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
     }
+    }
+
     
     if role == '管理员':
         pages['📚 Fig_preservation'] = {
