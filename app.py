@@ -68,11 +68,17 @@ def display_pages(role):
     else:
         page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
         if page_file.endswith('.py'):
-            with open(page_file, encoding='utf-8') as file:
-                exec(file.read())
+            try:
+                with open(page_file, encoding='utf-8') as file:
+                    exec(file.read())
+            except Exception as e:
+                st.error(f"文件执行错误: {e}")
         elif page_file.endswith('.md'):
-            with open(page_file, encoding='utf-8') as file:
-                st.markdown(file.read())
+            try:
+                with open(page_file, encoding='utf-8') as file:
+                    st.markdown(file.read())
+            except Exception as e:
+                st.error(f"文件读取错误: {e}")
         else:
             st.write('所选页面不正确或文件类型不支持')
 
@@ -80,6 +86,7 @@ def main():
     if 'username' not in st.session_state:
         st.session_state['username'] = None
         st.session_state['role'] = None
+        st.session_state['login_page'] = False
 
     if st.session_state['username'] is None:
         st.title("欢迎来到实验室应用")
