@@ -6,9 +6,6 @@ from pygwalker.api.streamlit import StreamlitRenderer
 from Cloud_storage import cloud_storage_page
 from hashlib import sha256
 import json
-import sqlite3
-from hashlib import sha256
-
 # 读取配置文件
 def load_config():
     with open('config.json', 'r') as f:
@@ -166,7 +163,6 @@ def main():
             st.session_state['role'] = None
             st.success("您已成功登出。")
             st.write("正在重定向到登录页面...")
-            # 使用以下方法代替 st.caching.clear_cache() 和 st.experimental_rerun()
             st.experimental_rerun()
 
 if __name__ == "__main__":
