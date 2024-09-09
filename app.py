@@ -1,10 +1,8 @@
 import streamlit as st
 import os
-import pandas as pd
 import sqlite3
-from pygwalker.api.streamlit import StreamlitRenderer
-from Cloud_storage import cloud_storage_page
 from hashlib import sha256
+from Cloud_storage import cloud_storage_page
 
 def get_db_connection():
     conn = sqlite3.connect('user_db.sqlite')
@@ -131,31 +129,6 @@ def main():
     else:
         st.title("欢迎回来")
         display_pages(st.session_state['role'])
-
-        menu = ["🔒 重置密码", "🚪 退出"]
-        choice = st.sidebar.selectbox("选择操作", menu)
-
-        if choice == "🔒 重置密码":
-            st.subheader("重置密码")
-            new_password = st.text_input("新密码", type="password")
-            if st.button("重置密码"):
-                if new_password:
-                    conn = get_db_connection()
-                    hashed_password = hash_password(new_password)
-                    conn.execute('UPDATE users SET password = ? WHERE username = ?',
-                                 (hashed_password, st.session_state['username']))
-                    conn.commit()
-                    conn.close()
-                    st.success("密码重置成功")
-                else:
-                    st.error("请输入新密码")
-        elif choice == "🚪 退出":
-            st.session_state['username'] = None
-            st.session_state['role'] = None
-            st.session_state['login_page'] = False
-            st.success("您已成功登出。")
-            st.write("正在重定向到主页...")
-            st.experimental_rerun()  # Re-run to update state and redirect
 
 if __name__ == "__main__":
     main()
