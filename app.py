@@ -61,13 +61,12 @@ def display_pages(role):
     pages = {
         '🏠 主页': 'main_page.py',
         '🖥️ 网页设计': 'Web_Design.md',
-        '☁️ 云服务': cloud_storage_page,
         '🛠️ 工具包': {
             'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
             'Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
             'Papers': os.path.join('工具包', 'Papers.py')
         },
-        '👤个人中心': 'Personal_center.py'
+        '👤 个人中心': 'Personal_center.py'
     }
 
     if role == '管理员':
@@ -78,19 +77,25 @@ def display_pages(role):
             '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
         }
 
-    page_name = st.sidebar.radio('导航', list(pages.keys()))
-    if page_name == '☁️ 云服务':
-        pages[page_name]()  # 调用 cloud_storage_page 函数
-    else:
-        page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
-        if page_file.endswith('.py'):
-            with open(page_file, encoding='utf-8') as file:
-                exec(file.read())
-        elif page_file.endswith('.md'):
-            with open(page_file, encoding='utf-8') as file:
-                st.markdown(file.read())
+    # Display pages based on login status
+    if 'username' in st.session_state and st.session_state['username']:
+        page_name = st.sidebar.radio('导航', list(pages.keys()))
+        if page_name == '☁️ 云服务':
+            cloud_storage_page()  # 调用 cloud_storage_page 函数
         else:
-            st.write('所选页面不正确或文件类型不支持')
+            page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
+            if page_file.endswith('.py'):
+                with open(page_file, encoding='utf-8') as file:
+                    exec(file.read())
+            elif page_file.endswith('.md'):
+                with open(page_file, encoding='utf-8') as file:
+                    st.markdown(file.read())
+            else:
+                st.write('所选页面不正确或文件类型不支持')
+    else:
+        st.write("请登录以访问更多功能。")
+        st.sidebar.write("欢迎访问主页!")
+        # You can also show a subset of available pages here if desired
 
 def main():
     if 'username' not in st.session_state:
@@ -128,6 +133,7 @@ def main():
                         st.session_state['role'] = get_user_role(username)
                         st.success(f"欢迎回来, {username}!")
                         st.balloons()
+                        st.experimental_rerun()  # Refresh the page to show logged-in content
                     else:
                         st.error("用户名或密码无效")
                 else:
