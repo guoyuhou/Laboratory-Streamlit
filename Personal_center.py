@@ -4,32 +4,6 @@ from app import get_db_connection, hash_password
 def display_personal_center(username):
     st.title("个人中心")
 
-    # 设定背景色
-    st.markdown(
-        """
-        <style>
-        .stApp {
-            background-color: #f0f2f6;
-        }
-        .stTitle {
-            font-size: 2em;
-            color: #2e3a59;
-            font-weight: bold;
-        }
-        .stSubheader {
-            font-size: 1.5em;
-            color: #3a3f5c;
-            margin-top: 20px;
-        }
-        .stButton {
-            background-color: #007bff;
-            color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     try:
         conn = get_db_connection()
         user = conn.execute('SELECT username, role, email, phone FROM users WHERE username = ?', (username,)).fetchone()
