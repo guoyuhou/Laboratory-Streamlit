@@ -107,23 +107,29 @@ def main():
             password = st.text_input("密码", type="password")
             role = st.selectbox("角色", ["用户", "管理员"])
             if st.button("注册"):
-                register_user(username, password, role)
+                if username and password:
+                    register_user(username, password, role)
+                else:
+                    st.error("用户名和密码不能为空")
         
         elif choice == "登录":
             st.subheader("登录")
             username = st.text_input("用户名")
             password = st.text_input("密码", type="password")
             if st.button("登录"):
-                user = authenticate_user(username, password)
-                if user:
-                    st.session_state['username'] = username
-                    st.session_state['role'] = get_user_role(username)
-                    st.success(f"欢迎回来, {username}!")
-                    st.balloons()  # 添加气球动画
+                if username and password:
+                    user = authenticate_user(username, password)
+                    if user:
+                        st.session_state['username'] = username
+                        st.session_state['role'] = get_user_role(username)
+                        st.success(f"欢迎回来, {username}!")
+                        st.balloons()  # 添加气球动画
+                    else:
+                        st.error("用户名或密码无效")
                 else:
-                    st.error("用户名或密码无效")
+                    st.error("用户名和密码不能为空")
     else:
-        
+        st.title("应用主页")
         menu = ["🏠 主页", "🔒 重置密码", "🚪 退出"]
         choice = st.sidebar.selectbox("选择操作", menu)
 
@@ -147,9 +153,8 @@ def main():
             st.session_state['username'] = None
             st.session_state['role'] = None
             st.success("您已成功登出。")
-            # 通过刷新应用程序重定向到登录页面，但不使用 st.experimental_rerun()
             st.write("正在重定向到登录页面...")
-            st.stop()  # 停止进一步执行并重新渲染页面
+            st.experimental_rerun()  # 使用 rerun() 重新加载页面以确保用户被重定向
 
 if __name__ == "__main__":
     main()
