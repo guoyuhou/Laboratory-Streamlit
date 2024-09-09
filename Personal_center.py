@@ -6,7 +6,6 @@ def display_personal_center(username):
 
     try:
         conn = get_db_connection()
-        # 确保表结构与查询匹配
         user = conn.execute('SELECT username, role, email, phone FROM users WHERE username = ?', (username,)).fetchone()
         conn.close()
         
