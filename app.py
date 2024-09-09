@@ -1,10 +1,15 @@
 import streamlit as st
 import os
-import pandas as pd
+import json
 import sqlite3
-from pygwalker.api.streamlit import StreamlitRenderer
-from Cloud_storage import cloud_storage_page
 from hashlib import sha256
+
+# 读取配置文件
+def load_config():
+    with open('config.json', 'r') as f:
+        return json.load(f)
+
+config = load_config()
 
 def get_db_connection():
     conn = sqlite3.connect('user_db.sqlite')
@@ -69,7 +74,7 @@ def display_pages(role):
         '👤个人中心': 'Personal_center.py'
     }
 
-    if role == '管理员':
+    if role in config['admin_users']:
         pages['📚 Fig_preservation'] = {
             '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
             '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
@@ -107,7 +112,7 @@ def main():
             st.subheader("注册")
             username = st.text_input("用户名")
             password = st.text_input("密码", type="password")
-            role = st.selectbox("角色", ["用户", "管理员"])
+            role = st.selectbox("角色", ["用户", "学生"])  # 修改为学生而非管理员
             email = st.text_input("邮箱")
             if st.button("注册"):
                 if username and password and email:
