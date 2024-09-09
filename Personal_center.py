@@ -5,16 +5,20 @@ def display_personal_center(username):
     st.title("个人中心")
 
     try:
+        # 连接到数据库
         conn = get_db_connection()
+        # 获取用户信息，包括邮箱和电话
         user = conn.execute('SELECT username, role, email, phone FROM users WHERE username = ?', (username,)).fetchone()
         conn.close()
         
         if user:
+            # 显示用户信息
             st.write(f"用户名: {user['username']}")
             st.write(f"角色: {user['role']}")
             st.write(f"邮箱: {user['email']}")
             st.write(f"电话: {user['phone']}")
             
+            # 更新个人信息部分
             st.subheader("更新个人信息")
             new_email = st.text_input("新邮箱", value=user['email'])
             new_phone = st.text_input("新电话", value=user['phone'])
@@ -30,6 +34,7 @@ def display_personal_center(username):
                 else:
                     st.error("邮箱和电话不能为空")
             
+            # 更新密码部分
             st.subheader("更改密码")
             new_password = st.text_input("新密码", type="password")
             confirm_password = st.text_input("确认新密码", type="password")
@@ -48,6 +53,7 @@ def display_personal_center(username):
                 else:
                     st.error("请输入新密码")
             
+            # 账户注销部分
             st.subheader("账户注销")
             if st.button("注销账户"):
                 conn = get_db_connection()
@@ -71,6 +77,7 @@ def display_personal_center(username):
     except Exception as e:
         st.error(f"发生错误: {e}")
 
+# 确保用户已登录才能访问个人中心
 if 'username' in st.session_state and st.session_state['username']:
     display_personal_center(st.session_state['username'])
 else:
