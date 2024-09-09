@@ -1,9 +1,9 @@
 import streamlit as st
-import os
+
 def display_papers():
     st.title('顶级自然科学期刊')
 
-    st.write('以下是三大顶级自然科学期刊的官网链接，点击即可访问：')
+    st.write('以下是一些顶级自然科学期刊的官网链接，点击即可访问：')
 
     # 使用 Markdown 和图标美化
     st.markdown(
@@ -30,6 +30,12 @@ def display_papers():
         
         <div class="title">Science</div>
         <a class="link" href="https://www.sciencemag.org" target="_blank">Science 官网</a>
+        
+        <div class="title">Advanced Materials</div>
+        <a class="link" href="https://onlinelibrary.wiley.com/journal/15214095" target="_blank">Advanced Materials 官网</a>
+        
+        <div class="title">Advanced Functional Materials</div>
+        <a class="link" href="https://onlinelibrary.wiley.com/journal/16163028" target="_blank">Advanced Functional Materials 官网</a>
         """,
         unsafe_allow_html=True
     )
