@@ -38,6 +38,8 @@ def register_user(username, password, role, email):
         st.success("用户注册成功")
     except sqlite3.IntegrityError:
         st.error("用户名已存在")
+    except sqlite3.OperationalError as e:
+        st.error(f"数据库操作错误: {e}")
     finally:
         conn.close()
 
@@ -57,17 +59,16 @@ def get_user_role(username):
 
 def display_pages(role):
     pages = {
-    '🏠 主页': 'main_page.py',
-    '🖥️ 网页设计': 'Web_Design.md',
-    '☁️ 云服务': cloud_storage_page,
-    '🛠️ 工具包': {
-        'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
-        'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
-    },
-    '个人中心': 'Personal_center.py'
+        '🏠 主页': 'main_page.py',
+        '🖥️ 网页设计': 'Web_Design.md',
+        '☁️ 云服务': cloud_storage_page,
+        '🛠️ 工具包': {
+            'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
+            'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
+        },
+        '个人中心': 'Personal_center.py'
     }
 
-    
     if role == '管理员':
         pages['📚 Fig_preservation'] = {
             '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
@@ -75,7 +76,7 @@ def display_pages(role):
             '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
             '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
         }
-    
+
     page_name = st.sidebar.radio('导航', list(pages.keys()))
     if page_name == '☁️ 云服务':
         pages[page_name]()  # 调用 cloud_storage_page 函数
