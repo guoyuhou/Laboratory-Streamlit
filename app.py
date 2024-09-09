@@ -64,7 +64,8 @@ def display_pages(role):
         '☁️ 云服务': cloud_storage_page,
         '🛠️ 工具包': {
             'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
-            'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
+            'Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
+            'Papers': os.path.join('工具包', 'Papers.py')
         },
         '👤个人中心': 'Personal_center.py'
     }
