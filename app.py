@@ -94,7 +94,11 @@ def main():
 
         if st.sidebar.button("登录以访问更多内容"):
             st.session_state['login_page'] = True
-            st.experimental_rerun()
+            st.write("正在跳转到登录页面...")
+            # Instead of st.experimental_rerun(), use a different approach to reset the state
+            st.session_state['username'] = None
+            st.session_state['role'] = None
+            st.session_state['login_page'] = True
 
     elif st.session_state.get('login_page', False):
         st.session_state['login_page'] = False
@@ -109,7 +113,8 @@ def main():
                     st.session_state['username'] = username
                     st.session_state['role'] = get_user_role(username)
                     st.success(f"欢迎回来, {username}!")
-                    st.experimental_rerun()
+                    st.write("正在跳转到主页...")
+                    st.session_state['login_page'] = False
                 else:
                     st.error("用户名或密码无效")
             else:
@@ -140,7 +145,7 @@ def main():
             st.session_state['role'] = None
             st.success("您已成功登出。")
             st.write("正在重定向到主页...")
-            st.experimental_rerun()
+            st.session_state['login_page'] = False
 
 if __name__ == "__main__":
     main()
