@@ -101,7 +101,6 @@ def main():
                         st.session_state['username'] = username
                         st.session_state['role'] = get_user_role(username)
                         st.session_state['login_page'] = False
-                        st.experimental_rerun()  # Re-run to update page state
                     else:
                         st.error("用户名或密码无效")
                 else:
@@ -111,7 +110,8 @@ def main():
             display_pages(None)
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
-                st.experimental_rerun()  # Re-run to switch to login page
+                # Display the login page without rerun
+                st.experimental_rerun()  # Ensure the login page is displayed
     else:
         st.title("欢迎回来")
         display_pages(st.session_state['role'])
