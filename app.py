@@ -166,7 +166,8 @@ def main():
             st.session_state['role'] = None
             st.success("您已成功登出。")
             st.write("正在重定向到登录页面...")
-            st.experimental_rerun()
+            st.caching.clear_cache()  # 清除缓存
+            st.experimental_rerun()  # 重新加载页面
 
 if __name__ == "__main__":
     main()
