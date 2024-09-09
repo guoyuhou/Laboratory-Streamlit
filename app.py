@@ -51,7 +51,7 @@ def display_pages(role):
             'Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
             'Papers': os.path.join('工具包', 'Papers.py')
         },
-        '👤 个人中心': 'Personal_center.py'
+        '👤 个人中心': 'Personal_center.py',
     }
 
     if role == '管理员':
@@ -61,26 +61,37 @@ def display_pages(role):
             '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
             '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
         }
+    
+    # Always show cloud storage page if the user is logged in
+    if st.session_state.get('username') is not None:
+        pages['☁️ 云服务'] = None
 
     page_name = st.sidebar.radio('导航', list(pages.keys()))
-    if page_name == '☁️ 云服务' and role:
-        cloud_storage_page()  # 调用 cloud_storage_page 函数
+    
+    if page_name == '☁️ 云服务':
+        cloud_storage_page()  # Call cloud_storage_page function
     else:
-        page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
-        if page_file.endswith('.py'):
-            try:
-                with open(page_file, encoding='utf-8') as file:
-                    exec(file.read())
-            except Exception as e:
-                st.error(f"文件执行错误: {e}")
-        elif page_file.endswith('.md'):
-            try:
-                with open(page_file, encoding='utf-8') as file:
-                    st.markdown(file.read())
-            except Exception as e:
-                st.error(f"文件读取错误: {e}")
+        if role == '管理员' and page_name == '📚 Fig_preservation':
+            category_name = st.sidebar.radio('分类', list(pages[page_name].keys()))
+            page_file = pages[page_name][category_name]
         else:
-            st.write('所选页面不正确或文件类型不支持')
+            page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
+        
+        if page_file:
+            if page_file.endswith('.py'):
+                try:
+                    with open(page_file, encoding='utf-8') as file:
+                        exec(file.read())
+                except Exception as e:
+                    st.error(f"文件执行错误: {e}")
+            elif page_file.endswith('.md'):
+                try:
+                    with open(page_file, encoding='utf-8') as file:
+                        st.markdown(file.read())
+                except Exception as e:
+                    st.error(f"文件读取错误: {e}")
+            else:
+                st.write('所选页面不正确或文件类型不支持')
 
 def main():
     if 'username' not in st.session_state:
@@ -101,13 +112,13 @@ def main():
                         st.session_state['username'] = username
                         st.session_state['role'] = get_user_role(username)
                         st.session_state['login_page'] = False
+                        st.experimental_rerun()  # Ensure the login page is properly updated
                     else:
                         st.error("用户名或密码无效")
                 else:
                     st.error("用户名和密码不能为空")
         else:
             st.title("欢迎来到实验室应用")
-            display_pages(None)
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
                 st.experimental_rerun()  # Ensure the login page is displayed
