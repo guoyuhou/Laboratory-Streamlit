@@ -61,7 +61,8 @@ def display_pages(role):
     '🛠️ 工具包': {
         'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
         'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
-    }
+    },
+    '个人中心': 'Personal_center.py'
     }
 
     
