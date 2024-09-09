@@ -66,7 +66,7 @@ def display_pages(role):
             'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
             'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
         },
-        '个人中心': 'Personal_center.py'
+        '👤个人中心': 'Personal_center.py'
     }
 
     if role == '管理员':
