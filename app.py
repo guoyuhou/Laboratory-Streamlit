@@ -17,7 +17,9 @@ def initialize_db():
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         username TEXT UNIQUE NOT NULL,
                         password TEXT NOT NULL,
-                        role TEXT NOT NULL)''')
+                        role TEXT NOT NULL,
+                        email TEXT,
+                        phone TEXT)''')
     conn.commit()
     conn.close()
 
@@ -26,12 +28,12 @@ initialize_db()
 def hash_password(password):
     return sha256(password.encode()).hexdigest()
 
-def register_user(username, password, role):
+def register_user(username, password, role, email):
     conn = get_db_connection()
     hashed_password = hash_password(password)
     try:
-        conn.execute('INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
-                     (username, hashed_password, role))
+        conn.execute('INSERT INTO users (username, password, role, email) VALUES (?, ?, ?, ?)',
+                     (username, hashed_password, role, email))
         conn.commit()
         st.success("用户注册成功")
     except sqlite3.IntegrityError:
@@ -105,11 +107,12 @@ def main():
             username = st.text_input("用户名")
             password = st.text_input("密码", type="password")
             role = st.selectbox("角色", ["用户", "管理员"])
+            email = st.text_input("邮箱")
             if st.button("注册"):
-                if username and password:
-                    register_user(username, password, role)
+                if username and password and email:
+                    register_user(username, password, role, email)
                 else:
-                    st.error("用户名和密码不能为空")
+                    st.error("用户名、密码和邮箱不能为空")
         
         elif choice == "登录":
             st.subheader("登录")
