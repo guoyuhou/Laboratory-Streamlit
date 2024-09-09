@@ -3,16 +3,14 @@ import os
 import pandas as pd
 import sqlite3
 from pygwalker.api.streamlit import StreamlitRenderer
-# 导入 Cloud_storage.py 中的 cloud_storage_page 函数
 from Cloud_storage import cloud_storage_page
 from hashlib import sha256
-# 数据库连接
+
 def get_db_connection():
     conn = sqlite3.connect('user_db.sqlite')
     conn.row_factory = sqlite3.Row
     return conn
 
-# 创建数据库和表
 def initialize_db():
     conn = get_db_connection()
     conn.execute('''CREATE TABLE IF NOT EXISTS users (
@@ -25,11 +23,9 @@ def initialize_db():
 
 initialize_db()
 
-# 哈希密码
 def hash_password(password):
     return sha256(password.encode()).hexdigest()
 
-# 用户注册
 def register_user(username, password, role):
     conn = get_db_connection()
     hashed_password = hash_password(password)
@@ -43,7 +39,6 @@ def register_user(username, password, role):
     finally:
         conn.close()
 
-# 用户登录
 def authenticate_user(username, password):
     conn = get_db_connection()
     hashed_password = hash_password(password)
@@ -52,32 +47,31 @@ def authenticate_user(username, password):
     conn.close()
     return user
 
-# 获取用户角色
 def get_user_role(username):
     conn = get_db_connection()
     user = conn.execute('SELECT role FROM users WHERE username = ?', (username,)).fetchone()
     conn.close()
     return user['role'] if user else None
 
-# 页面内容
-def display_pages():
+def display_pages(role):
     pages = {
         '🏠 主页': 'main_page.py',
         '🖥️ 网页设计': 'Web_Design.md',
-        '☁️ 云服务': cloud_storage_page,  # 使用 cloud_storage_page 函数
+        '☁️ 云服务': cloud_storage_page,
         '工具包': {
             'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
             'Storm Genie': os.path.join('工具包', 'Storm_Genie.py')
-        },
-        '📚 Fig_preservation': {
+        }
+    }
+    
+    if role == '管理员':
+        pages['📚 Fig_preservation'] = {
             '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
             '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
             '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
             '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
-        },
-        '❓ 帮助': 'Help.py'
-    }
-
+        }
+    
     page_name = st.sidebar.radio('导航', list(pages.keys()))
     if page_name == '☁️ 云服务':
         pages[page_name]()  # 调用 cloud_storage_page 函数
@@ -92,10 +86,10 @@ def display_pages():
         else:
             st.write('所选页面不正确或文件类型不支持')
 
-# 主函数
 def main():
     if 'username' not in st.session_state:
         st.session_state['username'] = None
+        st.session_state['role'] = None
 
     if st.session_state['username'] is None:
         st.title("登录要求")
@@ -126,7 +120,7 @@ def main():
                         st.session_state['username'] = username
                         st.session_state['role'] = get_user_role(username)
                         st.success(f"欢迎回来, {username}!")
-                        st.balloons()  # 添加气球动画
+                        st.balloons()
                     else:
                         st.error("用户名或密码无效")
                 else:
@@ -136,7 +130,7 @@ def main():
         choice = st.sidebar.selectbox("选择操作", menu)
 
         if choice == "🏠 主页":
-            display_pages()  # 登录后才显示页面
+            display_pages(st.session_state['role'])
         elif choice == "🔒 重置密码":
             st.subheader("重置密码")
             new_password = st.text_input("新密码", type="password")
@@ -156,7 +150,7 @@ def main():
             st.session_state['role'] = None
             st.success("您已成功登出。")
             st.write("正在重定向到登录页面...")
-            st.experimental_rerun()  # 使用 rerun() 重新加载页面以确保用户被重定向
+            st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
