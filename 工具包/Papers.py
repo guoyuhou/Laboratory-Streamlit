@@ -1,7 +1,7 @@
 import streamlit as st
-
+import os
 def display_papers():
-    st.title('顶级自然科学期刊')
+    st.title('论文和论文工具')
 
     with st.expander("查看顶级自然科学期刊", expanded=True):
         st.write('以下是一些顶级自然科学期刊的官网链接，点击即可访问：')
