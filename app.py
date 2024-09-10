@@ -43,15 +43,16 @@ def get_user_role(username):
 def display_pages(role):
     # Pages accessible without login
     public_pages = {
-        '🏠 主页': 'main_page.py',
-        '🖥️ 网页设计': 'Web_Design.md',
-        '🛠️ 工具包': {
-            'PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
-            'Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
-            'Papers': os.path.join('工具包', 'Papers.py')
-        },
-        '帮助': 'Help.py'
+    '🏠 主页': 'main_page.py',
+    '🖥️ 网页设计': 'Web_Design.md',
+    '🛠️ 工具包': {
+        '🧰 PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
+        '🔧 Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
+        '📄 Papers': os.path.join('工具包', 'Papers.py')
+    },
+    '❓ 帮助': 'Help.py'
     }
+
     
     # Pages accessible with login
     protected_pages = {
