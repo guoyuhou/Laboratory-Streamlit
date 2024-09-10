@@ -21,14 +21,25 @@ def list_files():
 def handle_file(file, operation):
     """处理文件上传和更新"""
     try:
-        if operation == 'upload':
-            bucket.put_object(file.name, file)
-            st.success(f'文件 {file.name} 上传成功')
-        elif operation == 'update':
-            bucket.put_object(file.name, file)
-            st.success(f'文件 {file.name} 更新成功')
+        bucket.put_object(file.name, file)
+        st.success(f'文件 {file.name} {operation} 成功')
     except Exception as e:
         st.error(f'操作文件时出错: {e}')
+
+def upload_zip_file(uploaded_file):
+    """处理ZIP文件上传"""
+    try:
+        with zipfile.ZipFile(uploaded_file, 'r') as zip_ref:
+            total_files = len(zip_ref.infolist())
+            progress_bar = st.progress(0)
+            for i, file_info in enumerate(zip_ref.infolist(), start=1):
+                file_data = zip_ref.read(file_info.filename)
+                bucket.put_object(file_info.filename, file_data)
+                progress_bar.progress(i / total_files)
+                st.write(f'文件 {file_info.filename} 上传成功')
+        st.success('ZIP文件中的所有文件已成功上传到 OSS')
+    except Exception as e:
+        st.error(f'处理ZIP文件时出错: {e}')
 
 def upload_files_with_progress():
     """处理文件上传，显示进度条"""
@@ -38,21 +49,10 @@ def upload_files_with_progress():
     if uploaded_file:
         file_size = uploaded_file.size / 1024 / 1024  # 以MB为单位
         st.write(f'文件大小：{file_size:.2f} MB')
-        progress_bar = st.progress(0)
-
         if uploaded_file.type == 'application/zip':
-            # 如果上传的是ZIP文件
-            with zipfile.ZipFile(uploaded_file, 'r') as zip_ref:
-                total_files = len(zip_ref.infolist())
-                for i, file_info in enumerate(zip_ref.infolist(), start=1):
-                    file_data = zip_ref.read(file_info.filename)
-                    bucket.put_object(file_info.filename, file_data)
-                    progress_bar.progress(i / total_files)
-                    st.write(f'文件 {file_info.filename} 上传成功')
-            st.success('ZIP文件中的所有文件已成功上传到 OSS')
+            upload_zip_file(uploaded_file)
         else:
-            handle_file(uploaded_file, 'upload')
-            progress_bar.progress(1)
+            handle_file(uploaded_file, '上传')
 
 def download_file():
     """处理文件下载"""
@@ -84,15 +84,9 @@ def update_file():
         uploaded_file = st.file_uploader("选择新的文件来替换", type=['zip', 'csv', 'txt', 'pdf', 'png', 'jpg', 'jpeg'])
         if uploaded_file:
             if uploaded_file.type == 'application/zip':
-                # 如果上传的是ZIP文件
-                with zipfile.ZipFile(uploaded_file, 'r') as zip_ref:
-                    for file_info in zip_ref.infolist():
-                        file_data = zip_ref.read(file_info.filename)
-                        bucket.put_object(file_info.filename, file_data)
-                        st.write(f'文件 {file_info.filename} 已被更新')
-                st.success('ZIP文件中的所有文件已成功更新到 OSS')
+                upload_zip_file(uploaded_file)
             else:
-                handle_file(uploaded_file, 'update')
+                handle_file(uploaded_file, '更新')
 
 def delete_file():
     """处理文件删除"""
@@ -164,20 +158,19 @@ def cloud_storage_page():
     st.sidebar.title("导航")
     options = st.sidebar.radio("选择操作", ("上传文件", "下载文件", "更新文件", "删除文件", "预览文件", "搜索文件", "批量删除文件"))
     
-    if options == "上传文件":
-        upload_files_with_progress()
-    elif options == "下载文件":
-        download_file()
-    elif options == "更新文件":
-        update_file()
-    elif options == "删除文件":
-        delete_file()
-    elif options == "预览文件":
-        preview_file()
-    elif options == "搜索文件":
-        search_files()
-    elif options == "批量删除文件":
-        batch_delete_files()
+    operations = {
+        "上传文件": upload_files_with_progress,
+        "下载文件": download_file,
+        "更新文件": update_file,
+        "删除文件": delete_file,
+        "预览文件": preview_file,
+        "搜索文件": search_files,
+        "批量删除文件": batch_delete_files
+    }
+    
+    operation_function = operations.get(options)
+    if operation_function:
+        operation_function()
 
     st.markdown("""
     <style>
