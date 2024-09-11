@@ -4,6 +4,7 @@ import sqlite3
 from hashlib import sha256
 from Cloud_storage import cloud_storage_page
 
+
 # Database and Authentication
 class AuthManager:
     def __init__(self, db_path='user_db.sqlite'):
