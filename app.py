@@ -1,12 +1,7 @@
 import streamlit as st
-import os
-import sqlite3
-from hashlib import sha256
-from Cloud_storage import cloud_storage_page
-import pygwalker
-import pandas as pd
-from pygwalker.api.streamlit import StreamlitRenderer
 import json
+import os
+from Cloud_storage import cloud_storage_page
 
 # Load users from configuration file
 def load_users(file_path='users.json'):
@@ -20,13 +15,9 @@ class AuthManager:
     def __init__(self, users):
         self.users = users
 
-    def hash_password(self, password):
-        return sha256(password.encode()).hexdigest()
-
     def authenticate_user(self, username, password):
-        hashed_password = self.hash_password(password)  # Use hashed password for authentication
         user = self.users.get(username)
-        if user and user['password'] == hashed_password:
+        if user and user['password'] == password:  # Compare plain text passwords
             return user
         return None
 
@@ -109,6 +100,7 @@ def main():
             PageManager().display_pages()
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
+                st.experimental_rerun()
     else:
         st.title("欢迎回来")
         PageManager(st.session_state['role']).display_pages()
