@@ -20,21 +20,22 @@ class AuthManager:
 
     def authenticate_user(self, username, password):
         user = self.users.get(username)
-        if user and user['password'] == password:
-            return user
-        return None
+        return user if user and user['password'] == password else None
 
     def get_user_projects(self, username):
-        user = self.users.get(username)
-        return user.get('projects', []) if user else []
+        return self.users.get(username, {}).get('projects', [])
 
 # Page Handling
 class PageManager:
-    def __init__(self, role=None, users=None, auth_manager=None):
+    def __init__(self, role, users, auth_manager):
         self.role = role
         self.users = users
         self.auth_manager = auth_manager
-        self.public_pages = {
+        self.public_pages = self.load_public_pages()
+        self.protected_pages = self.load_protected_pages()
+
+    def load_public_pages(self):
+        return {
             '🏠 主页': 'main_page.py',
             '🖥️ 网页设计': 'Web_Design.md',
             '🛠️ 工具包': {
@@ -44,7 +45,9 @@ class PageManager:
             },
             '❓ 帮助': 'Help.py'
         }
-        self.protected_pages = {
+
+    def load_protected_pages(self):
+        return {
             '👤 个人中心': 'Personal_center.py',
             '☁️ 云服务': None,
             '📚 Fig_preservation': {
@@ -53,7 +56,7 @@ class PageManager:
                 '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
                 '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
             },
-            '📂 项目列表': None  # 新增项目列表
+            '📂 项目列表': None
         }
 
     def display_pages(self):
@@ -68,26 +71,27 @@ class PageManager:
             self.load_page(pages, page_name)
 
     def load_page(self, pages, page_name):
+        page_file = self.get_page_file(pages, page_name)
+        if page_file:
+            self.execute_file(page_file)
+
+    def get_page_file(self, pages, page_name):
         if isinstance(pages[page_name], dict):
             category_name = st.sidebar.radio('分类', list(pages[page_name].keys()))
-            page_file = pages[page_name][category_name]
-        else:
-            page_file = pages[page_name]
+            return pages[page_name][category_name]
+        return pages[page_name]
 
-        if page_file:
-            if page_file.endswith('.py'):
-                self.execute_python_file(page_file)
-            elif page_file.endswith('.md'):
-                self.display_markdown(page_file)
+    def execute_file(self, file_path):
+        try:
+            if file_path.endswith('.py'):
+                with open(file_path, encoding='utf-8') as file:
+                    exec(file.read())
+            elif file_path.endswith('.md'):
+                self.display_markdown(file_path)
             else:
                 st.write('所选页面不正确或文件类型不支持')
-
-    def execute_python_file(self, file_path):
-        try:
-            with open(file_path, encoding='utf-8') as file:
-                exec(file.read())
         except Exception as e:
-            st.error(f"文件执行错误: {e}")
+            st.error(f"文件处理错误: {e}")
 
     def display_markdown(self, file_path):
         try:
@@ -100,44 +104,40 @@ class PageManager:
         user_projects = self.auth_manager.get_user_projects(username)
         st.markdown("## 我的项目")
         if user_projects:
-            for project in user_projects:
-                st.write(f"- {project}")
+            st.markdown('\n'.join(f"- {project}" for project in user_projects))
         else:
             st.write("您还没有项目。")
-
-        st.markdown("## 权限带来的项目")
         self.display_permission_based_projects(username)
 
     def display_permission_based_projects(self, username):
         user = self.users.get(username)
+        accessible_projects = self.get_accessible_projects(user)
+        if accessible_projects:
+            selected_project = st.selectbox("选择项目查看", accessible_projects)
+            st.write(f"您选择的项目: {selected_project}")
+        else:
+            st.write("您没有可访问的项目。")
+
+    def get_accessible_projects(self, user):
+        if not user:
+            return []
+        
         accessible_projects = []
-
-        if user:
-            # 根据用户角色筛选可访问的项目
-            if user['role'] == '导师':
-                for u, data in self.users.items():
-                    if data['role'] in ['研究生', '本科生']:
-                        for project in data.get('projects', []):
-                            accessible_projects.append(f"{u}: {project}")
-            elif user['role'] == '研究生':
-                for u, data in self.users.items():
-                    if data['role'] == '本科生':
-                        for project in data.get('projects', []):
-                            accessible_projects.append(f"{u}: {project}")
-            elif user['role'] == '本科生':
-                for project in user.get('projects', []):
-                    accessible_projects.append(f"{username}: {project}")
-
-            # 使用下拉框选择项目
-            if accessible_projects:
-                selected_project = st.selectbox("选择项目查看", accessible_projects)
-                st.write(f"您选择的项目: {selected_project}")
-            else:
-                st.write("您没有可访问的项目。")
+        if user['role'] == '导师':
+            for u, data in self.users.items():
+                if data['role'] in ['研究生', '本科生']:
+                    accessible_projects.extend(f"{u}: {project}" for project in data.get('projects', []))
+        elif user['role'] == '研究生':
+            for u, data in self.users.items():
+                if data['role'] == '本科生':
+                    accessible_projects.extend(f"{u}: {project}" for project in data.get('projects', []))
+        else:  # 本科生
+            accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))
+        
+        return accessible_projects
 
 # Main Application
 def main():
-    global users  # Make users a global variable to access in PageManager
     users = load_users()
     auth_manager = AuthManager(users)
     if 'username' not in st.session_state:
@@ -148,7 +148,7 @@ def main():
             handle_login(auth_manager)
         else:
             st.title("欢迎来到实验室应用")
-            PageManager(users=users, auth_manager=auth_manager).display_pages()
+            PageManager(None, users, auth_manager).display_pages()
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
     else:
@@ -165,9 +165,7 @@ def handle_login(auth_manager):
         if username and password:
             user = auth_manager.authenticate_user(username, password)
             if user:
-                st.session_state['username'] = username
-                st.session_state['role'] = user['role']
-                st.session_state['login_page'] = False
+                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
             else:
                 st.error("用户名或密码无效")
         else:
