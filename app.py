@@ -97,7 +97,7 @@ class PageManager:
             st.error(f"文件读取错误: {e}")
 
     def display_user_projects(self, username):
-        user_projects = self.auth_manager.get_user_projects(username)  # 使用实例调用
+        user_projects = self.auth_manager.get_user_projects(username)
         st.markdown("## 我的项目")
         if user_projects:
             for project in user_projects:
@@ -106,14 +106,28 @@ class PageManager:
             st.write("您还没有项目。")
 
         st.markdown("## 权限带来的项目")
-        self.display_permission_based_projects()
+        self.display_permission_based_projects(username)
 
-    def display_permission_based_projects(self):
-        st.markdown("### 其他可访问项目")
-        for user, data in self.users.items():
-            if data['role'] in ['研究生', '本科生']:
-                for project in data.get('projects', []):
-                    st.write(f"- 用户: {user}, 项目: {project}")
+    def display_permission_based_projects(self, username):
+        user = self.users.get(username)
+        if user:
+            st.markdown("### 可访问项目")
+            if user['role'] == '导师':
+                # 导师可以访问所有研究生和本科生的项目
+                for u, data in self.users.items():
+                    if data['role'] in ['研究生', '本科生']:
+                        for project in data.get('projects', []):
+                            st.write(f"- 用户: {u}, 项目: {project}")
+            elif user['role'] == '研究生':
+                # 研究生可以访问所有本科生的项目
+                for u, data in self.users.items():
+                    if data['role'] == '本科生':
+                        for project in data.get('projects', []):
+                            st.write(f"- 用户: {u}, 项目: {project}")
+            elif user['role'] == '本科生':
+                # 本科生只能访问自己的项目
+                for project in user.get('projects', []):
+                    st.write(f"- 用户: {username}, 项目: {project}")
 
 # Main Application
 def main():
@@ -128,7 +142,7 @@ def main():
             handle_login(auth_manager)
         else:
             st.title("欢迎来到实验室应用")
-            PageManager(users=users, auth_manager=auth_manager).display_pages()  # 传入 auth_manager
+            PageManager(users=users, auth_manager=auth_manager).display_pages()
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
     else:
