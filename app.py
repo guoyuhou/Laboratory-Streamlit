@@ -5,6 +5,7 @@ from Cloud_storage import cloud_storage_page
 import pygwalker
 import pandas as pd
 from pygwalker.api.streamlit import StreamlitRenderer
+
 # Load users from configuration file
 def load_users(file_path='users.json'):
     if not os.path.exists(file_path):
@@ -23,10 +24,16 @@ class AuthManager:
             return user
         return None
 
+    def get_user_projects(self, username):
+        # 获取用户的项目列表（假设存在用户的项目字段）
+        user = self.users.get(username)
+        return user.get('projects', []) if user else []
+
 # Page Handling
 class PageManager:
-    def __init__(self, role=None):
+    def __init__(self, role=None, users=None):
         self.role = role
+        self.users = users
         self.public_pages = {
             '🏠 主页': 'main_page.py',
             '🖥️ 网页设计': 'Web_Design.md',
@@ -56,7 +63,7 @@ class PageManager:
         if page_name == '☁️ 云服务':
             cloud_storage_page()
         elif page_name == '📂 项目列表':
-            self.display_user_projects(st.session_state['username'])  # 显示项目列表
+            self.display_user_projects(st.session_state['username'])
         else:
             self.load_page(pages, page_name)
 
@@ -102,10 +109,10 @@ class PageManager:
         self.display_permission_based_projects(username)
 
     def display_permission_based_projects(self, username):
-        user = users.get(username)
+        user = self.users.get(username)
         if user:
             st.markdown("### 其他可访问项目")
-            for u in users.values():
+            for u in self.users.values():
                 if u['role'] in ['研究生', '本科生']:
                     for project in u.get('projects', []):
                         st.write(f"- {project}")
@@ -123,12 +130,12 @@ def main():
             handle_login(auth_manager)
         else:
             st.title("欢迎来到实验室应用")
-            PageManager().display_pages()
+            PageManager(users=users).display_pages()
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
     else:
         st.title("欢迎回来")
-        page_manager = PageManager(st.session_state['role'])
+        page_manager = PageManager(st.session_state['role'], users)
         page_manager.display_pages()
 
 def handle_login(auth_manager):
