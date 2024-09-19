@@ -110,20 +110,30 @@ class PageManager:
 
     def display_permission_based_projects(self, username):
         user = self.users.get(username)
-        if user:
-            st.markdown("### 可访问项目")
-            project_options = []
+        accessible_projects = []
 
-            # 收集所有用户及其项目
-            for u, data in self.users.items():
-                for project in data.get('projects', []):
-                    project_options.append(f"{u}: {project}")
+        if user:
+            # 根据用户角色筛选可访问的项目
+            if user['role'] == '导师':
+                for u, data in self.users.items():
+                    if data['role'] in ['研究生', '本科生']:
+                        for project in data.get('projects', []):
+                            accessible_projects.append(f"{u}: {project}")
+            elif user['role'] == '研究生':
+                for u, data in self.users.items():
+                    if data['role'] == '本科生':
+                        for project in data.get('projects', []):
+                            accessible_projects.append(f"{u}: {project}")
+            elif user['role'] == '本科生':
+                for project in user.get('projects', []):
+                    accessible_projects.append(f"{username}: {project}")
 
             # 使用下拉框选择项目
-            selected_project = st.selectbox("选择项目查看", project_options)
-
-            # 展示所选项目
-            st.write(f"您选择的项目: {selected_project}")
+            if accessible_projects:
+                selected_project = st.selectbox("选择项目查看", accessible_projects)
+                st.write(f"您选择的项目: {selected_project}")
+            else:
+                st.write("您没有可访问的项目。")
 
 # Main Application
 def main():
