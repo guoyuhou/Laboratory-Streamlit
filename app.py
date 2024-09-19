@@ -24,7 +24,7 @@ class AuthManager:
         return sha256(password.encode()).hexdigest()
 
     def authenticate_user(self, username, password):
-        hashed_password = self.hash_password(password)
+        hashed_password = self.hash_password(password)  # Use hashed password for authentication
         user = self.users.get(username)
         if user and user['password'] == hashed_password:
             return user
@@ -44,17 +44,17 @@ class PageManager:
             },
             '❓ 帮助': 'Help.py'
         }
+        # All users can access Fig_preservation
         self.protected_pages = {
             '👤 个人中心': 'Personal_center.py',
-            '☁️ 云服务': None
-        }
-        if self.role == '导师':
-            self.protected_pages['📚 Fig_preservation'] = {
+            '☁️ 云服务': None,
+            '📚 Fig_preservation': {
                 '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
                 '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
                 '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
                 '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
             }
+        }
 
     def display_pages(self):
         pages = {**self.public_pages, **(self.protected_pages if st.session_state.get('username') else {})}
@@ -66,11 +66,11 @@ class PageManager:
             self.load_page(pages, page_name)
 
     def load_page(self, pages, page_name):
-        if self.role == '导师' and page_name == '📚 Fig_preservation':
+        if isinstance(pages[page_name], dict):  # Check if the page has subcategories
             category_name = st.sidebar.radio('分类', list(pages[page_name].keys()))
             page_file = pages[page_name][category_name]
         else:
-            page_file = pages[page_name] if not isinstance(pages[page_name], dict) else pages[page_name][st.sidebar.radio('分类', list(pages[page_name].keys()))]
+            page_file = pages[page_name]
 
         if page_file:
             if page_file.endswith('.py'):
