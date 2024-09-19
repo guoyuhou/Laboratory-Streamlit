@@ -3,47 +3,32 @@ import os
 import sqlite3
 from hashlib import sha256
 from Cloud_storage import cloud_storage_page
+import pygwalker
+import pandas as pd
+from pygwalker.api.streamlit import StreamlitRenderer
+import json
 
+# Load users from configuration file
+def load_users(file_path='users.json'):
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"配置文件 {file_path} 不存在")
+    with open(file_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
-# Database and Authentication
+# User Authentication
 class AuthManager:
-    def __init__(self, db_path='user_db.sqlite'):
-        self.db_path = db_path
-        self.initialize_db()
-
-    def get_db_connection(self):
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
-        return conn
-
-    def initialize_db(self):
-        conn = self.get_db_connection()
-        conn.execute('''CREATE TABLE IF NOT EXISTS users (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            username TEXT UNIQUE NOT NULL,
-                            password TEXT NOT NULL,
-                            role TEXT NOT NULL,
-                            email TEXT,
-                            phone TEXT)''')
-        conn.commit()
-        conn.close()
+    def __init__(self, users):
+        self.users = users
 
     def hash_password(self, password):
         return sha256(password.encode()).hexdigest()
 
     def authenticate_user(self, username, password):
-        conn = self.get_db_connection()
         hashed_password = self.hash_password(password)
-        user = conn.execute('SELECT * FROM users WHERE username = ? AND password = ?',
-                            (username, hashed_password)).fetchone()
-        conn.close()
-        return user
-
-    def get_user_role(self, username):
-        conn = self.get_db_connection()
-        user = conn.execute('SELECT role FROM users WHERE username = ?', (username,)).fetchone()
-        conn.close()
-        return user['role'] if user else None
+        user = self.users.get(username)
+        if user and user['password'] == hashed_password:
+            return user
+        return None
 
 # Page Handling
 class PageManager:
@@ -63,7 +48,7 @@ class PageManager:
             '👤 个人中心': 'Personal_center.py',
             '☁️ 云服务': None
         }
-        if self.role == '管理员':
+        if self.role == '导师':
             self.protected_pages['📚 Fig_preservation'] = {
                 '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
                 '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
@@ -81,7 +66,7 @@ class PageManager:
             self.load_page(pages, page_name)
 
     def load_page(self, pages, page_name):
-        if self.role == '管理员' and page_name == '📚 Fig_preservation':
+        if self.role == '导师' and page_name == '📚 Fig_preservation':
             category_name = st.sidebar.radio('分类', list(pages[page_name].keys()))
             page_file = pages[page_name][category_name]
         else:
@@ -111,7 +96,8 @@ class PageManager:
 
 # Main Application
 def main():
-    auth_manager = AuthManager()
+    users = load_users()
+    auth_manager = AuthManager(users)
     if 'username' not in st.session_state:
         st.session_state.update({'username': None, 'role': None, 'login_page': False})
 
@@ -138,7 +124,7 @@ def handle_login(auth_manager):
             user = auth_manager.authenticate_user(username, password)
             if user:
                 st.session_state['username'] = username
-                st.session_state['role'] = auth_manager.get_user_role(username)
+                st.session_state['role'] = user['role']
                 st.session_state['login_page'] = False
                 st.experimental_rerun()
             else:
