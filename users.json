@@ -1,18 +1,23 @@
 {
     "chenhao": {
         "password": "chenhao",
-        "role": "导师"
+        "role": "导师",
+        "projects": ["项目A", "项目B"]
     },
     "Alexander": {
         "password": "9426983..chang",
-        "role": "导师"
+        "role": "导师",
+        "projects": ["项目C", "项目D"]
     },
     "wangpu": {
         "password": "wangpu",
-        "role": "研究生"
+        "role": "研究生",
+        "projects": ["项目E", "项目F"]
     },
     "chenyixuan": {
         "password": "chenyixuan",
-        "role": "本科生"
+        "role": "本科生",
+        "projects": ["项目H", "项目I"]
     }
 }
+    
