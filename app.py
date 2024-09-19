@@ -25,7 +25,6 @@ class AuthManager:
         return None
 
     def get_user_projects(self, username):
-        # 获取用户的项目列表（假设存在用户的项目字段）
         user = self.users.get(username)
         return user.get('projects', []) if user else []
 
@@ -107,16 +106,14 @@ class PageManager:
             st.write("您还没有项目。")
 
         st.markdown("## 权限带来的项目")
-        self.display_permission_based_projects(username)
+        self.display_permission_based_projects()
 
-    def display_permission_based_projects(self, username):
-        user = self.users.get(username)
-        if user:
-            st.markdown("### 其他可访问项目")
-            for u in self.users.values():
-                if u['role'] in ['研究生', '本科生']:
-                    for project in u.get('projects', []):
-                        st.write(f"- {project}")
+    def display_permission_based_projects(self):
+        st.markdown("### 其他可访问项目")
+        for user, data in self.users.items():
+            if data['role'] in ['研究生', '本科生']:
+                for project in data.get('projects', []):
+                    st.write(f"- 用户: {user}, 项目: {project}")
 
 # Main Application
 def main():
