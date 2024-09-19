@@ -114,7 +114,7 @@ class PageManager:
 
     def display_permission_based_projects(self, username):
         user = self.users.get(username)
-        accessible_projects = self.get_accessible_projects(user)
+        accessible_projects = self.get_accessible_projects(user, username)
         if accessible_projects:
             selected_project = st.selectbox("选择可访问的项目", accessible_projects, key="accessible_projects")
             if selected_project:
