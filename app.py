@@ -112,22 +112,29 @@ class PageManager:
         user = self.users.get(username)
         if user:
             st.markdown("### 可访问项目")
+            project_options = []
+
             if user['role'] == '导师':
-                # 导师可以访问所有研究生和本科生的项目
-                for u, data in self.users.items():
-                    if data['role'] in ['研究生', '本科生']:
-                        for project in data.get('projects', []):
-                            st.write(f"- 用户: {u}, 项目: {project}")
+                project_options = [
+                    (u, data.get('projects', [])) 
+                    for u, data in self.users.items() if data['role'] in ['研究生', '本科生']
+                ]
             elif user['role'] == '研究生':
-                # 研究生可以访问所有本科生的项目
-                for u, data in self.users.items():
-                    if data['role'] == '本科生':
-                        for project in data.get('projects', []):
-                            st.write(f"- 用户: {u}, 项目: {project}")
+                project_options = [
+                    (u, data.get('projects', [])) 
+                    for u, data in self.users.items() if data['role'] == '本科生'
+                ]
             elif user['role'] == '本科生':
-                # 本科生只能访问自己的项目
-                for project in user.get('projects', []):
-                    st.write(f"- 用户: {username}, 项目: {project}")
+                project_options = [(username, user.get('projects', []))]
+
+            # 使用下拉框选择用户
+            selected_user = st.selectbox("选择用户查看项目", [u[0] for u in project_options])
+
+            # 展示所选用户的项目
+            for user_tuple in project_options:
+                if user_tuple[0] == selected_user:
+                    for project in user_tuple[1]:
+                        st.write(f"- 用户: {user_tuple[0]}, 项目: {project}")
 
 # Main Application
 def main():
