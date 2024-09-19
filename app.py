@@ -148,16 +148,17 @@ class PageManager:
         project_folder = f'projects/{project_name}'
         if os.path.exists(project_folder):
             st.sidebar.markdown("### 项目文件")
-            if st.sidebar.button("主页"):
+            if st.sidebar.button("主页", key=f"main_page_{project_name}"):
                 self.display_markdown(os.path.join(project_folder, 'main_page.md'))
-            if st.sidebar.button("实验设计"):
+            if st.sidebar.button("实验设计", key=f"experiment_design_{project_name}"):
                 self.display_markdown(os.path.join(project_folder, 'experiment_design.md'))
-            if st.sidebar.button("实验日志"):
+            if st.sidebar.button("实验日志", key=f"experiment_log_{project_name}"):
                 self.display_markdown(os.path.join(project_folder, 'experiment_log.md'))
-            if st.sidebar.button("论文"):
+            if st.sidebar.button("论文", key=f"papers_{project_name}"):
                 self.display_markdown(os.path.join(project_folder, 'papers.md'))
         else:
             st.error("项目文件夹不存在。")
+
 
 # Main Application
 def main():
