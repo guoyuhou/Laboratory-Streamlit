@@ -17,7 +17,7 @@
     "minxiaomei": {
         "password": "minxiaomei",
         "role": "本科生",
-        "projects": ["minxiaomei1", "minxiaomei2"]
+        "projects": ["Fig_preservation"]
     },
     "wangshuxin": {
         "password": "wangpu",

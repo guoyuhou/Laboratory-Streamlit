@@ -6,6 +6,7 @@ import pygwalker
 import pandas as pd
 from pygwalker.api.streamlit import StreamlitRenderer
 
+
 # Load users from configuration file
 def load_users(file_path='users.json'):
     if not os.path.exists(file_path):
@@ -50,12 +51,6 @@ class PageManager:
         return {
             '👤 个人中心': 'Personal_center.py',
             '☁️ 云服务': None,
-            '📚 Fig_preservation': {
-                '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
-                '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
-                '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
-                '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
-            },
             '📂 项目列表': None
         }
 
@@ -104,37 +99,27 @@ class PageManager:
         user_projects = self.auth_manager.get_user_projects(username)
         st.markdown("## 我的项目")
         if user_projects:
-            st.markdown('\n'.join(f"- {project}" for project in user_projects))
+            selected_project = st.selectbox("选择项目查看", user_projects)
+            if selected_project:
+                self.display_project_files(selected_project)
         else:
             st.write("您还没有项目。")
-        self.display_permission_based_projects(username)
 
-    def display_permission_based_projects(self, username):
-        user = self.users.get(username)
-        accessible_projects = self.get_accessible_projects(user)
-        if accessible_projects:
-            selected_project = st.selectbox("选择项目查看", accessible_projects)
-            st.write(f"您选择的项目: {selected_project}")
+    def display_project_files(self, project_name):
+        project_folder = f'projects/{project_name}'
+        if os.path.exists(project_folder):
+            # 设置侧边栏按钮
+            st.sidebar.markdown("### 项目文件")
+            if st.sidebar.button("主页"):
+                self.display_markdown(os.path.join(project_folder, 'main_page.md'))
+            if st.sidebar.button("实验设计"):
+                self.display_markdown(os.path.join(project_folder, 'experiment_design.md'))
+            if st.sidebar.button("实验日志"):
+                self.display_markdown(os.path.join(project_folder, 'experiment_log.md'))
+            if st.sidebar.button("论文"):
+                self.display_markdown(os.path.join(project_folder, 'papers.md'))
         else:
-            st.write("您没有可访问的项目。")
-
-    def get_accessible_projects(self, user):
-        if not user:
-            return []
-        
-        accessible_projects = []
-        if user['role'] == '导师':
-            for u, data in self.users.items():
-                if data['role'] in ['研究生', '本科生']:
-                    accessible_projects.extend(f"{u}: {project}" for project in data.get('projects', []))
-        elif user['role'] == '研究生':
-            for u, data in self.users.items():
-                if data['role'] == '本科生':
-                    accessible_projects.extend(f"{u}: {project}" for project in data.get('projects', []))
-        else:  # 本科生
-            accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))
-        
-        return accessible_projects
+            st.error("项目文件夹不存在。")
 
 # Main Application
 def main():
