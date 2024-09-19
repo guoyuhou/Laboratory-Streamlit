@@ -125,7 +125,7 @@ class PageManager:
             st.write("您没有可访问的项目。")
 
 
-    def get_accessible_projects(self, user):
+    def get_accessible_projects(self, user, username):  # 添加 username 参数
         if not user:
             return []
         
@@ -139,9 +139,10 @@ class PageManager:
                 if data['role'] == '本科生':
                     accessible_projects.extend(f"{u}: {project}" for project in data.get('projects', []))
         else:  # 本科生
-            accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))
+            accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))  # 使用传入的 username
         
         return accessible_projects
+
 
     def display_project_files(self, project_name):
         project_folder = f'projects/{project_name}'
