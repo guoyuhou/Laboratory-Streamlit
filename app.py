@@ -31,9 +31,10 @@ class AuthManager:
 
 # Page Handling
 class PageManager:
-    def __init__(self, role=None, users=None):
+    def __init__(self, role=None, users=None, auth_manager=None):
         self.role = role
         self.users = users
+        self.auth_manager = auth_manager
         self.public_pages = {
             '🏠 主页': 'main_page.py',
             '🖥️ 网页设计': 'Web_Design.md',
@@ -97,7 +98,7 @@ class PageManager:
             st.error(f"文件读取错误: {e}")
 
     def display_user_projects(self, username):
-        user_projects = AuthManager.get_user_projects(username)
+        user_projects = self.auth_manager.get_user_projects(username)  # 使用实例调用
         st.markdown("## 我的项目")
         if user_projects:
             for project in user_projects:
@@ -130,12 +131,12 @@ def main():
             handle_login(auth_manager)
         else:
             st.title("欢迎来到实验室应用")
-            PageManager(users=users).display_pages()
+            PageManager(users=users, auth_manager=auth_manager).display_pages()  # 传入 auth_manager
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
     else:
         st.title("欢迎回来")
-        page_manager = PageManager(st.session_state['role'], users)
+        page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
 
 def handle_login(auth_manager):
