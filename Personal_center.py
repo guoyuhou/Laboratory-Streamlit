@@ -16,24 +16,8 @@ def display_personal_center(username, users):
     if user:
         # 显示用户信息
         st.markdown("## 个人信息")
-        st.write(f"**用户名:** {user['username']}")
+        st.write(f"**用户名:** {username}")
         st.write(f"**角色:** {user['role']}")
-        st.write(f"**邮箱:** {user.get('email', '未提供')}")
-        st.write(f"**电话:** {user.get('phone', '未提供')}")
-
-        # 更新个人信息部分
-        with st.expander("更新个人信息", expanded=True):
-            new_email = st.text_input("新邮箱", value=user.get('email', ''))
-            new_phone = st.text_input("新电话", value=user.get('phone', ''))
-            if st.button("更新信息"):
-                if new_email and new_phone:
-                    user['email'] = new_email
-                    user['phone'] = new_phone
-                    with open('users.json', 'w', encoding='utf-8') as f:
-                        json.dump(users, f, ensure_ascii=False, indent=4)
-                    st.success("个人信息更新成功")
-                else:
-                    st.error("邮箱和电话不能为空")
 
         # 更新密码部分
         with st.expander("更改密码", expanded=True):
