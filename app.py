@@ -2,7 +2,9 @@ import streamlit as st
 import json
 import os
 from Cloud_storage import cloud_storage_page
-
+import pygwalker
+import pandas as pd
+from pygwalker.api.streamlit import StreamlitRenderer
 # Load users from configuration file
 def load_users(file_path='users.json'):
     if not os.path.exists(file_path):
@@ -20,12 +22,6 @@ class AuthManager:
         if user and user['password'] == password:
             return user
         return None
-
-    def get_user_projects(self, username):
-        user = self.users.get(username)
-        if user:
-            return user.get('projects', [])
-        return []
 
 # Page Handling
 class PageManager:
@@ -49,7 +45,8 @@ class PageManager:
                 '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
                 '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
                 '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
-            }
+            },
+            '📂 项目列表': None  # 新增项目列表
         }
 
     def display_pages(self):
@@ -57,7 +54,9 @@ class PageManager:
         page_name = st.sidebar.radio('导航', list(pages.keys()))
 
         if page_name == '☁️ 云服务':
-            cloud_storage_page()  # Call cloud_storage_page function
+            cloud_storage_page()
+        elif page_name == '📂 项目列表':
+            self.display_user_projects(st.session_state['username'])  # 显示项目列表
         else:
             self.load_page(pages, page_name)
 
@@ -90,28 +89,30 @@ class PageManager:
         except Exception as e:
             st.error(f"文件读取错误: {e}")
 
-    def display_user_projects(self, username, users):
+    def display_user_projects(self, username):
+        user_projects = auth_manager.get_user_projects(username)
+        st.markdown("## 我的项目")
+        if user_projects:
+            for project in user_projects:
+                st.write(f"- {project}")
+        else:
+            st.write("您还没有项目。")
+
+        st.markdown("## 权限带来的项目")
+        self.display_permission_based_projects(username)
+
+    def display_permission_based_projects(self, username):
         user = users.get(username)
         if user:
-            st.markdown("## 项目列表")
-            st.write("**我的项目:**")
-            for project in user.get('projects', []):
-                st.write(f"- {project}")
-
-            st.write("**权限带来的项目:**")
-            if user['role'] == '导师':
-                for u in users.values():
-                    if u['role'] in ['研究生', '本科生']:
-                        for project in u['projects']:
-                            st.write(f"- {project}")
-            elif user['role'] == '研究生':
-                for u in users.values():
-                    if u['role'] == '本科生':
-                        for project in u['projects']:
-                            st.write(f"- {project}")
+            st.markdown("### 其他可访问项目")
+            for u in users.values():
+                if u['role'] in ['研究生', '本科生']:
+                    for project in u.get('projects', []):
+                        st.write(f"- {project}")
 
 # Main Application
 def main():
+    global users  # Make users a global variable to access in PageManager
     users = load_users()
     auth_manager = AuthManager(users)
     if 'username' not in st.session_state:
@@ -129,7 +130,6 @@ def main():
         st.title("欢迎回来")
         page_manager = PageManager(st.session_state['role'])
         page_manager.display_pages()
-        page_manager.display_user_projects(st.session_state['username'], users)
 
 def handle_login(auth_manager):
     st.title("登录要求")
