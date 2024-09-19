@@ -109,8 +109,10 @@ class PageManager:
                 self.display_project_files(selected_project)
         else:
             st.write("您还没有项目。")
-        
-        self.display_permission_based_projects(username)
+
+        # 对于本科生，不显示可访问的项目
+        if self.users[username]['role'] != '本科生':
+            self.display_permission_based_projects(username)
 
     def display_permission_based_projects(self, username):
         user = self.users.get(username)
