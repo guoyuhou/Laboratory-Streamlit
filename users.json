@@ -2,12 +2,12 @@
     "chenhao": {
         "password": "chenhao",
         "role": "导师",
-        "projects": ["项目A", "项目B"]
+        "projects": []
     },
     "Alexander": {
         "password": "9426983..chang",
         "role": "导师",
-        "projects": ["项目C", "项目D"]
+        "projects": ["ModernY", "FutureZ"]
     },
     "wangpu": {
         "password": "wangpu",
@@ -27,7 +27,7 @@
     "LiuYaochang": {
         "password": "LiuYaochang",
         "role": "本科生",
-        "projects": ["ModernY", "FutureZ"]
+        "projects": ["ModernY"]
     }
 }
     
