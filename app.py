@@ -97,7 +97,7 @@ class PageManager:
             st.error(f"文件读取错误: {e}")
 
     def display_user_projects(self, username):
-        user_projects = auth_manager.get_user_projects(username)
+        user_projects = AuthManager.get_user_projects(username)
         st.markdown("## 我的项目")
         if user_projects:
             for project in user_projects:
