@@ -34,19 +34,6 @@ def display_personal_center(username, users):
                 else:
                     st.error("请输入新密码")
 
-        # 账户注销部分
-        with st.expander("账户注销", expanded=True):
-            if st.button("注销账户"):
-                if st.confirm("确定要注销账户吗？此操作不可撤销。"):
-                    del users[username]  # 从用户数据中删除
-                    with open('users.json', 'w', encoding='utf-8') as f:
-                        json.dump(users, f, ensure_ascii=False, indent=4)
-                    st.success("账户注销成功")
-                    st.session_state['username'] = None
-                    st.session_state['role'] = None
-                    st.write("正在重定向到登录页面...")
-                    st.experimental_rerun()
-
         # 用户日志（可选）
         with st.expander("活动日志", expanded=True):
             st.write("活动日志功能待实现")
