@@ -109,7 +109,6 @@ def main():
             PageManager().display_pages()
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
-                st.experimental_rerun()
     else:
         st.title("欢迎回来")
         PageManager(st.session_state['role']).display_pages()
