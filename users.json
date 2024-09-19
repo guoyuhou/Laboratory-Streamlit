@@ -14,10 +14,20 @@
         "role": "研究生",
         "projects": ["项目E", "项目F"]
     },
-    "chenyixuan": {
-        "password": "chenyixuan",
+    "minxiaomei": {
+        "password": "minxiaomei",
         "role": "本科生",
-        "projects": ["项目H", "项目I"]
+        "projects": ["minxiaomei1", "minxiaomei2"]
+    },
+    "wangshuxin": {
+        "password": "wangpu",
+        "role": "研究生",
+        "projects": ["wangshuxin", "wangshuxin2"]
+    },
+    "LiuYaochang": {
+        "password": "LiuYaochang",
+        "role": "本科生",
+        "projects": ["ModernY", "FutureZ"]
     }
 }
     
