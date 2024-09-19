@@ -109,16 +109,21 @@ class PageManager:
                 self.display_project_files(selected_project)
         else:
             st.write("您还没有项目。")
+        
         self.display_permission_based_projects(username)
 
     def display_permission_based_projects(self, username):
         user = self.users.get(username)
         accessible_projects = self.get_accessible_projects(user)
         if accessible_projects:
-            selected_project = st.selectbox("选择可访问的项目", accessible_projects)
-            st.write(f"您选择的项目: {selected_project}")
+            selected_project = st.selectbox("选择可访问的项目", accessible_projects, key="accessible_projects")
+            if selected_project:
+                # Extract project name from selection
+                project_name = selected_project.split(": ")[1]
+                self.display_project_files(project_name)
         else:
             st.write("您没有可访问的项目。")
+
 
     def get_accessible_projects(self, user):
         if not user:
