@@ -24,8 +24,8 @@
         "role": "研究生",
         "projects": ["wangshuxin", "wangshuxin2"]
     },
-    "LiuYaochang": {
-        "password": "LiuYaochang",
+    "chenyixuan": {
+        "password": "chenyixuan",
         "role": "本科生",
         "projects": ["ModernY", "Fig_preservation"]
     }
