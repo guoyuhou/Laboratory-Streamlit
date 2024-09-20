@@ -9,6 +9,11 @@
         "role": "导师",
         "projects": ["ModernY", "FutureZ"]
     },
+    "xinyijia": {
+        "password": "xinyijia",
+        "role": "导师",
+        "projects": []
+    },
     "wangpu": {
         "password": "wangpu",
         "role": "研究生",
