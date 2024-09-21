@@ -5,13 +5,60 @@ from Cloud_storage import cloud_storage_page
 import pygwalker
 import pandas as pd
 from pygwalker.api.streamlit import StreamlitRenderer
-    
+import base64
+import requests
+
+# GitHub API settings
+GITHUB_API_URL = "https://api.github.com"
+GITHUB_TOKEN = st.secrets["github"]["GITHUB_TOKEN"]
+GITHUB_REPO = st.secrets["github"]["GITHUB_REPO"]
+
 # Load users from configuration file
 def load_users(file_path='users.json'):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"配置文件 {file_path} 不存在")
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
+
+def get_github_file(repo, path):
+    url = f"{GITHUB_API_URL}/repos/{repo}/contents/{path}"
+    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        st.error(f"无法获取文件: {response.json().get('message')}")
+        return None
+
+def update_github_file(repo, path, content, message):
+    url = f"{GITHUB_API_URL}/repos/{repo}/contents/{path}"
+    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+    file_data = get_github_file(repo, path)
+
+    if file_data:
+        sha = file_data['sha']
+        data = {
+            "message": message,
+            "content": base64.b64encode(content.encode()).decode(),
+            "sha": sha
+        }
+        response = requests.put(url, headers=headers, json=data)
+
+        if response.status_code == 200:
+            st.success("文件已成功更新")
+        else:
+            st.error(f"更新文件失败: {response.json().get('message')}")
+
+def edit_markdown(repo, file_path):
+    file_data = get_github_file(repo, file_path)
+    if file_data:
+        content = base64.b64decode(file_data['content']).decode("utf-8")
+
+        new_content = st.text_area("编辑Markdown文件", value=content, height=300)
+
+        if st.button("保存更改"):
+            update_github_file(repo, file_path, new_content, "更新Markdown文件")
 
 # User Authentication
 class AuthManager:
@@ -110,7 +157,6 @@ class PageManager:
         else:
             st.write("您还没有项目。")
 
-        # 对于本科生，不显示可访问的项目
         if self.users[username]['role'] != '本科生':
             self.display_permission_based_projects(username)
 
@@ -120,14 +166,12 @@ class PageManager:
         if accessible_projects:
             selected_project = st.selectbox("选择可访问的项目", accessible_projects, key="accessible_projects")
             if selected_project:
-                # Extract project name from selection
                 project_name = selected_project.split(": ")[1]
                 self.display_project_files(project_name)
         else:
             st.write("您没有可访问的项目。")
 
-
-    def get_accessible_projects(self, user, username):  # 添加 username 参数
+    def get_accessible_projects(self, user, username):
         if not user:
             return []
         
@@ -141,10 +185,9 @@ class PageManager:
                 if data['role'] == '本科生':
                     accessible_projects.extend(f"{u}: {project}" for project in data.get('projects', []))
         else:  # 本科生
-            accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))  # 使用传入的 username
+            accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))
         
         return accessible_projects
-
 
     def display_project_files(self, project_name):
         project_folder = f'projects/{project_name}'
@@ -154,13 +197,13 @@ class PageManager:
                 self.display_markdown(os.path.join(project_folder, 'main_page.md'))
             if st.sidebar.button("实验设计", key=f"experiment_design_{project_name}"):
                 self.display_markdown(os.path.join(project_folder, 'experiment_design.md'))
-            if st.sidebar.button("实验日志", key=f"experiment_log_{project_name}"):
-                self.display_markdown(os.path.join(project_folder, 'experiment_log.md'))
-            if st.sidebar.button("论文", key=f"papers_{project_name}"):
-                self.display_markdown(os.path.join(project_folder, 'papers.md'))
+
+            # 允许用户编辑Markdown文件
+            if self.users[st.session_state['username']]['role'] in ['导师', '研究生']:
+                if st.sidebar.button("编辑实验设计", key=f"edit_experiment_design_{project_name}"):
+                    edit_markdown(GITHUB_REPO, f'projects/{project_name}/experiment_design.md')
         else:
             st.error("项目文件夹不存在。")
-
 
 # Main Application
 def main():
