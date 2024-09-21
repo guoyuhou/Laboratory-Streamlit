@@ -52,13 +52,6 @@ def update_github_file(repo, path, content, message):
             return False
     return False
 
-def edit_markdown(repo, file_path):
-    file_data = get_github_file(repo, file_path)
-    if file_data:
-        content = base64.b64decode(file_data['content']).decode("utf-8")
-        return content
-    return None
-
 # User Authentication
 class AuthManager:
     def __init__(self, users):
@@ -200,7 +193,6 @@ class PageManager:
         st.sidebar.markdown("### 项目文件")
         selected_file = st.sidebar.radio("选择Markdown文件", markdown_files)
 
-        # 编辑区域
         if selected_file:
             file_path = os.path.join(project_folder, selected_file)
             self.display_markdown(file_path)
@@ -209,15 +201,20 @@ class PageManager:
             if st.button("编辑该文件"):
                 content = edit_markdown(GITHUB_REPO, f'projects/{project_name}/{selected_file}')
                 if content:
-                    new_content = st.text_area("编辑Markdown内容", value=content, height=300)
+                    st.session_state['edit_content'] = content  # 保存内容到session_state
+
+                    # 使用session_state中的内容
+                    new_content = st.text_area("编辑Markdown内容", value=st.session_state['edit_content'], height=300)
+
+                    # 保存按钮
                     if st.button("保存更改"):
-                        # 调用更新函数并获取返回值
-                        update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
-                        
-                        if update_success:  # 检查返回值
-                            st.success("您的更新已成功提交！")  # 提示用户更新成功
-                        else:
-                            st.error("更新失败，请检查您的输入或权限。")
+                        with st.spinner("正在保存..."):
+                            update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
+                            if update_success:
+                                st.success("您的更新已成功提交！")
+                                st.session_state['edit_content'] = new_content  # 更新session_state中的内容
+                            else:
+                                st.error("更新失败，请检查您的输入或权限。")
 
         else:
             st.error("项目文件夹不存在。")
@@ -227,7 +224,7 @@ def main():
     users = load_users()
     auth_manager = AuthManager(users)
     if 'username' not in st.session_state:
-        st.session_state.update({'username': None, 'role': None, 'login_page': False})
+        st.session_state.update({'username': None, 'role': None, 'login_page': False, 'edit_content': ''})
 
     if st.session_state['username'] is None:
         if st.session_state['login_page']:
@@ -241,21 +238,3 @@ def main():
         st.title("欢迎回来")
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
-
-def handle_login(auth_manager):
-    st.title("登录要求")
-    st.write("请登录以访问更多内容。")
-    username = st.text_input("用户名")
-    password = st.text_input("密码", type="password")
-    if st.button("登录"):
-        if username and password:
-            user = auth_manager.authenticate_user(username, password)
-            if user:
-                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
-            else:
-                st.error("用户名或密码无效")
-        else:
-            st.error("用户名和密码不能为空")
-
-if __name__ == "__main__":
-    main()
