@@ -1,10 +1,6 @@
 import streamlit as st
 import json
 import os
-from Cloud_storage import cloud_storage_page
-import pygwalker
-import pandas as pd
-from pygwalker.api.streamlit import StreamlitRenderer
 import base64
 import requests
 
@@ -193,15 +189,20 @@ class PageManager:
         project_folder = f'projects/{project_name}'
         if os.path.exists(project_folder):
             st.sidebar.markdown("### 项目文件")
-            if st.sidebar.button("主页", key=f"main_page_{project_name}"):
-                self.display_markdown(os.path.join(project_folder, 'main_page.md'))
-            if st.sidebar.button("实验设计", key=f"experiment_design_{project_name}"):
-                self.display_markdown(os.path.join(project_folder, 'experiment_design.md'))
+            markdown_files = [
+                "main_page.md",
+                "experiment_design.md",
+                "experiment_log.md",
+                "papers.md"
+            ]
 
-            # 允许用户编辑Markdown文件
-            if self.users[st.session_state['username']]['role'] in ['导师', '研究生']:
-                if st.sidebar.button("编辑实验设计", key=f"edit_experiment_design_{project_name}"):
-                    edit_markdown(GITHUB_REPO, f'projects/{project_name}/experiment_design.md')
+            for md_file in markdown_files:
+                if st.sidebar.button(f"编辑 {md_file}", key=f"edit_{md_file}_{project_name}"):
+                    edit_markdown(GITHUB_REPO, f'projects/{project_name}/{md_file}')
+
+            for md_file in markdown_files:
+                if st.sidebar.button(f"查看 {md_file}", key=f"view_{md_file}_{project_name}"):
+                    self.display_markdown(os.path.join(project_folder, md_file))
         else:
             st.error("项目文件夹不存在。")
 
