@@ -34,10 +34,7 @@ def get_github_file(repo, path):
 def update_github_file(repo, path, content, message):
     url = f"{GITHUB_API_URL}/repos/{repo}/contents/{path}"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
-    
-    # 调试：获取文件数据
     file_data = get_github_file(repo, path)
-    st.write(f"文件数据: {file_data}")  # 添加调试信息
 
     if file_data:
         sha = file_data['sha']
@@ -46,23 +43,14 @@ def update_github_file(repo, path, content, message):
             "content": base64.b64encode(content.encode()).decode(),
             "sha": sha
         }
-
-        # 调试：检查准备提交的数据
-        st.write(f"提交数据: {data}")
-
         response = requests.put(url, headers=headers, json=data)
-        st.write(f"响应: {response.status_code}, 内容: {response.json()}")  # 调试信息
 
         if response.status_code == 200:
-            return True
+            return True  # 返回成功状态
         else:
             st.error(f"更新文件失败: {response.json().get('message')}")
             return False
-
-    st.error("未找到文件数据，无法更新。")
     return False
-
-
 
 def edit_markdown(repo, file_path):
     file_data = get_github_file(repo, file_path)
@@ -212,6 +200,7 @@ class PageManager:
         st.sidebar.markdown("### 项目文件")
         selected_file = st.sidebar.radio("选择Markdown文件", markdown_files)
 
+        # 编辑区域
         if selected_file:
             file_path = os.path.join(project_folder, selected_file)
             self.display_markdown(file_path)
@@ -222,8 +211,13 @@ class PageManager:
                 if content:
                     new_content = st.text_area("编辑Markdown内容", value=content, height=300)
                     if st.button("保存更改"):
-                        if update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件"):
+                        # 调用更新函数并获取返回值
+                        update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
+                        
+                        if update_success:  # 检查返回值
                             st.success("您的更新已成功提交！")  # 提示用户更新成功
+                        else:
+                            st.error("更新失败，请检查您的输入或权限。")
 
         else:
             st.error("项目文件夹不存在。")
