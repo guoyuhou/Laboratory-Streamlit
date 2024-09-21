@@ -45,12 +45,15 @@ def update_github_file(repo, path, content, message):
         }
         response = requests.put(url, headers=headers, json=data)
 
+        st.write(response.json())  # 在这里添加调试信息
+
         if response.status_code == 200:
             return True  # 返回成功状态
         else:
             st.error(f"更新文件失败: {response.json().get('message')}")
             return False
     return False
+
 
 def edit_markdown(repo, file_path):
     file_data = get_github_file(repo, file_path)
