@@ -8,6 +8,7 @@ from pygwalker.api.streamlit import StreamlitRenderer
 import base64
 import requests
 
+
 # GitHub API settings
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = st.secrets["github"]["GITHUB_TOKEN"]
@@ -51,6 +52,13 @@ def update_github_file(repo, path, content, message):
             st.error(f"更新文件失败: {response.json().get('message')}")
             return False
     return False
+
+def edit_markdown(repo, file_path):
+    file_data = get_github_file(repo, file_path)
+    if file_data:
+        content = base64.b64decode(file_data['content']).decode("utf-8")
+        return content
+    return None
 
 # User Authentication
 class AuthManager:
