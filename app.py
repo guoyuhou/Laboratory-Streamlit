@@ -7,6 +7,7 @@ import pandas as pd
 from pygwalker.api.streamlit import StreamlitRenderer
 import requests
 
+
 # Load users from configuration file
 def load_users(file_path='users.json'):
     if not os.path.exists(file_path):
