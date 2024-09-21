@@ -50,11 +50,8 @@ def edit_markdown(repo, file_path):
     file_data = get_github_file(repo, file_path)
     if file_data:
         content = base64.b64decode(file_data['content']).decode("utf-8")
-
-        new_content = st.text_area("编辑Markdown文件", value=content, height=300)
-
-        if st.button("保存更改"):
-            update_github_file(repo, file_path, new_content, "更新Markdown文件")
+        return content
+    return None
 
 # User Authentication
 class AuthManager:
@@ -187,22 +184,28 @@ class PageManager:
 
     def display_project_files(self, project_name):
         project_folder = f'projects/{project_name}'
-        if os.path.exists(project_folder):
-            st.sidebar.markdown("### 项目文件")
-            markdown_files = [
-                "main_page.md",
-                "experiment_design.md",
-                "experiment_log.md",
-                "papers.md"
-            ]
+        markdown_files = [
+            "main_page.md",
+            "experiment_design.md",
+            "experiment_log.md",
+            "papers.md"
+        ]
+        
+        st.sidebar.markdown("### 项目文件")
+        selected_file = st.sidebar.radio("选择Markdown文件", markdown_files)
 
-            for md_file in markdown_files:
-                if st.sidebar.button(f"编辑 {md_file}", key=f"edit_{md_file}_{project_name}"):
-                    edit_markdown(GITHUB_REPO, f'projects/{project_name}/{md_file}')
+        if selected_file:
+            file_path = os.path.join(project_folder, selected_file)
+            self.display_markdown(file_path)
 
-            for md_file in markdown_files:
-                if st.sidebar.button(f"查看 {md_file}", key=f"view_{md_file}_{project_name}"):
-                    self.display_markdown(os.path.join(project_folder, md_file))
+            # 编辑区域
+            if st.button("编辑该文件"):
+                content = edit_markdown(GITHUB_REPO, f'projects/{project_name}/{selected_file}')
+                if content:
+                    new_content = st.text_area("编辑Markdown内容", value=content, height=300)
+                    if st.button("保存更改"):
+                        update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
+
         else:
             st.error("项目文件夹不存在。")
 
