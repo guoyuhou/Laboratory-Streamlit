@@ -11,8 +11,8 @@ import requests
 
 # GitHub API settings
 GITHUB_API_URL = "https://api.github.com"
-GITHUB_TOKEN = st.secrets["github"]["GITHUB_TOKEN"]
-GITHUB_REPO = st.secrets["github"]["GITHUB_REPO"]
+GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
+GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"]
 
 # Load users from configuration file
 def load_users(file_path='users.json'):
