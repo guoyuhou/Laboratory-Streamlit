@@ -238,3 +238,21 @@ def main():
         st.title("欢迎回来")
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
+
+def handle_login(auth_manager):
+    st.title("登录要求")
+    st.write("请登录以访问更多内容。")
+    username = st.text_input("用户名")
+    password = st.text_input("密码", type="password")
+    if st.button("登录"):
+        if username and password:
+            user = auth_manager.authenticate_user(username, password)
+            if user:
+                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
+            else:
+                st.error("用户名或密码无效")
+        else:
+            st.error("用户名和密码不能为空")
+
+if __name__ == "__main__":
+    main()
