@@ -35,23 +35,29 @@ def get_github_file(repo, path):
 def update_github_file(repo, path, content, message):
     url = f"{GITHUB_API_URL}/repos/{repo}/contents/{path}"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+
+    # 获取文件数据
     file_data = get_github_file(repo, path)
+    if not file_data:
+        st.error("无法获取文件信息，更新操作无法继续。")
+        return False
 
-    if file_data:
-        sha = file_data['sha']
-        data = {
-            "message": message,
-            "content": base64.b64encode(content.encode()).decode(),
-            "sha": sha
-        }
-        response = requests.put(url, headers=headers, json=data)
+    sha = file_data['sha']
+    data = {
+        "message": message,
+        "content": base64.b64encode(content.encode()).decode(),
+        "sha": sha
+    }
 
-        if response.status_code == 200:
-            return True  # 返回成功状态
-        else:
-            st.error(f"更新文件失败: {response.json().get('message')}")
-            return False
-    return False
+    response = requests.put(url, headers=headers, json=data)
+
+    if response.status_code == 200:
+        return True  # 返回成功状态
+    else:
+        # 输出更多的错误信息，方便调试
+        st.error(f"更新文件失败: {response.status_code} - {response.json().get('message', '未知错误')}")
+        return False
+
 
 def edit_markdown(repo, file_path):
     file_data = get_github_file(repo, file_path)
@@ -189,8 +195,6 @@ class PageManager:
         
         return accessible_projects
 
-    # 省略导入和其他部分代码...
-
     def display_project_files(self, project_name):
         project_folder = f'projects/{project_name}'
         markdown_files = [
@@ -207,6 +211,7 @@ class PageManager:
             file_path = os.path.join(project_folder, selected_file)
             self.display_markdown(file_path)
 
+            # 编辑区域
             if st.button("编辑该文件"):
                 content = edit_markdown(GITHUB_REPO, f'projects/{project_name}/{selected_file}')
                 if content:
@@ -217,19 +222,16 @@ class PageManager:
 
                     # 保存按钮
                     if st.button("保存更改"):
-                        if new_content:  # 确保新内容不为空
-                            with st.spinner("正在保存..."):
-                                update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
-                                if update_success:
-                                    st.success("您的更新已成功提交！")
-                                    st.experimental_rerun()  # 刷新页面以显示更新内容
-                                else:
-                                    st.error("更新失败，请检查您的输入或权限。")
-                        else:
-                            st.error("内容不能为空！")
+                        with st.spinner("正在保存..."):
+                            update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
+                            if update_success:
+                                st.success("您的更新已成功提交！")
+                                st.session_state['edit_content'] = new_content  # 更新session_state中的内容
+                            else:
+                                st.error("更新失败，请检查您的输入或权限。")
 
-            else:
-                st.error("项目文件夹不存在。")
+        else:
+            st.error("项目文件夹不存在。")
 
 # Main Application
 def main():
