@@ -46,9 +46,11 @@ def update_github_file(repo, path, content, message):
         response = requests.put(url, headers=headers, json=data)
 
         if response.status_code == 200:
-            st.success("文件已成功更新")
+            return True  # 返回成功状态
         else:
             st.error(f"更新文件失败: {response.json().get('message')}")
+            return False
+    return False
 
 def edit_markdown(repo, file_path):
     file_data = get_github_file(repo, file_path)
@@ -208,7 +210,8 @@ class PageManager:
                 if content:
                     new_content = st.text_area("编辑Markdown内容", value=content, height=300)
                     if st.button("保存更改"):
-                        update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
+                        if update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件"):
+                            st.success("您的更新已成功提交！")  # 提示用户更新成功
 
         else:
             st.error("项目文件夹不存在。")
