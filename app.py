@@ -34,7 +34,10 @@ def get_github_file(repo, path):
 def update_github_file(repo, path, content, message):
     url = f"{GITHUB_API_URL}/repos/{repo}/contents/{path}"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+    
+    # 调试：获取文件数据
     file_data = get_github_file(repo, path)
+    st.write(f"文件数据: {file_data}")  # 添加调试信息
 
     if file_data:
         sha = file_data['sha']
@@ -43,16 +46,22 @@ def update_github_file(repo, path, content, message):
             "content": base64.b64encode(content.encode()).decode(),
             "sha": sha
         }
-        response = requests.put(url, headers=headers, json=data)
 
-        st.write(response.json())  # 在这里添加调试信息
+        # 调试：检查准备提交的数据
+        st.write(f"提交数据: {data}")
+
+        response = requests.put(url, headers=headers, json=data)
+        st.write(f"响应: {response.status_code}, 内容: {response.json()}")  # 调试信息
 
         if response.status_code == 200:
-            return True  # 返回成功状态
+            return True
         else:
             st.error(f"更新文件失败: {response.json().get('message')}")
             return False
+
+    st.error("未找到文件数据，无法更新。")
     return False
+
 
 
 def edit_markdown(repo, file_path):
