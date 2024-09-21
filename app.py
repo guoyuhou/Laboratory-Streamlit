@@ -1,12 +1,10 @@
 import streamlit as st
 import json
 import os
-import requests
 from Cloud_storage import cloud_storage_page
 import pygwalker
 import pandas as pd
 from pygwalker.api.streamlit import StreamlitRenderer
-from config import GITHUB_TOKEN, GITHUB_REPO
 
 # Load users from configuration file
 def load_users(file_path='users.json'):
@@ -17,10 +15,10 @@ def load_users(file_path='users.json'):
 
 # Update Markdown file on GitHub
 def update_markdown_file(file_path, content):
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}"
+    url = f"https://api.github.com/repos/{st.secrets['github']['GITHUB_REPO']}/contents/{file_path}"
     
     # Get file info to get SHA
-    response = requests.get(url, headers={"Authorization": f"token {GITHUB_TOKEN}"})
+    response = requests.get(url, headers={"Authorization": f"token {st.secrets['github']['GITHUB_TOKEN']}"})
     if response.status_code != 200:
         st.error("无法获取文件信息，请检查文件路径或权限。")
         return
@@ -35,7 +33,7 @@ def update_markdown_file(file_path, content):
         "sha": sha
     }
     
-    response = requests.put(url, json=data, headers={"Authorization": f"token {GITHUB_TOKEN}"})
+    response = requests.put(url, json=data, headers={"Authorization": f"token {st.secrets['github']['GITHUB_TOKEN']}"})
     if response.status_code == 200:
         st.success("文件更新成功！")
     else:
@@ -124,17 +122,9 @@ class PageManager:
     def display_markdown(self, file_path):
         try:
             with open(file_path, encoding='utf-8') as file:
-                content = file.read()
-            self.edit_markdown_file(file_path, content)
+                st.markdown(file.read())
         except Exception as e:
             st.error(f"文件读取错误: {e}")
-
-    def edit_markdown_file(self, file_path, content):
-        st.subheader("编辑 Markdown 文件")
-        new_content = st.text_area("内容", content, height=300)
-
-        if st.button("保存修改"):
-            update_markdown_file(file_path.replace('projects/', ''), new_content)
 
     def display_user_projects(self, username):
         user_projects = self.auth_manager.get_user_projects(username)
@@ -193,6 +183,7 @@ class PageManager:
                 self.display_markdown(os.path.join(project_folder, 'papers.md'))
         else:
             st.error("项目文件夹不存在。")
+
 
 # Main Application
 def main():
