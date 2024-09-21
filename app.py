@@ -5,41 +5,13 @@ from Cloud_storage import cloud_storage_page
 import pygwalker
 import pandas as pd
 from pygwalker.api.streamlit import StreamlitRenderer
-import requests
-
-
+    
 # Load users from configuration file
 def load_users(file_path='users.json'):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"配置文件 {file_path} 不存在")
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
-
-# Update Markdown file on GitHub
-def update_markdown_file(file_path, content):
-    url = f"https://api.github.com/repos/{st.secrets['github']['GITHUB_REPO']}/contents/{file_path}"
-    
-    # Get file info to get SHA
-    response = requests.get(url, headers={"Authorization": f"token {st.secrets['github']['GITHUB_TOKEN']}"})
-    if response.status_code != 200:
-        st.error("无法获取文件信息，请检查文件路径或权限。")
-        return
-    
-    file_info = response.json()
-    sha = file_info['sha']
-
-    # Submit update
-    data = {
-        "message": "Update Markdown file from Streamlit app",
-        "content": content.encode("utf-8").decode("utf-8"),  # Base64 encoding
-        "sha": sha
-    }
-    
-    response = requests.put(url, json=data, headers={"Authorization": f"token {st.secrets['github']['GITHUB_TOKEN']}"})
-    if response.status_code == 200:
-        st.success("文件更新成功！")
-    else:
-        st.error("文件更新失败，请检查错误信息。")
 
 # User Authentication
 class AuthManager:
@@ -148,12 +120,14 @@ class PageManager:
         if accessible_projects:
             selected_project = st.selectbox("选择可访问的项目", accessible_projects, key="accessible_projects")
             if selected_project:
+                # Extract project name from selection
                 project_name = selected_project.split(": ")[1]
                 self.display_project_files(project_name)
         else:
             st.write("您没有可访问的项目。")
 
-    def get_accessible_projects(self, user, username):
+
+    def get_accessible_projects(self, user, username):  # 添加 username 参数
         if not user:
             return []
         
@@ -166,10 +140,11 @@ class PageManager:
             for u, data in self.users.items():
                 if data['role'] == '本科生':
                     accessible_projects.extend(f"{u}: {project}" for project in data.get('projects', []))
-        else:
-            accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))
+        else:  # 本科生
+            accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))  # 使用传入的 username
         
         return accessible_projects
+
 
     def display_project_files(self, project_name):
         project_folder = f'projects/{project_name}'
@@ -224,5 +199,3 @@ def handle_login(auth_manager):
 
 if __name__ == "__main__":
     main()
-
-
