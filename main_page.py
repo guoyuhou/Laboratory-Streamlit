@@ -128,15 +128,15 @@ team_members = {
     },
     '王普': {
         'description': '博士研究生，研究方向：海洋生物多样性',
-        'image': 'Images/example2.jpg'
+        'image': 'Images/example.jpg/150?text=王普'
     },
     '王淑新': {
         'description': '硕士研究生，研究方向：海洋污染治理',
-        'image': 'Images/example3.jpg'
+        'image': 'https://via.placeholder.com/150?text=王淑欣'
     },
     'bro': {
         'description': '硕士研究生，研究方向：海洋污染治理',
-        'image': 'Images/example4.jpg'
+        'image': 'https://via.placeholder.com/150?text=王淑欣'
     }
 }
 
