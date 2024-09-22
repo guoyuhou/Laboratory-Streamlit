@@ -211,8 +211,7 @@ class PageManager:
             if st.button("编辑该文件"):
                 content = edit_markdown(GITHUB_REPO, f'projects/{project_name}/{selected_file}')
                 if content:
-                    st.session_state['edit_content'] = content
-                    new_content = st.text_area("新内容", "")
+                    new_content = st.text_area("编辑Markdown内容", value=st.session_state['edit_content'], height=300)
                     st.title(new_content)
                     if st.button("保存更改"):
                         with st.spinner("正在保存..."):
