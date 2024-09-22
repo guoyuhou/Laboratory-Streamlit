@@ -75,3 +75,12 @@ Streamlit 实验室web页面开发
 
 ### 开发时间：
 鉴于9月份课表和课堂任务较轻，计划于每天上午进行约2小时的web开发。
+
+### 项目结构：
+project_root/
+│
+├── app.py                  # 主应用逻辑
+├── user_manager.py         # 用户管理模块
+├── file_operations.py      # 文件操作模块
+├── Cloud_storage.py        # 云存储模块  
+└── page_manager.py         # 页面管理模块
