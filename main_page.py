@@ -27,7 +27,7 @@ st.markdown("""
             border-radius: 10px;
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin: 20px 0;
+            margin: 10px 0;  /* 调整为10px以减少空白 */
         }
         .nav {
             position: fixed;
@@ -70,6 +70,19 @@ st.markdown("""
             margin-right: 5px;
         }
     </style>
+""", unsafe_allow_html=True)
+
+# 导航栏
+st.markdown("""
+    <div class="nav">
+        <a href="#实验室简介">实验室简介</a>
+        <a href="#实时数据展示">实时数据展示</a>
+        <a href="#研究团队">研究团队</a>
+        <a href="#研究项目">研究项目</a>
+        <a href="#发表论文">发表论文</a>
+        <a href="#联系方式">联系方式</a>
+        <a href="#新闻与更新">新闻与更新</a>
+    </div>
 """, unsafe_allow_html=True)
 
 # 实验室标题
