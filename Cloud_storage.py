@@ -221,6 +221,8 @@ def cloud_storage_page():
     </style>
     """, unsafe_allow_html=True)
 
+    display_statistics()
+
     st.sidebar.title("导航")
     options = st.sidebar.radio("选择操作", ("上传文件", "下载文件", "更新文件", "删除文件", "预览文件", "搜索文件", "批量删除文件"))
     
@@ -239,7 +241,7 @@ def cloud_storage_page():
         operation_function()
 
     st.markdown("""<style>.css-1xarl7p { padding: 1rem; }</style>""", unsafe_allow_html=True)
-    display_statistics()
+
 
 
 # Run the cloud storage page
