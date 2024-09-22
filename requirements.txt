@@ -87,6 +87,7 @@ sqlglot==25.20.1
 stack-data==0.6.3
 streamlit==1.38.0
 streamlit-authenticator==0.3.3
+streamlit-on-Hover-tabs==1.0.1
 tenacity==8.5.0
 toml==0.10.2
 tornado==6.4.1
