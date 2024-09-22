@@ -13,7 +13,7 @@ from page_manager import PageManager
 from st_on_hover_tabs import on_hover_tabs
 
 def main():
-    st.logo('Images/sdu_logo.jpg')
+    st.logo('Images/sdu_logo.jpg', width=300)
     users = load_users()
     auth_manager = AuthManager(users)
 
