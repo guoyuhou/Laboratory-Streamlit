@@ -33,44 +33,30 @@ def handle_login(auth_manager):
     st.title("登录要求")
     st.write("请登录以访问更多内容。")
     
-    # 设置卡片样式
-    with st.container():
-        st.markdown(
-            """
-            <div style="background-color: #f0f2f5; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
-            """,
-            unsafe_allow_html=True
-        )
-        
-        # 用户名输入
-        username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
-        
-        # 密码输入
-        password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
-        
-        # 记住我选项
-        remember_me = st.checkbox("记住我")
+    # 用户名输入
+    username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
+    
+    # 密码输入
+    password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
+    
+    # 记住我选项
+    remember_me = st.checkbox("记住我")
 
-        # 登录按钮
-        if st.button("登录", key="login_button", help="点击登录"):
-            if username and password:
-                user = auth_manager.authenticate_user(username, password)
-                if user:
-                    # 登录成功，添加趣味效果
-                    st.balloons()
-                    st.snow()
-                    st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
-                else:
-                    st.error("用户名或密码无效")
+    # 登录按钮
+    if st.button("登录"):
+        if username and password:
+            user = auth_manager.authenticate_user(username, password)
+            if user:
+                st.
+                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
             else:
-                st.error("用户名和密码不能为空")
+                st.error("用户名或密码无效")
+        else:
+            st.error("用户名和密码不能为空")
 
-        # 忘记密码和注册链接
-        st.write("[忘记密码？](#)")
-        st.write("[没有账号？注册](#)")
-        
-        st.markdown("</div>", unsafe_allow_html=True)
-
+    # 忘记密码和注册链接
+    st.write("[忘记密码？](#)")
+    st.write("[没有账号？注册](#)")
 
 if __name__ == "__main__":
     main()
