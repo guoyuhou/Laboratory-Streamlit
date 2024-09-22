@@ -7,17 +7,20 @@ import pandas as pd
 from pygwalker.api.streamlit import StreamlitRenderer
 import base64
 import requests
+import logging
 
-
-# GitHub API settings
+# GitHub API 设置
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
 GITHUB_REPO = "guoyuhou/Laboratory-Streamlit"
 
-# Load users from configuration file
+# 设置日志
+logging.basicConfig(level=logging.INFO)
+
+# 从配置文件加载用户
 def load_users(file_path='users.json'):
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"配置文件 {file_path} 不存在")
+        raise FileNotFoundError(f"配置文件 {file_path} 不存在。")
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
@@ -36,7 +39,6 @@ def update_github_file(repo, path, content, message):
     url = f"{GITHUB_API_URL}/repos/{repo}/contents/{path}"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
 
-    # 获取文件数据
     file_data = get_github_file(repo, path)
     if not file_data:
         st.error("无法获取文件信息，更新操作无法继续。")
@@ -49,15 +51,15 @@ def update_github_file(repo, path, content, message):
         "sha": sha
     }
 
-    response = requests.put(url, headers=headers, json=data)
-
-    if response.status_code == 200:
-        return True  # 返回成功状态
-    else:
-        # 输出更多的错误信息，方便调试
-        st.error(f"更新文件失败: {response.status_code} - {response.json().get('message', '未知错误')}")
+    try:
+        response = requests.put(url, headers=headers, json=data)
+        response.raise_for_status()
+        logging.info("文件更新成功")
+        return True
+    except requests.exceptions.HTTPError as e:
+        st.error(f"更新失败: {e.response.status_code} - {e.response.json().get('message', '未知错误')}")
+        logging.error(f"更新错误: {e}")
         return False
-
 
 def edit_markdown(repo, file_path):
     file_data = get_github_file(repo, file_path)
@@ -66,7 +68,7 @@ def edit_markdown(repo, file_path):
         return content
     return None
 
-# User Authentication
+# 用户认证
 class AuthManager:
     def __init__(self, users):
         self.users = users
@@ -78,7 +80,7 @@ class AuthManager:
     def get_user_projects(self, username):
         return self.users.get(username, {}).get('projects', [])
 
-# Page Handling
+# 页面处理
 class PageManager:
     def __init__(self, role, users, auth_manager):
         self.role = role
@@ -103,7 +105,7 @@ class PageManager:
         return {
             '👤 个人中心': 'Personal_center.py',
             '☁️ 云服务': None,
-            '📚 Fig_preservation': {
+            '📚 图示保存': {
                 '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
                 '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
                 '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
@@ -142,7 +144,7 @@ class PageManager:
             elif file_path.endswith('.md'):
                 self.display_markdown(file_path)
             else:
-                st.write('所选页面不正确或文件类型不支持')
+                st.write('所选页面不正确或文件类型不支持。')
         except Exception as e:
             st.error(f"文件处理错误: {e}")
 
@@ -190,7 +192,7 @@ class PageManager:
             for u, data in self.users.items():
                 if data['role'] == '本科生':
                     accessible_projects.extend(f"{u}: {project}" for project in data.get('projects', []))
-        else:  # 本科生
+        else:
             accessible_projects.extend(f"{username}: {project}" for project in user.get('projects', []))
         
         return accessible_projects
@@ -211,27 +213,24 @@ class PageManager:
             file_path = os.path.join(project_folder, selected_file)
             self.display_markdown(file_path)
 
-            # 编辑区域
             if st.button("编辑该文件"):
                 content = edit_markdown(GITHUB_REPO, f'projects/{project_name}/{selected_file}')
                 if content:
-                    st.session_state['edit_content'] = content  # 保存内容到session_state
+                    st.session_state['edit_content'] = content
 
-                    # 使用session_state中的内容
                     new_content = st.text_area("编辑Markdown内容", value=st.session_state['edit_content'], height=300)
 
-                    # 保存按钮
                     if st.button("保存更改"):
                         with st.spinner("正在保存..."):
                             update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
                             if update_success:
                                 st.success("您的更新已成功提交！")
-                                st.session_state['edit_content'] = new_content  # 更新session_state中的内容
+                                st.session_state['edit_content'] = new_content
                             else:
                                 st.error("更新失败，请检查您的输入或权限。")
-
         else:
             st.error("项目文件夹不存在。")
+
 
 # Main Application
 def main():
