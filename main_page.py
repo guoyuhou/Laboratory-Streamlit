@@ -5,7 +5,7 @@ import pandas as pd
 st.markdown("""
     <style>
         body {
-            background-image: url('https://www.example.com/ocean_background.mp4');
+            background: linear-gradient(to bottom, rgba(0, 45, 114, 0.8), rgba(255, 255, 255, 0.8)), url('https://www.example.com/ocean_background.mp4');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -16,22 +16,23 @@ st.markdown("""
             font-size: 3rem;
             color: #ffffff;
             padding: 20px;
-            background-color: rgba(0, 45, 114, 0.7);
+            background-color: rgba(0, 45, 114, 0.8);
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
         }
         .section {
             padding: 20px;
             border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
+            margin: 20px 0;
         }
         .nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
             padding: 10px;
             text-align: center;
@@ -41,13 +42,31 @@ st.markdown("""
             color: white;
             margin: 0 15px;
             text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: #ffa500; /* 橙色 */
         }
         .team-member img {
             border-radius: 75px;
             transition: transform 0.2s;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         .team-member img:hover {
             transform: scale(1.1);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #002d72;
+            color: #ffffff;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .icon {
+            margin-right: 5px;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -181,7 +200,11 @@ contact_info = {
 }
 
 for key, value in contact_info.items():
-    st.write(f"**{key}**: {value}")
+    st.markdown(f"""
+        <div style="display: flex; align-items: center;">
+            <span class="icon">🔗</span><strong>{key}:</strong> {value}
+        </div>
+    """, unsafe_allow_html=True)
 
 # 新闻与更新
 st.header('新闻与更新')
@@ -206,4 +229,4 @@ if st.button("提交"):
         st.warning("反馈不能为空。")
 
 # 页脚
-st.markdown('<div class="footer" style="text-align: center; padding: 20px; background-color: #002d72; color: #ffffff;">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
+st.markdown('<div class="footer">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
