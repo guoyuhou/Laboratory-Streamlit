@@ -16,6 +16,8 @@ GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"]
 print(GITHUB_TOKEN)
 print(GITHUB_REPO)
 st.title(GITHUB_TOKEN)
+st.title(GITHUB_REPO)
+
 # 设置日志
 logging.basicConfig(level=logging.INFO)
 
