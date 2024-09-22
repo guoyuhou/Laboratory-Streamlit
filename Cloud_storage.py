@@ -4,6 +4,8 @@ import zipfile
 import io
 from pdf2image import convert_from_path
 import logging
+import random
+from datetime import datetime, timedelta
 
 # 设置日志
 logging.basicConfig(level=logging.INFO)
@@ -165,36 +167,43 @@ def batch_delete_files():
             logging.error(f'批量删除文件时出错: {e}')
             st.error(f'批量删除文件时出错: {e}')
 
+def generate_simulated_data():
+    """生成模拟的每日流量、文件总数和占用率数据"""
+    daily_data = {
+        '日期': [],
+        '流量': [],
+        '文件总数': [],
+        '占用率': []
+    }
+    
+    start_date = datetime.now() - timedelta(days=30)  # 过去30天
+    for i in range(30):
+        date = start_date + timedelta(days=i)
+        daily_data['日期'].append(date.strftime('%Y-%m-%d'))
+        daily_data['流量'].append(random.randint(50, 300))  # 模拟流量（50MB到300MB）
+        daily_data['文件总数'].append(random.randint(20, 100))  # 模拟文件总数
+        daily_data['占用率'].append(random.uniform(0, 100))  # 模拟占用率（0%到100%）
+
+    return daily_data
+
+# 在 display_statistics 中调用生成的数据
 def display_statistics():
     """展示云服务使用频率和占用率"""
     st.subheader('云服务统计信息')
+
+    daily_data = generate_simulated_data()
     
-    # 计算文件数量和总大小
-    files = list_files()
-    total_size = sum(bucket.get_object(file).content_length for file in files) if files else 0
-    total_files = len(files)
+    # 转换为 DataFrame 以便绘图
+    import pandas as pd
+    df = pd.DataFrame(daily_data)
 
-    # 假设最大存储限制为 500GB
-    max_storage = 500 * 1024 * 1024 * 1024  # 500GB
-    usage_rate = (total_size / max_storage) * 100 if max_storage > 0 else 0
-
-    st.write(f'文件总数: {total_files}')
-    st.write(f'总占用空间: {total_size / (1024 * 1024):.2f} MB')
-    st.write(f'占用率: {usage_rate:.2f}%')
-
-    # 数据准备
-    used_space = total_size / (1024 * 1024)  # 转换为MB
-    remaining_space = (max_storage - total_size) / (1024 * 1024)  # 转换为MB
-    space_data = {'已用空间': used_space, '剩余空间': remaining_space}
-
-    # 使用 Streamlit 的条形图
-    st.bar_chart(space_data)
+    # 使用折线图显示数据
+    st.line_chart(df.set_index('日期'))
 
     # 显示操作日志
     st.write('操作日志:')
     for log in operation_log:
         st.write(f"{log['time']} - {log['action']}")
-
 def cloud_storage_page():
     """显示云存储页面"""
     st.title("云存储")
