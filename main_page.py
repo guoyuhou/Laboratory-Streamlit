@@ -1,29 +1,42 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-# 背景动态效果（可以替换为你自己的视频或动态图像）
+
+# 设置页面标题
+st.set_page_config(page_title="陈浩实验室", layout="wide")
+
+# 背景动态效果（请替换为有效的视频链接）
 st.markdown("""
     <style>
         body {
-            background-image: url('https://www.youtube.com/watch?v=LX6I80wMJQM'); /* 动态背景视频链接 */
+            background-image: url('https://www.example.com/ocean_background.mp4'); /* 动态背景视频链接 */
             background-size: cover;
             background-position: center;
-            height: 100vh; /* 设置背景高度 */
+            height: 100vh;
+            overflow: hidden;
         }
         .main-title {
             text-align: center;
             font-size: 3rem;
             color: #ffffff;
             padding: 20px;
-            background-color: rgba(0, 45, 114, 0.8); /* 深蓝色半透明背景 */
+            background-color: rgba(0, 45, 114, 0.7);
             border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
         .section {
             padding: 20px;
             border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.9); /* 半透明白色背景 */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
+        }
+        .team-member img {
+            border-radius: 75px;
+            transition: transform 0.2s; /* 动画效果 */
+        }
+        .team-member img:hover {
+            transform: scale(1.1); /* 放大效果 */
         }
     </style>
 """, unsafe_allow_html=True)
@@ -35,7 +48,7 @@ st.markdown('<h1 class="main-title">陈浩实验室</h1>', unsafe_allow_html=Tru
 st.header('实验室简介')
 st.markdown("""
     <div class="section">
-        <p>本实验室专注于海洋科学的前沿研究，致力于海洋生态、环境保护及资源管理等领域。</p>
+        <p>本实验室专注于海洋科学的前沿研究，致力于海洋生态、环境保护及资源管理等领域。我们通过多学科的合作，推动科学研究和技术创新。</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -46,7 +59,7 @@ data = pd.DataFrame({
     '研究成果': [10, 20, 15, 25]
 })
 
-fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势')
+fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
 st.plotly_chart(fig)
 
 # 研究团队
@@ -54,15 +67,15 @@ st.header('研究团队')
 team_members = {
     '陈浩': {
         'description': '实验室主任，研究方向：海洋生态学',
-        'image': 'https://via.placeholder.com/150?text=陈浩'  # 示例图片链接
+        'image': 'https://via.placeholder.com/150?text=陈浩'
     },
     '李四': {
         'description': '博士研究生，研究方向：海洋生物多样性',
-        'image': 'https://via.placeholder.com/150?text=李四'  # 示例图片链接
+        'image': 'https://via.placeholder.com/150?text=李四'
     },
     '王五': {
         'description': '硕士研究生，研究方向：海洋污染治理',
-        'image': 'https://via.placeholder.com/150?text=王五'  # 示例图片链接
+        'image': 'https://via.placeholder.com/150?text=王五'
     }
 }
 
@@ -70,7 +83,7 @@ team_members = {
 cols = st.columns(len(team_members))
 for i, (member, info) in enumerate(team_members.items()):
     with cols[i]:
-        st.markdown(f'<div class="team-member"><img src="{info["image"]}" alt="{member}" style="border-radius: 75px;" /><br><strong>{member}</strong><br>{info["description"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="team-member"><img src="{info["image"]}" alt="{member}" /><br><strong>{member}</strong><br>{info["description"]}</div>', unsafe_allow_html=True)
 
 # 研究项目
 st.header('研究项目')
