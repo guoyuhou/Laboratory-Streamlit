@@ -103,6 +103,10 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+# 实验室宣传片
+st.video('videos/elon_mask.mp4')
+
+
 # 动态数据图表
 st.header('实时数据展示')
 st.markdown('<div class="section" id="实时数据展示"></div>', unsafe_allow_html=True)

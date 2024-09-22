@@ -31,7 +31,6 @@ def main():
     else:
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
-    st.video('videos/elon_mask.mp4')
 
     # 侧边栏内容
     with st.sidebar:
