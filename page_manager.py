@@ -19,7 +19,6 @@ class PageManager:
     def load_public_pages(self):
         return {
             '🏠 主页': 'main_page.py',
-            '🖥️ 网页设计': 'Web_Design.md',
             '🛠️ 工具包': {
                 '🧰 PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
                 '🔧 Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
@@ -32,12 +31,6 @@ class PageManager:
         return {
             '👤 个人中心': 'Personal_center.py',
             '☁️ 云服务': None,
-            '📚 图示保存': {
-                '🔍 项目信息': os.path.join('Fig_preservation', 'information.md'),
-                '🧪 实验设计': os.path.join('Fig_preservation', 'experi_design.md'),
-                '📝 实验日志': os.path.join('Fig_preservation', 'experi_log.md'),
-                '🔄 更新日志': os.path.join('Fig_preservation', 'update_log.md'),
-            },
             '📂 项目列表': None
         }
 
