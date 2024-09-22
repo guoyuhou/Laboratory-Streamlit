@@ -9,7 +9,7 @@ ACCESS_KEY_ID = st.secrets["oss"]["ACCESS_KEY_ID"]
 ACCESS_KEY_SECRET = st.secrets["oss"]["ACCESS_KEY_SECRET"]
 ENDPOINT = st.secrets["oss"]["ENDPOINT"]
 BUCKET_NAME = st.secrets["oss"]["BUCKET_NAME"]
-
+print(ACCESS_KEY_ID)
 # 创建OSS认证和存储桶对象
 auth = oss2.Auth(ACCESS_KEY_ID, ACCESS_KEY_SECRET)
 bucket = oss2.Bucket(auth, ENDPOINT, BUCKET_NAME)
