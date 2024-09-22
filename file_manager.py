@@ -1,6 +1,7 @@
 import base64
 import requests
 import logging
+import streamlit as st
 
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
