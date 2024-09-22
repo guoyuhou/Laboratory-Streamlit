@@ -29,6 +29,18 @@ def main():
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
 
+    # 侧边栏内容
+    with st.sidebar:
+        st.markdown("---")
+        st.markdown(
+            '<h6>Made in &nbsp<img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16">&nbsp by <a href="https://twitter.com/andfanilo">@andfanilo</a></h6>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            '<div style="margin-top: 0.75em;"><a href="https://www.buymeacoffee.com/andfanilo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a></div>',
+            unsafe_allow_html=True,
+        )
+
 def handle_login(auth_manager):
     st.title("登录要求")
     st.write("请登录以访问更多内容。")
