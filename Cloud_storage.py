@@ -22,6 +22,9 @@ def list_files():
     """列出OSS中的所有文件"""
     return [obj.key for obj in oss2.ObjectIterator(bucket)]
 
+# 用于记录操作日志
+operation_log = []
+
 def handle_file(file, operation):
     """处理文件上传和更新"""
     try:
@@ -162,6 +165,28 @@ def batch_delete_files():
             logging.error(f'批量删除文件时出错: {e}')
             st.error(f'批量删除文件时出错: {e}')
 
+def display_statistics():
+    """展示云服务使用频率和占用率"""
+    st.subheader('云服务统计信息')
+    
+    # 计算文件数量和总大小
+    files = list_files()
+    total_size = sum(bucket.get_object(file).content_length for file in files) if files else 0
+    total_files = len(files)
+
+    # 假设最大存储限制为 5GB
+    max_storage = 5 * 1024 * 1024 * 1024  # 5GB
+    usage_rate = (total_size / max_storage) * 100 if max_storage > 0 else 0
+
+    st.write(f'文件总数: {total_files}')
+    st.write(f'总占用空间: {total_size / (1024 * 1024):.2f} MB')
+    st.write(f'占用率: {usage_rate:.2f}%')
+
+    # 显示操作日志
+    st.write('操作日志:')
+    for log in operation_log:
+        st.write(f"{log['time']} - {log['action']}")
+
 def cloud_storage_page():
     """显示云存储页面"""
     st.title("云存储")
@@ -214,6 +239,8 @@ def cloud_storage_page():
         operation_function()
 
     st.markdown("""<style>.css-1xarl7p { padding: 1rem; }</style>""", unsafe_allow_html=True)
+    display_statistics()
+
 
 # Run the cloud storage page
 if __name__ == "__main__":
