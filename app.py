@@ -47,6 +47,9 @@ def handle_login(auth_manager):
         if username and password:
             user = auth_manager.authenticate_user(username, password)
             if user:
+                # 登录成功，添加趣味效果
+                st.balloons()
+                st.snow()
                 st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
             else:
                 st.error("用户名或密码无效")
@@ -56,6 +59,7 @@ def handle_login(auth_manager):
     # 忘记密码和注册链接
     st.write("[忘记密码？](#)")
     st.write("[没有账号？注册](#)")
+
 
 if __name__ == "__main__":
     main()
