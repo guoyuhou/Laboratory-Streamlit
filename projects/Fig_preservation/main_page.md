@@ -5,3 +5,5 @@
 LB固体培养基：1000ml 水，25g LB，18g 琼脂粉
 LB液体培养基：1000ml 水，25g LB
 
+ModernY
+
