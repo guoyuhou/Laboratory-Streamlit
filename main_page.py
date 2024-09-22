@@ -100,7 +100,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 实验室标题
-st.markdown('<h1 class="main-title">陈浩实验室</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">Frontier Lab</h1>', unsafe_allow_html=True)
 
 # 实验室简介
 st.header('实验室简介')
