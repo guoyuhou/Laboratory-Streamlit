@@ -11,69 +11,12 @@ import logging
 from user_manager import load_users, AuthManager
 from page_manager import PageManager
 
-# 设置页面配置
-st.set_page_config(
-    page_title="实验室应用",
-    page_icon="🔬",
-    layout="centered",
-    initial_sidebar_state="expanded",
-)
-
-# 定义主题选项
-THEMES = {
-    "默认": {
-        "primaryColor": "#007bff",
-        "backgroundColor": "#f4f4f4",
-        "textColor": "#333"
-    },
-    "暗黑": {
-        "primaryColor": "#4a90e2",
-        "backgroundColor": "#1e1e1e",
-        "textColor": "#f4f4f4"
-    },
-    "明亮": {
-        "primaryColor": "#28a745",
-        "backgroundColor": "#ffffff",
-        "textColor": "#000000"
-    }
-}
-
-def apply_theme(theme):
-    """应用主题样式"""
-    st.markdown(f"""
-    <style>
-        body {{
-            background-color: {theme['backgroundColor']};
-            color: {theme['textColor']};
-        }}
-        .stButton button {{
-            background-color: {theme['primaryColor']};
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-        }}
-        .stButton button:hover {{
-            background-color: darken({theme['primaryColor']}, 10%);
-        }}
-    </style>
-    """, unsafe_allow_html=True)
-
 def main():
     users = load_users()
     auth_manager = AuthManager(users)
     
     if 'username' not in st.session_state:
         st.session_state.update({'username': None, 'role': None, 'login_page': False, 'edit_content': ''})
-
-    # 主题选择
-    selected_theme = st.sidebar.selectbox("选择主题", list(THEMES.keys()))
-    theme = THEMES[selected_theme]
-
-
-    # 应用主题
-    apply_theme(theme)
 
     if st.session_state['username'] is None:
         if st.session_state['login_page']:
