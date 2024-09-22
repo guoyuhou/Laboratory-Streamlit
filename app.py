@@ -208,24 +208,23 @@ class PageManager:
             file_path = os.path.join(project_folder, selected_file)
             self.display_markdown(file_path)
 
-            if st.button("编辑该文件"):
-                content = edit_markdown(GITHUB_REPO, f'projects/{project_name}/{selected_file}')
-                if content:
-                    new_content = st.text_area("编辑Markdown内容", "", height=300)
-                    st.title(new_content)
-                    if st.button("保存更改"):
-                        with st.spinner("正在保存..."):
-                            try:
-                                update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
-                                if update_success:
-                                    st.success("您的更新已成功提交！")
-                                else:
-                                    st.error("更新失败，请检查您的输入或权限。")
-                            except Exception as e:
-                                st.error(f"发生错误: {e}")
-                
+            # 直接显示编辑文本框和更新按钮
+            content = edit_markdown(GITHUB_REPO, f'projects/{project_name}/{selected_file}')
+            if content:
+                new_content = st.text_area("编辑Markdown内容", value=content, height=300)
+                if st.button("保存更改"):
+                    with st.spinner("正在保存..."):
+                        try:
+                            update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
+                            if update_success:
+                                st.success("您的更新已成功提交！")
+                            else:
+                                st.error("更新失败，请检查您的输入或权限。")
+                        except Exception as e:
+                            st.error(f"发生错误: {e}")
         else:
             st.error("项目文件夹不存在。")
+
 
 
 # Main Application
