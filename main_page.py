@@ -1,6 +1,8 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
+from PIL import Image
+
 
 # 背景动态效果
 st.markdown("""
@@ -117,9 +119,6 @@ data = pd.DataFrame({
 fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
 st.plotly_chart(fig)
 
-import streamlit as st
-from PIL import Image
-
 # 研究团队
 st.header('研究团队')
 st.markdown('<div class="section" id="研究团队"></div>', unsafe_allow_html=True)
@@ -153,6 +152,19 @@ for i, (member, info) in enumerate(team_members.items()):
         st.image(image, caption=member, width=150)
         st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
 
+        # 添加一些CSS动画效果
+        st.markdown(
+            """
+            <style>
+            .section {
+                transition: transform 0.3s;
+            }
+            .section:hover {
+                transform: scale(1.05);
+            }
+            </style>
+            """, unsafe_allow_html=True
+        )
 
 # 研究项目
 st.header('研究项目')
