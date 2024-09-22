@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import os
+import time
 from Cloud_storage import cloud_storage_page
 import pygwalker
 import pandas as pd
@@ -27,14 +28,15 @@ def main():
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
     else:
-        display_welcome_message()
+        show_temporary_welcome_message()
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
 
-def display_welcome_message():
-    st.title("欢迎回来")
-    st.markdown("#### 很高兴再次见到您！")
-    st.write("您可以访问实验室的云服务和其他功能。请查看侧边栏以获取更多选项。")
+def show_temporary_welcome_message():
+    welcome_message = st.empty()
+    welcome_message.title("欢迎回来")
+    time.sleep(2)  # 显示2秒
+    welcome_message.empty()  # 清除消息
 
 def handle_login(auth_manager):
     st.title("登录要求")
