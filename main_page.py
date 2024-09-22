@@ -2,6 +2,9 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
+# 设置页面标题
+st.set_page_config(page_title="陈浩实验室", layout="wide")
+
 # 背景动态效果
 st.markdown("""
     <style>
@@ -82,7 +85,6 @@ st.markdown("""
         <a href="#发表论文">发表论文</a>
         <a href="#联系方式">联系方式</a>
         <a href="#新闻与更新">新闻与更新</a>
-        <a href="#反馈">反馈</a>
     </div>
 """, unsafe_allow_html=True)
 
@@ -107,14 +109,8 @@ data = pd.DataFrame({
     '研究成果': [10, 20, 15, 25]
 })
 
-# 选择数据视图
-view_type = st.selectbox("选择数据视图", ["趋势图", "柱状图"])
-
-if view_type == "趋势图":
-    fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
-else:
-    fig = px.bar(data, x='时间', y='研究成果', title='实验室研究成果柱状图')
-
+# 只保留折线图
+fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
 st.plotly_chart(fig)
 
 # 研究团队
@@ -217,17 +213,6 @@ updates = [
 ]
 for update in updates:
     st.write(f"- {update}")
-
-# 反馈区域
-st.header('反馈')
-st.markdown('<div class="section" id="反馈"></div>', unsafe_allow_html=True)
-
-feedback = st.text_area("请留下您的反馈意见：")
-if st.button("提交"):
-    if feedback:
-        st.success("感谢您的反馈！")
-    else:
-        st.warning("反馈不能为空。")
 
 # 页脚
 st.markdown('<div class="footer">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
