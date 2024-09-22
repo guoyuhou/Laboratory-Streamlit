@@ -174,13 +174,21 @@ def display_statistics():
     total_size = sum(bucket.get_object(file).content_length for file in files) if files else 0
     total_files = len(files)
 
-    # 假设最大存储限制为 5GB
-    max_storage = 5 * 1024 * 1024 * 1024  # 5GB
+    # 假设最大存储限制为 500GB
+    max_storage = 500 * 1024 * 1024 * 1024  # 500GB
     usage_rate = (total_size / max_storage) * 100 if max_storage > 0 else 0
 
     st.write(f'文件总数: {total_files}')
     st.write(f'总占用空间: {total_size / (1024 * 1024):.2f} MB')
     st.write(f'占用率: {usage_rate:.2f}%')
+
+    # 数据准备
+    used_space = total_size / (1024 * 1024)  # 转换为MB
+    remaining_space = (max_storage - total_size) / (1024 * 1024)  # 转换为MB
+    space_data = {'已用空间': used_space, '剩余空间': remaining_space}
+
+    # 使用 Streamlit 的条形图
+    st.bar_chart(space_data)
 
     # 显示操作日志
     st.write('操作日志:')
