@@ -52,10 +52,11 @@ def update_github_file(repo, path, content, message):
     }
 
     try:
-        response = requests.put(url, headers=headers, json=data)
-        response.raise_for_status()
-        logging.info("文件更新成功")
-        return True
+        with st.spinner("正在更新文件..."):
+            response = requests.put(url, headers=headers, json=data)
+            response.raise_for_status()
+            logging.info("文件更新成功")
+            return True
     except requests.exceptions.HTTPError as e:
         st.error(f"更新失败: {e.response.status_code} - {e.response.json().get('message', '未知错误')}")
         logging.error(f"更新错误: {e}")
@@ -200,10 +201,9 @@ class PageManager:
     def display_project_files(self, project_name):
         project_folder = f'projects/{project_name}'
         markdown_files = ["main_page.md", "experiment_design.md", "experiment_log.md", "papers.md"]
-        
+
         st.sidebar.markdown("### 项目文件")
         selected_file = st.sidebar.radio("选择Markdown文件", markdown_files)
-
         if selected_file:
             file_path = os.path.join(project_folder, selected_file)
             self.display_markdown(file_path)
@@ -220,10 +220,10 @@ class PageManager:
                                 st.success("您的更新已成功提交！")
                             else:
                                 st.error("更新失败，请检查您的输入或权限。")
-                        except Exception as e:
+                        except Exception as e:  
                             st.error(f"发生错误: {e}")
-        else:
-            st.error("项目文件夹不存在。")
+            else:
+                st.error("项目文件夹不存在。")
 
 
 
