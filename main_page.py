@@ -11,16 +11,26 @@ st.write('本实验室专注于海洋科学的前沿研究，致力于海洋生�
 # 研究团队
 st.header('研究团队')
 team_members = {
-    '陈浩': '实验室主任，研究方向：海洋生态学',
-    '李四': '博士研究生，研究方向：海洋生物多样性',
-    '王五': '硕士研究生，研究方向：海洋污染治理'
+    '陈浩': {
+        'description': '实验室主任，研究方向：海洋生态学',
+        'image': 'https://via.placeholder.com/150?text=陈浩'  # 示例图片链接
+    },
+    '李四': {
+        'description': '博士研究生，研究方向：海洋生物多样性',
+        'image': 'https://via.placeholder.com/150?text=李四'  # 示例图片链接
+    },
+    '王五': {
+        'description': '硕士研究生，研究方向：海洋污染治理',
+        'image': 'https://via.placeholder.com/150?text=王五'  # 示例图片链接
+    }
 }
 
 cols = st.columns(len(team_members))
-for i, (member, description) in enumerate(team_members.items()):
+for i, (member, info) in enumerate(team_members.items()):
     with cols[i]:
+        st.image(info['image'], caption=f"{member}", use_column_width=True)
         st.subheader(member)
-        st.write(description)
+        st.write(info['description'])
 
 # 研究项目
 st.header('研究项目')
