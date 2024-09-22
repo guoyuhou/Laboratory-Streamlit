@@ -168,10 +168,7 @@ def cloud_storage_page():
     
     # 添加使用说明
     st.subheader("关于实验室云服务")
-    st.write("""
-        欢迎使用实验室云服务平台！您可以在这里上传、下载、更新、删除文件，支持多种文件格式（如ZIP、PDF、图片等）。
-        请根据侧边栏的选项选择您需要的服务。
-    """)
+    st.write("""欢迎使用实验室云服务平台！您可以在这里上传、下载、更新、删除文件，支持多种文件格式（如ZIP、PDF、图片等）。请根据侧边栏的选项选择您需要的服务。""")
 
     # 添加一些样式
     st.markdown("""
@@ -217,3 +214,7 @@ def cloud_storage_page():
         operation_function()
 
     st.markdown("""<style>.css-1xarl7p { padding: 1rem; }</style>""", unsafe_allow_html=True)
+
+# Run the cloud storage page
+if __name__ == "__main__":
+    cloud_storage_page()
