@@ -95,18 +95,27 @@ class PageManager:
             with open(file_path, encoding='utf-8') as file:
                 content = file.read()
             st.markdown(content)
+
             # 编辑按钮
             if st.button("编辑此文件"):
-                self.edit_markdown(file_path, content)
+                self.edit_markdown(file_path)
         except Exception as e:
             st.error(f"文件读取错误: {e}")
 
-    def edit_markdown(self, file_path, current_content):
-        new_content = st.text_area("编辑Markdown内容", current_content, height=300)
-        if st.button("保存"):
-            with open(file_path, 'w', encoding='utf-8') as file:
-                file.write(new_content)
-            st.success("保存成功！")
+    def edit_markdown(self, file_path):
+        try:
+            with open(file_path, encoding='utf-8') as file:
+                current_content = file.read()
+            new_content = st.text_area("编辑Markdown内容", current_content, height=300)
+
+            if st.button("保存"):
+                with open(file_path, 'w', encoding='utf-8') as file:
+                    file.write(new_content)
+                st.success("保存成功！")
+                # 立即展示更新后的Markdown内容
+                st.markdown(new_content)
+        except Exception as e:
+            st.error(f"文件读取错误: {e}")
 
     def display_user_projects(self, username):
         user_projects = self.auth_manager.get_user_projects(username)
