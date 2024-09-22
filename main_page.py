@@ -5,19 +5,17 @@ import pandas as pd
 # 背景动态效果
 st.markdown("""
     <style>
+        body {
+            background: linear-gradient(to bottom, rgba(0, 45, 114, 0.8), rgba(255, 255, 255, 0.8)), url('https://www.example.com/ocean_background.jpg');
+            background-size: cover;
+            height: 100vh;
+            overflow: hidden;
+            animation: backgroundAnimation 30s ease infinite;
+        }
+
         @keyframes backgroundAnimation {
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
-        }
-
-        body {
-            background: linear-gradient(to bottom, rgba(0, 45, 114, 0.8), rgba(255, 255, 255, 0.8)),
-                        url('https://www.example.com/ocean_background.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-            animation: backgroundAnimation 30s ease infinite;
-            height: 100vh;
-            overflow: hidden;
         }
 
         .main-title {
