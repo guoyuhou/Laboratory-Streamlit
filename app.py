@@ -14,54 +14,21 @@ from page_manager import PageManager
 # 定义主题选项
 THEMES = {
     "默认": {
-        "background_color": "#f4f4f4",
-        "text_color": "#333",
-        "sidebar_color": "#001f3f",
-        "button_color": "#007bff",
-        "button_hover_color": "#0056b3"
+        "primaryColor": "#007bff",
+        "backgroundColor": "#f4f4f4",
+        "textColor": "#333"
     },
     "暗黑": {
-        "background_color": "#1e1e1e",
-        "text_color": "#f4f4f4",
-        "sidebar_color": "#2b2b2b",
-        "button_color": "#4a90e2",
-        "button_hover_color": "#357ab7"
+        "primaryColor": "#4a90e2",
+        "backgroundColor": "#1e1e1e",
+        "textColor": "#f4f4f4"
     },
     "明亮": {
-        "background_color": "#ffffff",
-        "text_color": "#000000",
-        "sidebar_color": "#e1e1e1",
-        "button_color": "#28a745",
-        "button_hover_color": "#218838"
+        "primaryColor": "#28a745",
+        "backgroundColor": "#ffffff",
+        "textColor": "#000000"
     }
 }
-
-def apply_theme(theme):
-    """应用用户选择的主题"""
-    st.markdown(f"""
-    <style>
-        body {{
-            background-color: {theme['background_color']};
-            color: {theme['text_color']};
-            font-family: 'Arial', sans-serif;
-        }}
-        .sidebar .sidebar-content {{
-            background-color: {theme['sidebar_color']};
-            color: {theme['text_color']};
-        }}
-        .stButton button {{
-            background-color: {theme['button_color']};
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-        }}
-        .stButton button:hover {{
-            background-color: {theme['button_hover_color']};
-        }}
-    </style>
-    """, unsafe_allow_html=True)
 
 def main():
     users = load_users()
@@ -72,7 +39,17 @@ def main():
 
     # 主题选择
     selected_theme = st.sidebar.selectbox("选择主题", list(THEMES.keys()))
-    apply_theme(THEMES[selected_theme])
+    theme = THEMES[selected_theme]
+
+    # 设置页面主题
+    st.set_page_config(
+        page_title="实验室应用",
+        page_icon="🔬",
+        layout="centered",
+        initial_sidebar_state="expanded",
+        # 这里设置主题颜色
+        theme={"primaryColor": theme['primaryColor']}
+    )
 
     if st.session_state['username'] is None:
         if st.session_state['login_page']:
