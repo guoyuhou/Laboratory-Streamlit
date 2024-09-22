@@ -8,7 +8,6 @@ from pygwalker.api.streamlit import StreamlitRenderer
 import base64
 import requests
 import logging
-
 from user_manager import load_users, AuthManager
 from page_manager import PageManager
 
