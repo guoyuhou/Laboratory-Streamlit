@@ -139,12 +139,13 @@ def search_files():
     if query:
         files = [file for file in list_files() if query.lower() in file.lower()]
         if files:
-            st.write(f'找到 {len(files)} 个文件')
-            return files
+            st.write(f'找到 {len(files)} 个文件:')
+            for file in files:
+                st.write(f'- {file}')  # 列举找到的文件
         else:
             st.write('没有找到匹配的文件')
-            return []
-    return list_files()
+    else:
+        st.write('请在上方输入关键词进行搜索')
 
 def batch_delete_files():
     """处理批量文件删除"""
