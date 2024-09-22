@@ -29,13 +29,6 @@ st.markdown("""
             margin-top: 20px;
         }
 
-        .section {
-            padding: 20px;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin: 10px 0;
-        }
 
         .nav {
             position: fixed;
