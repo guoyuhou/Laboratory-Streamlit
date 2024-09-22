@@ -1,12 +1,62 @@
 import streamlit as st
 
+# 设置页面标题
+st.set_page_config(page_title="陈浩实验室", layout="wide")
+
 # 实验室主页
-st.title('陈浩实验室')
-st.write('__欢迎访问，这里是山东大学威海校区海洋学院陈浩老师实验室。__')
+st.markdown("""
+    <style>
+        .main-title {
+            text-align: center;
+            font-size: 3rem;
+            color: #ffffff;
+            padding: 20px;
+            background-color: #002d72; /* 深蓝色背景 */
+            border-radius: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 40px;
+        }
+        .section {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f4f4f4; /* 浅灰背景 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .team-member {
+            text-align: center;
+            margin: 20px;
+        }
+        .project, .paper {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #ffffff; /* 白色背景 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #002d72;
+            color: #ffffff;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# 实验室标题和欢迎语
+st.markdown('<h1 class="main-title">陈浩实验室</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">欢迎访问山东大学威海校区海洋学院陈浩老师实验室</p>', unsafe_allow_html=True)
 
 # 实验室简介
 st.header('实验室简介')
-st.write('本实验室专注于海洋科学的前沿研究，致力于海洋生态、环境保护及资源管理等领域。')
+st.markdown("""
+    <div class="section">
+        <p>本实验室专注于海洋科学的前沿研究，致力于海洋生态、环境保护及资源管理等领域。</p>
+    </div>
+""", unsafe_allow_html=True)
 
 # 研究团队
 st.header('研究团队')
@@ -25,12 +75,11 @@ team_members = {
     }
 }
 
+# 创建团队成员展示
 cols = st.columns(len(team_members))
 for i, (member, info) in enumerate(team_members.items()):
     with cols[i]:
-        st.image(info['image'], caption=f"{member}", use_column_width=True)
-        st.subheader(member)
-        st.write(info['description'])
+        st.markdown(f'<div class="team-member"><img src="{info["image"]}" alt="{member}" style="border-radius: 75px;" /><br><strong>{member}</strong><br>{info["description"]}</div>', unsafe_allow_html=True)
 
 # 研究项目
 st.header('研究项目')
@@ -47,12 +96,14 @@ projects = [
     }
 ]
 
-project_cols = st.columns(len(projects))
-for i, project in enumerate(projects):
-    with project_cols[i]:
-        st.markdown(f"### {project['name']}")
-        st.write(project['description'])
-        st.write(f"[了解更多]({project['link']})")
+for project in projects:
+    st.markdown(f"""
+        <div class="project">
+            <h3>{project['name']}</h3>
+            <p>{project['description']}</p>
+            <a href="{project['link']}">了解更多</a>
+        </div>
+    """, unsafe_allow_html=True)
 
 # 发表论文
 st.header('发表论文')
@@ -67,10 +118,12 @@ papers = [
     }
 ]
 
-paper_cols = st.columns(len(papers))
-for i, paper in enumerate(papers):
-    with paper_cols[i]:
-        st.markdown(f"- [{paper['title']}]({paper['link']})")
+for paper in papers:
+    st.markdown(f"""
+        <div class="paper">
+            <p><a href="{paper['link']}">{paper['title']}</a></p>
+        </div>
+    """, unsafe_allow_html=True)
 
 # 联系方式
 st.header('联系方式')
@@ -92,11 +145,5 @@ updates = [
 for update in updates:
     st.write(f"- {update}")
 
-# 添加样式
-st.markdown("""
-<style>
-    .stHeader {font-size: 2.5rem;}
-    .stSubheader {font-size: 2rem;}
-    .stMarkdown {text-align: left;}
-</style>
-""", unsafe_allow_html=True)
+# 页脚
+st.markdown('<div class="footer">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
