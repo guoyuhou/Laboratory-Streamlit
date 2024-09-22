@@ -48,9 +48,6 @@ st.markdown("""
             z-index: 1000;
         }
 
-        .nav a:hover {
-            color: #ffa500;
-        }
 
         .team-member img {
             border-radius: 75px;
