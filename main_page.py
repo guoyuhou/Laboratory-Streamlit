@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-from PIL import Image
+
 # 背景动态效果
 st.markdown("""
     <style>
@@ -117,54 +117,34 @@ data = pd.DataFrame({
 fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
 st.plotly_chart(fig)
 
-
 # 研究团队
 st.header('研究团队')
 st.markdown('<div class="section" id="研究团队"></div>', unsafe_allow_html=True)
 
-# 使用本地图片路径
 team_members = {
     '陈浩': {
         'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-        'image': 'Images/example1.jpg'  
+        'image': 'Images/example1.jpg'
     },
     '王普': {
         'description': '博士研究生，研究方向：海洋生物多样性',
-        'image': 'Images/example2.jpg'  
+        'image': 'https://www.bing.com/images/search?view=detailV2&ccid=IFLzeDgH&id=BE43D136CC57CD35C51FA21C1B77AD355914388C&thid=OIP.IFLzeDgHm6qo85f0AkzqUwHaJ3&mediaurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.2052f37838079baaa8f397f4024cea53%3frik%3djDgUWTWtdxscog%26riu%3dhttp%253a%252f%252fweb4708.w2.magic2008.cn%252fuFile%252f4708%252fproduct%252f201282215326422.jpg%26ehk%3dtW5hCMOv1Z0YmsqyDfZyG066dmsFB4HaeYrNG4CKb5g%253d%26risl%3d%26pid%3dImgRaw%26r%3d0&exph=666&expw=500&q=%e5%bd%ad%e4%ba%8e%e6%99%8f&simid=608027620347943218&FORM=IRPRST&ck=615E42CC409B18A0EB4B485E23973D0F&selectedIndex=53&itb=0'
     },
     '王淑新': {
         'description': '硕士研究生，研究方向：海洋污染治理',
-        'image': 'Images/example3.jpg'  
+        'image': 'https://via.placeholder.com/150?text=王淑欣'
     },
     'bro': {
         'description': '硕士研究生，研究方向：海洋污染治理',
-        'image': 'Images/example4.jpg'  
+        'image': 'https://via.placeholder.com/150?text=王淑欣'
     }
 }
-
-# 添加 CSS 样式
-st.markdown("""
-<style>
-    .profile-pic {
-        border-radius: 50%; /* 椭圆形 */
-        width: 150px;
-        height: 150px;
-        object-fit: cover; /* 保持比例 */
-    }
-</style>
-""", unsafe_allow_html=True)
 
 # 创建团队成员展示
 cols = st.columns(len(team_members))
 for i, (member, info) in enumerate(team_members.items()):
     with cols[i]:
-        # 加载本地图片
-        image = Image.open(info['image'])
-        # 将图片保存为文件，以便使用 HTML 显示
-        image.save(f'temp_image_{member}.png')
-        st.markdown(f'<img class="profile-pic" src="temp_image_{member}.png" alt="{member}">', unsafe_allow_html=True)
-        st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
-
+        st.markdown(f'<div class="team-member"><img src="{info["image"]}" alt="{member}" /><br><strong>{member}</strong><br>{info["description"]}</div>', unsafe_allow_html=True)
 
 # 研究项目
 st.header('研究项目')
