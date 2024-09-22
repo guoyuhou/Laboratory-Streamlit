@@ -1,17 +1,25 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-import os
+
 # 背景动态效果
 st.markdown("""
     <style>
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
         body {
-            background: linear-gradient(to bottom, rgba(0, 45, 114, 0.8), rgba(255, 255, 255, 0.8)), url('videos\oceans.mp4');
+            background: linear-gradient(to bottom, rgba(0, 45, 114, 0.8), rgba(255, 255, 255, 0.8)),
+                        url('https://www.example.com/ocean_background.jpg');
             background-size: cover;
-            background-position: center;
+            background-attachment: fixed;
+            animation: backgroundAnimation 30s ease infinite;
             height: 100vh;
             overflow: hidden;
         }
+
         .main-title {
             text-align: center;
             font-size: 3rem;
@@ -22,13 +30,15 @@ st.markdown("""
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             margin-top: 20px;
         }
+
         .section {
             padding: 20px;
             border-radius: 10px;
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin: 10px 0;  /* 调整为10px以减少空白 */
+            margin: 10px 0;
         }
+
         .nav {
             position: fixed;
             top: 0;
@@ -39,24 +49,29 @@ st.markdown("""
             text-align: center;
             z-index: 1000;
         }
+
         .nav a {
             color: white;
             margin: 0 15px;
             text-decoration: none;
             transition: color 0.3s;
         }
+
         .nav a:hover {
-            color: #ffa500; /* 橙色 */
+            color: #ffa500;
         }
+
         .team-member img {
             border-radius: 75px;
             transition: transform 0.2s;
             border: 3px solid #ffffff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+
         .team-member img:hover {
             transform: scale(1.1);
         }
+
         .footer {
             text-align: center;
             padding: 20px;
@@ -66,6 +81,7 @@ st.markdown("""
             bottom: 0;
             width: 100%;
         }
+
         .icon {
             margin-right: 5px;
         }
