@@ -13,10 +13,6 @@ import logging
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
 GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"] 
-print(GITHUB_TOKEN)
-print(GITHUB_REPO)
-st.title(GITHUB_TOKEN)
-st.title(GITHUB_REPO)
 
 # 设置日志
 logging.basicConfig(level=logging.INFO)
@@ -230,6 +226,8 @@ class PageManager:
                                     st.error("更新失败，请检查您的输入或权限。")
                             except Exception as e:
                                 st.error(f"发生错误: {e}")
+                else:
+                    st.error("请在文本框中输入新内容。")
             else:
                 st.error("项目文件夹不存在。")
 
