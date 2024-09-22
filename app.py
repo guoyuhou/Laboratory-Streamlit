@@ -226,7 +226,7 @@ class PageManager:
                                     st.error("更新失败，请检查您的输入或权限。")
                             except Exception as e:
                                 st.error(f"发生错误: {e}")
-            else:
+        else:
                 st.error("项目文件夹不存在。")
 
 
