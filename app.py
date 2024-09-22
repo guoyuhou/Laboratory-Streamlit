@@ -15,7 +15,7 @@ from PIL import Image
 
 def main():
     st.logo('Images/sdu_logo2.jpg')
-    st.video('videos/elon_mask2.mp4')
+    st.video('videos/Elon_mask2.mp4')
     users = load_users()
     auth_manager = AuthManager(users)
 
