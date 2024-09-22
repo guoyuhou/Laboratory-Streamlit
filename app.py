@@ -199,12 +199,7 @@ class PageManager:
 
     def display_project_files(self, project_name):
         project_folder = f'projects/{project_name}'
-        markdown_files = [
-            "main_page.md",
-            "experiment_design.md",
-            "experiment_log.md",
-            "papers.md"
-        ]
+        markdown_files = ["main_page.md", "experiment_design.md", "experiment_log.md", "papers.md"]
         
         st.sidebar.markdown("### 项目文件")
         selected_file = st.sidebar.radio("选择Markdown文件", markdown_files)
@@ -222,14 +217,17 @@ class PageManager:
 
                     if st.button("保存更改"):
                         with st.spinner("正在保存..."):
-                            update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
-                            if update_success:
-                                st.success("您的更新已成功提交！")
-                                st.session_state['edit_content'] = new_content
-                            else:
-                                st.error("更新失败，请检查您的输入或权限。")
-        else:
-            st.error("项目文件夹不存在。")
+                            try:
+                                update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
+                                if update_success:
+                                    st.success("您的更新已成功提交！")
+                                    st.session_state['edit_content'] = new_content  # 更新内容
+                                else:
+                                    st.error("更新失败，请检查您的输入或权限。")
+                            except Exception as e:
+                                st.error(f"发生错误: {e}")
+            else:
+                st.error("项目文件夹不存在。")
 
 
 # Main Application
