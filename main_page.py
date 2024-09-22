@@ -98,7 +98,7 @@ st.markdown("""
 
 # 动态数据图表
 st.header('实时数据展示')
-st.markdown('<div class="section" id="实时数据展示"></div>', unsafe_allow_html=False)
+st.markdown('<div class="section" id="实时数据展示">', unsafe_allow_html=True)
 
 # 示例数据
 data = pd.DataFrame({
@@ -112,7 +112,7 @@ st.plotly_chart(fig)
 
 # 研究团队
 st.header('研究团队')
-st.markdown('<div class="section" id="研究团队"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section" id="研究团队">', unsafe_allow_html=True)
 
 team_members = {
     '陈浩': {
@@ -137,7 +137,7 @@ for i, (member, info) in enumerate(team_members.items()):
 
 # 研究项目
 st.header('研究项目')
-st.markdown('<div class="section" id="研究项目"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section" id="研究项目">', unsafe_allow_html=True)
 
 projects = [
     {
@@ -163,7 +163,7 @@ for project in projects:
 
 # 发表论文
 st.header('发表论文')
-st.markdown('<div class="section" id="发表论文"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section" id="发表论文">', unsafe_allow_html=True)
 
 papers = [
     {
@@ -185,7 +185,7 @@ for paper in papers:
 
 # 联系方式
 st.header('联系方式')
-st.markdown('<div class="section" id="联系方式"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section" id="联系方式">', unsafe_allow_html=True)
 
 contact_info = {
     'Email': 'chenh@mail.sdu.edu.cn',
@@ -202,7 +202,7 @@ for key, value in contact_info.items():
 
 # 新闻与更新
 st.header('新闻与更新')
-st.markdown('<div class="section" id="新闻与更新"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section" id="新闻与更新">', unsafe_allow_html=True)
 
 updates = [
     '2024年1月：实验室获得国家自然科学基金支持。',
