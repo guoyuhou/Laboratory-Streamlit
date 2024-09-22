@@ -33,7 +33,7 @@ def main():
     with st.sidebar:
         st.markdown("---")
         st.markdown(
-            '<h6>Made in &nbsp<img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16">&nbsp by @Alexander</a></h6>',
+            '<h6>Made in &nbsp<img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16">&nbsp by @Diary</a></h6>',
             unsafe_allow_html=True,
         )
         st.markdown(
