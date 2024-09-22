@@ -22,7 +22,6 @@ def main():
         if st.session_state['login_page']:
             handle_login(auth_manager)
         else:
-            st.title("欢迎来到实验室应用")
             PageManager(None, users, auth_manager).display_pages()
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
