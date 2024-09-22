@@ -1,8 +1,6 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-from PIL import Image
-
 
 # 背景动态效果
 st.markdown("""
@@ -123,23 +121,22 @@ st.plotly_chart(fig)
 st.header('研究团队')
 st.markdown('<div class="section" id="研究团队"></div>', unsafe_allow_html=True)
 
-# 使用本地图片路径
 team_members = {
     '陈浩': {
         'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-        'image': 'Images/example1.jpg'  
+        'image': 'Images/example1.jpg'
     },
     '王普': {
         'description': '博士研究生，研究方向：海洋生物多样性',
-        'image': 'Images/example2.jpg'  
+        'image': 'Images/example2.jpg'
     },
     '王淑新': {
         'description': '硕士研究生，研究方向：海洋污染治理',
-        'image': 'Images/example3.jpg'  
+        'image': 'Images/example3.jpg'
     },
     'bro': {
         'description': '硕士研究生，研究方向：海洋污染治理',
-        'image': 'Images/example4.jpg'  
+        'image': 'Images/example4.jpg'
     }
 }
 
@@ -147,11 +144,7 @@ team_members = {
 cols = st.columns(len(team_members))
 for i, (member, info) in enumerate(team_members.items()):
     with cols[i]:
-        # 加载本地图片并显示
-        image = Image.open(info['image'])
-        st.image(image, caption=member, width=150)
-        st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
-
+        st.markdown(f'<div class="team-member"><img src="{info["image"]}" alt="{member}" /><br><strong>{member}</strong><br>{info["description"]}</div>', unsafe_allow_html=True)
 
 # 研究项目
 st.header('研究项目')
