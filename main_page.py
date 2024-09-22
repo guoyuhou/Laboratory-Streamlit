@@ -149,7 +149,7 @@ cols = st.columns(len(team_members))
 for i, (member, info) in enumerate(team_members.items()):
     with cols[i]:
         # 加载本地图片并显示
-        image = Image.open(info['Image'])
+        image = Image.open(info['image'])
         st.image(image, caption=member, width=150)
         st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
 
