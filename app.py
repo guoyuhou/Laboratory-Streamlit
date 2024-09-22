@@ -11,6 +11,14 @@ import logging
 from user_manager import load_users, AuthManager
 from page_manager import PageManager
 
+# 设置页面配置
+st.set_page_config(
+    page_title="实验室应用",
+    page_icon="🔬",
+    layout="centered",
+    initial_sidebar_state="expanded",
+)
+
 # 定义主题选项
 THEMES = {
     "默认": {
@@ -63,13 +71,6 @@ def main():
     selected_theme = st.sidebar.selectbox("选择主题", list(THEMES.keys()))
     theme = THEMES[selected_theme]
 
-    # 设置页面配置
-    st.set_page_config(
-        page_title="实验室应用",
-        page_icon="🔬",
-        layout="centered",
-        initial_sidebar_state="expanded",
-    )
 
     # 应用主题
     apply_theme(theme)
