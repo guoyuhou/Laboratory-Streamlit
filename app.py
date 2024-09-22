@@ -47,7 +47,7 @@ def handle_login(auth_manager):
         if username and password:
             user = auth_manager.authenticate_user(username, password)
             if user:
-                st.
+                st.balloons()
                 st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
             else:
                 st.error("用户名或密码无效")
