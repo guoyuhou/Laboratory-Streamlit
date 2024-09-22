@@ -113,7 +113,6 @@ data = pd.DataFrame({
     '研究成果': [10, 20, 15, 25]
 })
 
-# 只保留折线图
 fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
 st.plotly_chart(fig)
 
