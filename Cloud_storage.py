@@ -3,13 +3,17 @@ import oss2
 import zipfile
 import io
 from pdf2image import convert_from_path
+import logging
+
+# 设置日志
+logging.basicConfig(level=logging.INFO)
 
 # 从Streamlit的Secrets中读取OSS的密钥和存储桶信息
 ACCESS_KEY_ID = st.secrets["oss"]["ACCESS_KEY_ID"]
 ACCESS_KEY_SECRET = st.secrets["oss"]["ACCESS_KEY_SECRET"]
 ENDPOINT = st.secrets["oss"]["ENDPOINT"]
 BUCKET_NAME = st.secrets["oss"]["BUCKET_NAME"]
-print(ACCESS_KEY_ID)
+
 # 创建OSS认证和存储桶对象
 auth = oss2.Auth(ACCESS_KEY_ID, ACCESS_KEY_SECRET)
 bucket = oss2.Bucket(auth, ENDPOINT, BUCKET_NAME)
@@ -24,6 +28,7 @@ def handle_file(file, operation):
         bucket.put_object(file.name, file)
         st.success(f'文件 {file.name} {operation} 成功')
     except Exception as e:
+        logging.error(f'操作文件 {file.name} 时出错: {e}')
         st.error(f'操作文件时出错: {e}')
 
 def upload_zip_file(uploaded_file):
@@ -39,6 +44,7 @@ def upload_zip_file(uploaded_file):
                 st.write(f'文件 {file_info.filename} 上传成功')
         st.success('ZIP文件中的所有文件已成功上传到 OSS')
     except Exception as e:
+        logging.error(f'处理ZIP文件时出错: {e}')
         st.error(f'处理ZIP文件时出错: {e}')
 
 def upload_files_with_progress():
@@ -47,8 +53,7 @@ def upload_files_with_progress():
     uploaded_file = st.file_uploader("选择要上传的文件（支持ZIP和其他类型）", type=['zip', 'csv', 'txt', 'pdf', 'png', 'jpg', 'jpeg'])
     
     if uploaded_file:
-        file_size = uploaded_file.size / 1024 / 1024  # 以MB为单位
-        st.write(f'文件大小：{file_size:.2f} MB')
+        st.write(f'文件大小：{uploaded_file.size / 1024 / 1024:.2f} MB')
         if uploaded_file.type == 'application/zip':
             upload_zip_file(uploaded_file)
         else:
@@ -70,6 +75,7 @@ def download_file():
                     mime='application/octet-stream'
                 )
             except Exception as e:
+                logging.error(f'下载文件 {file_name} 时出错: {e}')
                 st.error(f'下载文件时出错: {e}')
     else:
         st.write('没有文件可供下载')
@@ -99,6 +105,7 @@ def delete_file():
             bucket.delete_object(file_name)
             st.success(f'文件 {file_name} 已成功删除')
         except Exception as e:
+            logging.error(f'删除文件 {file_name} 时出错: {e}')
             st.error(f'删除文件时出错: {e}')
 
 def preview_file():
@@ -116,12 +123,13 @@ def preview_file():
             elif file_name.lower().endswith('txt'):
                 st.text(file_content.decode('utf-8'))
             elif file_name.lower().endswith('pdf'):
-                images = convert_from_path(io.BytesIO(file_content))
+                images = convert_from_path(io.BytesIO(file_content), first_page=5)
                 for image in images:
                     st.image(image, caption=file_name)
             else:
                 st.write(f'无法预览此文件类型：{file_name}')
         except Exception as e:
+            logging.error(f'预览文件 {file_name} 时出错: {e}')
             st.error(f'预览文件时出错: {e}')
 
 def search_files():
@@ -150,6 +158,7 @@ def batch_delete_files():
                 bucket.delete_object(file_name)
             st.success(f'已成功删除 {len(selected_files)} 个文件')
         except Exception as e:
+            logging.error(f'批量删除文件时出错: {e}')
             st.error(f'批量删除文件时出错: {e}')
 
 def cloud_storage_page():
@@ -172,8 +181,4 @@ def cloud_storage_page():
     if operation_function:
         operation_function()
 
-    st.markdown("""
-    <style>
-        .css-1xarl7p { padding: 1rem; }
-    </style>
-    """, unsafe_allow_html=True)
+    st.markdown("""<style>.css-1xarl7p { padding: 1rem; }</style>""", unsafe_allow_html=True)
