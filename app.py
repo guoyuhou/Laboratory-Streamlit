@@ -14,6 +14,13 @@ from st_on_hover_tabs import on_hover_tabs
 from PIL import Image
 
 def main():
+    st.set_page_config(
+    page_title="Froniter Lab",  # 设置网页标题
+    page_icon=":smiley:",           # 设置网页 favicon，这里使用了一个emoji作为示例，实际中可以是本地图片路径
+    layout="wide",                  # 设置页面布局，可选"centered"或"wide"
+    initial_sidebar_state="expanded", # 设置侧边栏的初始状态，可选"auto", "expanded", "collapsed"
+)
+
     st.logo('Images/sdu_logo2.jpg')
     users = load_users()
     auth_manager = AuthManager(users)
