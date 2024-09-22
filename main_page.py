@@ -1,50 +1,39 @@
 import streamlit as st
-# 实验室主页
+import plotly.express as px
+import pandas as pd
+
+# 设置页面标题
+st.set_page_config(page_title="陈浩实验室", layout="wide")
+
+# 背景动态效果（可以替换为你自己的视频或动态图像）
 st.markdown("""
     <style>
+        body {
+            background-image: url('https://example.com/background.mp4'); /* 动态背景视频链接 */
+            background-size: cover;
+            background-position: center;
+            height: 100vh; /* 设置背景高度 */
+        }
         .main-title {
             text-align: center;
             font-size: 3rem;
             color: #ffffff;
             padding: 20px;
-            background-color: #002d72; /* 深蓝色背景 */
+            background-color: rgba(0, 45, 114, 0.8); /* 深蓝色半透明背景 */
             border-radius: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #ffffff;
-            margin-bottom: 40px;
         }
         .section {
             padding: 20px;
             border-radius: 10px;
-            background-color: #f4f4f4; /* 浅灰背景 */
+            background-color: rgba(255, 255, 255, 0.9); /* 半透明白色背景 */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .team-member {
-            text-align: center;
-            margin: 20px;
-        }
-        .project, .paper {
-            margin: 20px 0;
-            padding: 10px;
-            border-radius: 10px;
-            background-color: #ffffff; /* 白色背景 */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #002d72;
-            color: #ffffff;
+            margin-top: 20px;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# 实验室标题和欢迎语
+# 实验室标题
 st.markdown('<h1 class="main-title">陈浩实验室</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">欢迎访问山东大学威海校区海洋学院陈浩老师实验室</p>', unsafe_allow_html=True)
 
 # 实验室简介
 st.header('实验室简介')
@@ -53,6 +42,16 @@ st.markdown("""
         <p>本实验室专注于海洋科学的前沿研究，致力于海洋生态、环境保护及资源管理等领域。</p>
     </div>
 """, unsafe_allow_html=True)
+
+# 动态数据图表
+st.header('实时数据展示')
+data = pd.DataFrame({
+    '时间': ['2023-01', '2023-02', '2023-03', '2023-04'],
+    '研究成果': [10, 20, 15, 25]
+})
+
+fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势')
+st.plotly_chart(fig)
 
 # 研究团队
 st.header('研究团队')
@@ -94,7 +93,7 @@ projects = [
 
 for project in projects:
     st.markdown(f"""
-        <div class="project">
+        <div class="section">
             <h3>{project['name']}</h3>
             <p>{project['description']}</p>
             <a href="{project['link']}">了解更多</a>
@@ -116,7 +115,7 @@ papers = [
 
 for paper in papers:
     st.markdown(f"""
-        <div class="paper">
+        <div class="section">
             <p><a href="{paper['link']}">{paper['title']}</a></p>
         </div>
     """, unsafe_allow_html=True)
@@ -142,4 +141,4 @@ for update in updates:
     st.write(f"- {update}")
 
 # 页脚
-st.markdown('<div class="footer">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
+st.markdown('<div class="footer" style="text-align: center; padding: 20px; background-color: #002d72; color: #ffffff;">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
