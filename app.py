@@ -30,6 +30,28 @@ THEMES = {
     }
 }
 
+def apply_theme(theme):
+    """应用主题样式"""
+    st.markdown(f"""
+    <style>
+        body {{
+            background-color: {theme['backgroundColor']};
+            color: {theme['textColor']};
+        }}
+        .stButton button {{
+            background-color: {theme['primaryColor']};
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }}
+        .stButton button:hover {{
+            background-color: darken({theme['primaryColor']}, 10%);
+        }}
+    </style>
+    """, unsafe_allow_html=True)
+
 def main():
     users = load_users()
     auth_manager = AuthManager(users)
@@ -41,15 +63,16 @@ def main():
     selected_theme = st.sidebar.selectbox("选择主题", list(THEMES.keys()))
     theme = THEMES[selected_theme]
 
-    # 设置页面主题
+    # 设置页面配置
     st.set_page_config(
         page_title="实验室应用",
         page_icon="🔬",
         layout="centered",
         initial_sidebar_state="expanded",
-        # 这里设置主题颜色
-        theme={"primaryColor": theme['primaryColor']}
     )
+
+    # 应用主题
+    apply_theme(theme)
 
     if st.session_state['username'] is None:
         if st.session_state['login_page']:
