@@ -219,7 +219,6 @@ class PageManager:
                                 update_success = update_github_file(GITHUB_REPO, f'projects/{project_name}/{selected_file}', new_content, "更新Markdown文件")
                                 if update_success:
                                     st.success("您的更新已成功提交！")
-                                    st.session_state['edit_content'] = new_content  # 更新内容
                                 else:
                                     st.error("更新失败，请检查您的输入或权限。")
                             except Exception as e:
