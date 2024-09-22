@@ -10,7 +10,6 @@ import requests
 import logging
 from user_manager import load_users, AuthManager
 from page_manager import PageManager
-from st_on_hover_tabs import on_hover_tabs  # 导入悬停标签组件
 
 def main():
     users = load_users()
@@ -32,45 +31,6 @@ def main():
 
     # 侧边栏内容
     with st.sidebar:
-        # 悬停标签
-        tabs = on_hover_tabs(
-            tabName=['Dashboard', 'Money', 'Economy'],
-            iconName=['dashboard', 'money', 'economy'],
-            styles={
-                'navtab': {
-                    'background-color': '#111',
-                    'color': '#818181',
-                    'font-size': '18px',
-                    'transition': '.3s',
-                    'white-space': 'nowrap',
-                    'text-transform': 'uppercase'
-                },
-                'tabStyle': {
-                    ':hover': {'color': 'red', 'cursor': 'pointer'},
-                    'list-style-type': 'none',
-                    'margin-bottom': '30px',
-                    'padding-left': '30px'
-                },
-                'iconStyle': {
-                    'position': 'fixed',
-                    'left': '7.5px',
-                    'text-align': 'left'
-                },
-            },
-            key="1"
-        )
-
-        # 根据选择的选项显示内容
-        if tabs == 'Dashboard':
-            st.title("Dashboard")
-            st.write('Name of option is {}'.format(tabs))
-        elif tabs == 'Money':
-            st.title("Money")
-            st.write('Name of option is {}'.format(tabs))
-        elif tabs == 'Economy':
-            st.title("Economy")
-            st.write('Name of option is {}'.format(tabs))
-
         st.markdown("---")
         st.markdown(
             '<h6>Made in &nbsp<img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16">&nbsp by @Diary</a></h6>',
