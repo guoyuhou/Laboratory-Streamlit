@@ -214,7 +214,7 @@ class PageManager:
                     st.session_state['edit_content'] = content
 
                     new_content = st.text_area("编辑Markdown内容", value=st.session_state['edit_content'], height=300)
-
+                    st.title(new_content)
                     if st.button("保存更改"):
                         with st.spinner("正在保存..."):
                             try:
@@ -226,8 +226,7 @@ class PageManager:
                                     st.error("更新失败，请检查您的输入或权限。")
                             except Exception as e:
                                 st.error(f"发生错误: {e}")
-                else:
-                    st.error("请在文本框中输入新内容。")
+                
         else:
             st.error("项目文件夹不存在。")
 
