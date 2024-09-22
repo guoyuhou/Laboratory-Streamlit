@@ -2,20 +2,6 @@ import streamlit as st
 import json
 import os
 from Cloud_storage import cloud_storage_page
-import pygwalker
-import pandas as pd
-from pygwalker.api.streamlit import StreamlitRenderer
-import base64
-import requests
-import logging
-
-# GitHub API 设置
-GITHUB_API_URL = "https://api.github.com"
-GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
-GITHUB_REPO = "guoyuhou/Laboratory-Streamlit"   
-
-# 设置日志
-logging.basicConfig(level=logging.INFO)
 
 # 从配置文件加载用户
 def load_users(file_path='users.json'):
@@ -103,24 +89,24 @@ class PageManager:
                 st.write('所选页面不正确或文件类型不支持。')
         except Exception as e:
             st.error(f"文件处理错误: {e}")
-    def edit_markdown(self, file_path):
-        st.write("## 编辑Markdown内容")
-        if os.path.exists(file_path):
-            with open(file_path, 'r', encoding='utf-8') as file:
-                content = file.read()
-            new_content = st.text_area("Markdown内容", content)
-            if st.button("保存"):
-                with open(file_path, 'w', encoding='utf-8') as file:
-                    file.write(new_content)
-                st.success("保存成功！")
-            st.markdown(new_content)
 
     def display_markdown(self, file_path):
         try:
             with open(file_path, encoding='utf-8') as file:
-                st.markdown(file.read())
+                content = file.read()
+            st.markdown(content)
+            # 编辑按钮
+            if st.button("编辑此文件"):
+                self.edit_markdown(file_path, content)
         except Exception as e:
             st.error(f"文件读取错误: {e}")
+
+    def edit_markdown(self, file_path, current_content):
+        new_content = st.text_area("编辑Markdown内容", current_content, height=300)
+        if st.button("保存"):
+            with open(file_path, 'w', encoding='utf-8') as file:
+                file.write(new_content)
+            st.success("保存成功！")
 
     def display_user_projects(self, username):
         user_projects = self.auth_manager.get_user_projects(username)
@@ -175,15 +161,14 @@ class PageManager:
             file_path = os.path.join(project_folder, selected_file)
             self.display_markdown(file_path)
         else:
-                st.error("项目文件夹不存在。")
-
+            st.error("项目文件夹不存在。")
 
 # Main Application
 def main():
     users = load_users()
     auth_manager = AuthManager(users)
     if 'username' not in st.session_state:
-        st.session_state.update({'username': None, 'role': None, 'login_page': False, 'edit_content': ''})
+        st.session_state.update({'username': None, 'role': None, 'login_page': False})
 
     if st.session_state['username'] is None:
         if st.session_state['login_page']:
