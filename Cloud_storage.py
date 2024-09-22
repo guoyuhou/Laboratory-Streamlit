@@ -26,7 +26,7 @@ def handle_file(file, operation):
     """处理文件上传和更新"""
     try:
         bucket.put_object(file.name, file)
-        st.success(f'文件 {file.name} {operation} 成功')
+        st.success(f'文件 {file.name} {operation} 成功', icon="✅")
     except Exception as e:
         logging.error(f'操作文件 {file.name} 时出错: {e}')
         st.error(f'操作文件时出错: {e}')
@@ -42,7 +42,7 @@ def upload_zip_file(uploaded_file):
                 bucket.put_object(file_info.filename, file_data)
                 progress_bar.progress(i / total_files)
                 st.write(f'文件 {file_info.filename} 上传成功')
-        st.success('ZIP文件中的所有文件已成功上传到 OSS')
+        st.success('ZIP文件中的所有文件已成功上传到 OSS', icon="✅")
     except Exception as e:
         logging.error(f'处理ZIP文件时出错: {e}')
         st.error(f'处理ZIP文件时出错: {e}')
@@ -103,7 +103,7 @@ def delete_file():
     if file_name and st.button('删除'):
         try:
             bucket.delete_object(file_name)
-            st.success(f'文件 {file_name} 已成功删除')
+            st.success(f'文件 {file_name} 已成功删除', icon="✅")
         except Exception as e:
             logging.error(f'删除文件 {file_name} 时出错: {e}')
             st.error(f'删除文件时出错: {e}')
@@ -156,7 +156,7 @@ def batch_delete_files():
         try:
             for file_name in selected_files:
                 bucket.delete_object(file_name)
-            st.success(f'已成功删除 {len(selected_files)} 个文件')
+            st.success(f'已成功删除 {len(selected_files)} 个文件', icon="✅")
         except Exception as e:
             logging.error(f'批量删除文件时出错: {e}')
             st.error(f'批量删除文件时出错: {e}')
@@ -171,7 +171,33 @@ def cloud_storage_page():
         欢迎使用实验室云服务平台！您可以在这里上传、下载、更新、删除文件，支持多种文件格式（如ZIP、PDF、图片等）。
         请根据侧边栏的选项选择您需要的服务。
     """)
-    
+
+    # 添加一些样式
+    st.markdown("""
+    <style>
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+        .sidebar .sidebar-content {
+            background-color: #001f3f;
+            color: white;
+        }
+        .stButton button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .stButton button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.sidebar.title("导航")
     options = st.sidebar.radio("选择操作", ("上传文件", "下载文件", "更新文件", "删除文件", "预览文件", "搜索文件", "批量删除文件"))
     
