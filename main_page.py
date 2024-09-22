@@ -16,9 +16,11 @@ team_members = {
     '王五': '硕士研究生，研究方向：海洋污染治理'
 }
 
-for member, description in team_members.items():
-    st.subheader(member)
-    st.write(description)
+cols = st.columns(len(team_members))
+for i, (member, description) in enumerate(team_members.items()):
+    with cols[i]:
+        st.subheader(member)
+        st.write(description)
 
 # 研究项目
 st.header('研究项目')
@@ -35,10 +37,12 @@ projects = [
     }
 ]
 
-for project in projects:
-    st.subheader(project['name'])
-    st.write(project['description'])
-    st.write(f"[了解更多]({project['link']})")
+project_cols = st.columns(len(projects))
+for i, project in enumerate(projects):
+    with project_cols[i]:
+        st.markdown(f"### {project['name']}")
+        st.write(project['description'])
+        st.write(f"[了解更多]({project['link']})")
 
 # 发表论文
 st.header('发表论文')
@@ -53,24 +57,36 @@ papers = [
     }
 ]
 
-for paper in papers:
-    st.write(f"[{paper['title']}]({paper['link']})")
+paper_cols = st.columns(len(papers))
+for i, paper in enumerate(papers):
+    with paper_cols[i]:
+        st.markdown(f"- [{paper['title']}]({paper['link']})")
 
 # 联系方式
 st.header('联系方式')
-st.write('Email: chenh@mail.sdu.edu.cn')
-st.write('电话: +86 123 456 7890')
-st.write('关注我们的社交媒体: [Twitter](https://twitter.com/example), [ResearchGate](https://www.researchgate.net/)')
+contact_info = {
+    'Email': 'chenh@mail.sdu.edu.cn',
+    '电话': '+86 123 456 7890',
+    '社交媒体': '[Twitter](https://twitter.com/example), [ResearchGate](https://www.researchgate.net/)'
+}
+
+for key, value in contact_info.items():
+    st.write(f"**{key}**: {value}")
 
 # 新闻与更新
 st.header('新闻与更新')
-st.write('- 2024年1月：实验室获得国家自然科学基金支持。')
-st.write('- 2024年2月：实验室成员参加国际海洋会议。')
+updates = [
+    '2024年1月：实验室获得国家自然科学基金支持。',
+    '2024年2月：实验室成员参加国际海洋会议。'
+]
+for update in updates:
+    st.write(f"- {update}")
 
 # 添加样式
 st.markdown("""
 <style>
     .stHeader {font-size: 2.5rem;}
     .stSubheader {font-size: 2rem;}
+    .stMarkdown {text-align: left;}
 </style>
 """, unsafe_allow_html=True)
