@@ -14,7 +14,7 @@ from st_on_hover_tabs import on_hover_tabs
 from PIL import Image
 
 def main():
-    st.logo('Images/sdu_logo0.jpg')
+    st.logo('Images\sdu_logo2.jpg')
     users = load_users()
     auth_manager = AuthManager(users)
 
