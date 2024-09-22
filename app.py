@@ -15,7 +15,6 @@ from PIL import Image
 
 def main():
     st.logo('Images/sdu_logo2.jpg')
-    st.video('videos/elon_mask2.mp4')
     users = load_users()
     auth_manager = AuthManager(users)
 
@@ -32,6 +31,7 @@ def main():
     else:
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
+    st.video('videos/elon_mask2.mp4')
 
     # 侧边栏内容
     with st.sidebar:
