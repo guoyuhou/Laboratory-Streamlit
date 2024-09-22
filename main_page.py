@@ -108,7 +108,7 @@ st.video('videos/elon_mask.mp4')
 
 st.markdown("""
         <div style='text-align: center; font-size: 20px; font-weight: bold;'>
-            向未至之境的探索者致敬<br>
+            向未知之境的探索者致敬<br>
         </div>
     """, unsafe_allow_html=True)
 
