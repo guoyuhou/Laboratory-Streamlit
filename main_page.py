@@ -152,19 +152,6 @@ for i, (member, info) in enumerate(team_members.items()):
         st.image(image, caption=member, width=150)
         st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
 
-        # 添加一些CSS动画效果
-        st.markdown(
-            """
-            <style>
-            .section {
-                transition: transform 0.3s;
-            }
-            .section:hover {
-                transform: scale(1.05);
-            }
-            </style>
-            """, unsafe_allow_html=True
-        )
 
 # 研究项目
 st.header('研究项目')
