@@ -12,9 +12,10 @@ import logging
 # GitHub API 设置
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
-GITHUB_REPO = "guoyuhou/Laboratory-Streamlit"   
-print('GITHUB_TOKEN')
-
+GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"] 
+print(GITHUB_TOKEN)
+print(GITHUB_REPO)
+st.title(GITHUB_TOKEN)
 # 设置日志
 logging.basicConfig(level=logging.INFO)
 
