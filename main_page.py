@@ -72,6 +72,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# 导航栏
+st.markdown("""
+    <div class="nav">
+        <a href="#实验室简介">实验室简介</a>
+        <a href="#实时数据展示">实时数据展示</a>
+        <a href="#研究团队">研究团队</a>
+        <a href="#研究项目">研究项目</a>
+        <a href="#发表论文">发表论文</a>
+        <a href="#联系方式">联系方式</a>
+        <a href="#新闻与更新">新闻与更新</a>
+    </div>
+""", unsafe_allow_html=True)
+
 # 实验室标题
 st.markdown('<h1 class="main-title">陈浩实验室</h1>', unsafe_allow_html=True)
 
@@ -85,7 +98,7 @@ st.markdown("""
 
 # 动态数据图表
 st.header('实时数据展示')
-st.markdown('<div class="section" id="实时数据展示"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section" id="实时数据展示"></div>', unsafe_allow_html=False)
 
 # 示例数据
 data = pd.DataFrame({
