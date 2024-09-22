@@ -1,8 +1,4 @@
 import streamlit as st
-
-# 设置页面标题
-st.title('陈浩实验室')
-
 # 实验室主页
 st.markdown("""
     <style>
