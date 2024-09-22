@@ -27,9 +27,14 @@ def main():
             if st.sidebar.button("登录以访问更多内容"):
                 st.session_state['login_page'] = True
     else:
-        st.title("欢迎回来")
+        display_welcome_message()
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
+
+def display_welcome_message():
+    st.title("欢迎回来")
+    st.markdown("#### 很高兴再次见到您！")
+    st.write("您可以访问实验室的云服务和其他功能。请查看侧边栏以获取更多选项。")
 
 def handle_login(auth_manager):
     st.title("登录要求")
