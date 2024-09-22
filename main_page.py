@@ -5,7 +5,7 @@ import pandas as pd
 st.markdown("""
     <style>
         body {
-            background-image: url('https://example.com/background.mp4'); /* 动态背景视频链接 */
+            background-image: url('https://www.youtube.com/watch?v=LX6I80wMJQM'); /* 动态背景视频链接 */
             background-size: cover;
             background-position: center;
             height: 100vh; /* 设置背景高度 */
