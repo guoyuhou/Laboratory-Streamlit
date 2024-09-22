@@ -124,15 +124,15 @@ st.markdown('<div class="section" id="研究团队"></div>', unsafe_allow_html=T
 team_members = {
     '陈浩': {
         'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-        'image': 'https://via.placeholder.com/150?text=王普'
+        'image': 'https://diary-alexander.oss-cn-qingdao.aliyuncs.com/example1.jpg?Expires=1726996606&OSSAccessKeyId=TMP.3KhUG6sUbfyg5x7jzBWDAE3jpyzoWSwczQ1GJX1yFMDmigEkYqVneMC73rkYSJty7RD7XNhDzq7gLYeYHcwDsiHnyLVVqt&Signature=D7uXV5mVb6wNf%2BDuCK9p4HULrHE%3D'
     },
     '王普': {
         'description': '博士研究生，研究方向：海洋生物多样性',
-        'image': 'https://via.placeholder.com/150?text=王普'
+        'image': 'https://diary-alexander.oss-cn-qingdao.aliyuncs.com/example3.jpg?Expires=1726996584&OSSAccessKeyId=TMP.3KhUG6sUbfyg5x7jzBWDAE3jpyzoWSwczQ1GJX1yFMDmigEkYqVneMC73rkYSJty7RD7XNhDzq7gLYeYHcwDsiHnyLVVqt&Signature=AItR8ebxIajojM%2B12m19BmtYXl0%3D'
     },
     '王淑新': {
         'description': '硕士研究生，研究方向：海洋污染治理',
-        'image': 'https://via.placeholder.com/150?text=王淑欣'
+        'image': 'https://diary-alexander.oss-cn-qingdao.aliyuncs.com/example2.jpg?Expires=1726996564&OSSAccessKeyId=TMP.3KhUG6sUbfyg5x7jzBWDAE3jpyzoWSwczQ1GJX1yFMDmigEkYqVneMC73rkYSJty7RD7XNhDzq7gLYeYHcwDsiHnyLVVqt&Signature=DfecmwQIhGx7GZZ2JraKS7hq7SU%3D'
     },
     'bro': {
         'description': '硕士研究生，研究方向：海洋污染治理',
