@@ -1,10 +1,6 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-
-# 设置页面标题
-st.set_page_config(page_title="陈浩实验室", layout="wide")
-
 # 背景动态效果（可以替换为你自己的视频或动态图像）
 st.markdown("""
     <style>
