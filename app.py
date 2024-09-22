@@ -11,9 +11,10 @@ import logging
 from user_manager import load_users, AuthManager
 from page_manager import PageManager
 from st_on_hover_tabs import on_hover_tabs
+from PIL import Image
 
 def main():
-    st.logo('Images/sdu_logo.jpg', width=300)
+    st.logo('Images\sdu_logo2.jpg')
     users = load_users()
     auth_manager = AuthManager(users)
 
