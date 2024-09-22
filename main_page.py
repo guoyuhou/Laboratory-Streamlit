@@ -48,13 +48,6 @@ st.markdown("""
             z-index: 1000;
         }
 
-        .nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
         .nav a:hover {
             color: #ffa500;
         }
