@@ -15,13 +15,34 @@ from PIL import Image
 
 def main():
     st.set_page_config(
-    page_title="Froniter Lab",  # 设置网页标题
-    page_icon=":smiley:",           # 设置网页 favicon，这里使用了一个emoji作为示例，实际中可以是本地图片路径
-    layout="wide",                  # 设置页面布局，可选"centered"或"wide"
-    initial_sidebar_state="expanded", # 设置侧边栏的初始状态，可选"auto", "expanded", "collapsed"
-)
+        page_title="Frontier Lab",  # 设置网页标题
+        page_icon="🚀",             # 使用火箭emoji作为favicon
+        layout="wide",              # 设置页面布局为宽屏
+        initial_sidebar_state="expanded"  # 设置侧边栏初始状态为展开
+    )
 
-    st.logo('Images/sdu_logo2.jpg')
+    # 使用自定义CSS美化界面
+    st.markdown("""
+        <style>
+        .stApp {
+            background: linear-gradient(to right, #f6f9fc, #e9f1f7);
+        }
+        .stButton>button {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+        .stTextInput>div>div>input {
+            border-radius: 5px;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+    # 使用列布局使logo居中
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        st.image('Images/sdu_logo2.jpg', width=300)
+
     users = load_users()
     auth_manager = AuthManager(users)
 
@@ -33,52 +54,56 @@ def main():
             handle_login(auth_manager)
         else:
             PageManager(None, users, auth_manager).display_pages()
-            if st.sidebar.button("登录以访问更多内容"):
+            if st.sidebar.button("登录以访问更多内容", key="login_button"):
                 st.session_state['login_page'] = True
     else:
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
 
-    # 侧边栏内容
+    # 美化侧边栏内容
     with st.sidebar:
         st.markdown("---")
         st.markdown(
-            '<h6>Made in &nbsp<img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16">&nbsp by @Diary</a></h6>',
+            '<h6 style="text-align: center;">Made with ❤️ using <img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16"> by @Diary</h6>',
             unsafe_allow_html=True,
         )
         st.markdown(
-            '<div style="margin-top: 0.75em;"><a href="https://moderny-alexander.streamlit.app/" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a></div>',
+            '<div style="display: flex; justify-content: center; margin-top: 0.75em;"><a href="https://moderny-alexander.streamlit.app/" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a></div>',
             unsafe_allow_html=True,
         )
 
 def handle_login(auth_manager):
-    st.title("登录要求")
-    st.write("请登录以访问更多内容。")
+    st.title("欢迎登录")
+    st.write("请登录以访问更多精彩内容。")
     
-    # 用户名输入
-    username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
+    col1, col2 = st.columns(2)
+    with col1:
+        username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
+    with col2:
+        password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
     
-    # 密码输入
-    password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
-    
-    # 记住我选项
-    remember_me = st.checkbox("记住我")
-
-    # 登录按钮
-    if st.button("登录"):
-        if username and password:
-            user = auth_manager.authenticate_user(username, password)
-            if user:
-                st.balloons()
-                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
+    col3, col4, col5 = st.columns([1,1,2])
+    with col3:
+        remember_me = st.checkbox("记住我")
+    with col4:
+        if st.button("登录", key="login_submit"):
+            if username and password:
+                user = auth_manager.authenticate_user(username, password)
+                if user:
+                    st.balloons()
+                    st.success("登录成功！")
+                    st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
+                else:
+                    st.error("用户名或密码无效")
             else:
-                st.error("用户名或密码无效")
-        else:
-            st.error("用户名和密码不能为空")
+                st.warning("用户名和密码不能为空")
 
-    # 忘记密码和注册链接
-    st.write("[忘记密码？](#)")
-    st.write("[没有账号？注册](#)")
+    st.markdown("---")
+    col6, col7 = st.columns(2)
+    with col6:
+        st.markdown("[忘记密码？](#)", help="点击此处重置密码")
+    with col7:
+        st.markdown("[没有账号？注册](#)", help="点击此处创建新账号")
 
 if __name__ == "__main__":
     main()
