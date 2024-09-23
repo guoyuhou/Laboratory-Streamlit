@@ -39,10 +39,8 @@ def main():
         </style>
         """, unsafe_allow_html=True)
 
-    # 使用列布局使logo居中
-    col1, col2, col3 = st.columns([1,2,1])
-    with col2:
-        st.image('Images/sdu_logo2.jpg', width=300)
+    # 显示logo
+    st.image('Images/sdu_logo2.jpg', width=100)
 
     users = load_users()
     auth_manager = AuthManager(users)
@@ -77,33 +75,28 @@ def handle_login(auth_manager):
     st.title("欢迎登录")
     st.write("请登录以访问更多精彩内容。")
     
-    col1, col2 = st.columns(2)
-    with col1:
-        username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
-    with col2:
-        password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
+    username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
+    password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
     
-    col3, col4, col5 = st.columns([1,1,2])
-    with col3:
-        remember_me = st.checkbox("记住我")
-    with col4:
-        if st.button("登录", key="login_submit"):
-            if username and password:
-                user = auth_manager.authenticate_user(username, password)
-                if user:
-                    st.balloons()
-                    st.success("登录成功！")
-                    st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
-                else:
-                    st.error("用户名或密码无效")
+    remember_me = st.checkbox("记住我")
+    
+    if st.button("登录", key="login_submit"):
+        if username and password:
+            user = auth_manager.authenticate_user(username, password)
+            if user:
+                st.balloons()
+                st.success("登录成功！")
+                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
             else:
-                st.warning("用户名和密码不能为空")
+                st.error("用户名或密码无效")
+        else:
+            st.warning("用户名和密码不能为空")
 
     st.markdown("---")
-    col6, col7 = st.columns(2)
-    with col6:
+    col1, col2 = st.columns(2)
+    with col1:
         st.markdown("[忘记密码？](#)", help="点击此处重置密码")
-    with col7:
+    with col2:
         st.markdown("[没有账号？注册](#)", help="点击此处创建新账号")
 
 if __name__ == "__main__":
