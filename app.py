@@ -13,6 +13,7 @@ from page_manager import PageManager
 from st_on_hover_tabs import on_hover_tabs
 from PIL import Image
 
+
 def main():
     st.set_page_config(
         page_title="Frontier Lab",  # 设置网页标题
