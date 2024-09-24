@@ -101,6 +101,7 @@ def main():
         if st.session_state['login_page']:
             handle_login(auth_manager)
         else:
+            home_page()  # 显示首页
             PageManager(None, users, auth_manager).display_pages()
             if st.sidebar.button("登录以访问更多内容", key="login_button"):
                 st.session_state['login_page'] = True
@@ -155,6 +156,32 @@ def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
     st.success("已退出登录")
 
+
+def dashboard():
+    st.title(f"欢迎回来，{st.session_state['username']}！")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("最新通知")
+        st.info("下周三将举行实验室会议")
+        st.info("新的研究项目申请截止日期：2023年12月31日")
+    
+    with col2:
+        st.subheader("个人任务")
+        st.success("完成实验报告")
+        st.warning("准备下周的演讲")
+
+    st.subheader("实验室资源使用情况")
+    resource_usage = {
+        "计算集群": 75,
+        "存储空间": 60,
+        "实验设备": 40
+    }
+    for resource, usage in resource_usage.items():
+        st.write(f"{resource}：")
+        st.progress(usage)
+
+# 在用户登录后显示仪表板
 
 if __name__ == "__main__":
     main()
