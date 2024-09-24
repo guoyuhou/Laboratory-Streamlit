@@ -195,15 +195,15 @@ def main_page():
             }, 
             '王普': {
                 'description': '博士研究生，研究方向：海洋生物多样性',
-                'image': 'Images/example2.jpg'
+                'image': 'Images/example1.jpg'
             },
             '王淑新': {
                 'description': '硕士研究生，研究方向：海洋污染治理',
-                'image': 'Images/example3.jpg'
+                'image': 'Images/example1.jpg'
             },
             'bro': {
                 'description': '硕士研究生，研究方向：海洋污染治理',
-                'image': 'Images/example4.jpg'
+                'image': 'Images/example1.jpg'
             }
         }
 
