@@ -21,6 +21,7 @@ st.set_page_config(
         initial_sidebar_state="expanded"
     )
 
+
 # 设置版本信息
 VERSION = "1.0.0"
 
