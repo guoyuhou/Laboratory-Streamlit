@@ -49,7 +49,7 @@ class PageManager:
 
         # 显示选中的页面
         if page_name in self.public_pages:
-            self.public_pages[page_name]()  # 修改这里，调用函数而不是直接使用函数名
+            self.public_pages[page_name]()
         elif page_name in self.protected_pages:
             if callable(self.protected_pages[page_name]):
                 self.protected_pages[page_name](st.session_state.get('username'))
@@ -57,11 +57,57 @@ class PageManager:
                 self.execute_file(self.protected_pages[page_name])
 
     def team_page(self, username=None):
-        st.title("团队成员")
+        st.title("研究团队")
         
+        # 团队介绍
+        st.markdown("""
+        我们的研究团队由来自不同背景的优秀科研人员组成,致力于海洋科学的前沿研究。
+        团队成员涵盖教授、副教授、博士后、博士生和硕士生,形成了一个多层次、多学科的研究群体。
+        """)
+
+        # 团队成员数据
         members = [
-            {"name": "张教授", "title": "实验室主任", "image": "Images/example1.jpg"},]
-    
+            {"name": "陈浩", "title": "实验室主任", "image": "Images/example1.jpg", "description": "海洋生态学教授,专注于海洋生物多样性研究"},
+            {"name": "李明", "title": "副教授", "image": "Images/example2.jpg", "description": "海洋化学专家,研究海洋污染物的迁移转化"},
+            {"name": "王芳", "title": "博士后", "image": "Images/example3.jpg", "description": "海洋微生物学研究者,探索深海极端环境微生物"},
+            {"name": "张伟", "title": "博士生", "image": "Images/example4.jpg", "description": "海洋地质学方向,研究海底地貌演变"},
+        ]
+        
+        # 使用列布局展示团队成员
+        cols = st.columns(3)  # 每行显示3个成员
+        for i, member in enumerate(members):
+            with cols[i % 3]:
+                st.image(member["image"], width=200)
+                st.subheader(member["name"])
+                st.write(f"**{member['title']}**")
+                st.write(member["description"])
+                st.markdown("---")
+
+        # 团队成就
+        st.subheader("团队成就")
+        st.markdown("""
+        - 获得国家自然科学基金重点项目支持
+        - 在Nature、Science等顶级期刊发表多篇研究论文
+        - 多次获得海洋科学领域国际会议最佳论文奖
+        - 开发的海洋环境监测技术已在多个沿海城市应用
+        """)
+
+        # 合作伙伴
+        st.subheader("合作伙伴")
+        st.markdown("""
+        - 中国海洋大学
+        - 国家海洋局第一海洋研究所
+        - 美国伍兹霍尔海洋研究所
+        - 日本东京大学大气与海洋研究所
+        """)
+
+        # 加入我们
+        st.subheader("加入我们")
+        st.markdown("""
+        我们始终欢迎优秀的研究人员加入团队。如果您对海洋科学充满热情,并希望在这个领域做出贡献,
+        请将您的简历发送至 recruitment@oceanlab.edu.cn
+        """)
+
     def execute_file(self, file_path):
         try:
             if file_path.endswith('.py'):
