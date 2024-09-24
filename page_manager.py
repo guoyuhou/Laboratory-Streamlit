@@ -3,16 +3,6 @@ from file_operations import edit_markdown, update_github_file
 import os
 from Cloud_storage import cloud_storage_page
 import json
-
-GITHUB_API_URL = "https://api.github.com"
-GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
-GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"] 
-
-import streamlit as st
-from file_operations import edit_markdown, update_github_file
-import os
-from Cloud_storage import cloud_storage_page
-import json
 import folium
 from streamlit_folium import folium_static
 
@@ -107,9 +97,9 @@ class PageManager:
         st.title("团队成员")
         
         members = [
-            {"name": "张教授", "title": "实验室主任", "image": "path/to/zhang.jpg"},
-            {"name": "李博士", "title": "高级研究员", "image": "path/to/li.jpg"},
-            {"name": "王工程师", "title": "技术专家", "image": "path/to/wang.jpg"},
+            {"name": "张教授", "title": "实验室主任", "image": "Images/example.jpg"},
+            {"name": "李博士", "title": "高级研究员", "image": "Images/example2.jpg"},
+            {"name": "王工程师", "title": "技术专家", "image": "Images/example3.jpg"},
         ]
         
         for member in members:
