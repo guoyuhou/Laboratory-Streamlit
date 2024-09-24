@@ -64,53 +64,89 @@ class PageManager:
         
         # 团队介绍
         st.markdown("""
-        我们的研究团队由来自不同背景的优秀科研人员组成,致力于海洋科学的前沿研究。
-        团队成员涵盖教授、副教授、博士后、博士生和硕士生,形成了一个多层次、多学科的研究群体。
-        """)
+        <div style="background-color: #f0f8ff; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h2 style="color: #00008b;">团队简介</h2>
+            <p style="font-size: 16px; line-height: 1.6;">
+            我们的研究团队由来自不同背景的优秀科研人员组成，致力于海洋科学的前沿研究。
+            团队成员涵盖教授、副教授、博士后、博士生和硕士生，形成了一个多层次、多学科的研究群体。
+            我们秉持创新、协作、卓越的理念，不断推动海洋科学的发展。
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
         # 团队成员数据
         members = [
-            {"name": "陈浩", "title": "实验室主任", "image": "Images/example1.jpg", "description": "海洋生态学教授,专注于海洋生物多样性研究"},
-            {"name": "李明", "title": "副教授", "image": "Images/example2.jpg", "description": "海洋化学专家,研究海洋污染物的迁移转化"},
-            {"name": "王芳", "title": "博士后", "image": "Images/example3.jpg", "description": "海洋微生物学研究者,探索深海极端环境微生物"},
-            {"name": "张伟", "title": "博士生", "image": "Images/example4.jpg", "description": "海洋地质学方向,研究海底地貌演变"},
-
+            {"name": "陈浩", "title": "实验室主任", "image": "Images/example1.jpg", "description": "海洋生态学教授，专注于海洋生物多样性研究"},
+            {"name": "李明", "title": "副教授", "image": "Images/example2.jpg", "description": "海洋化学专家，研究海洋污染物的迁移转化"},
+            {"name": "王芳", "title": "博士后", "image": "Images/example3.jpg", "description": "海洋微生物学研究者，探索深海极端环境微生物"},
+            {"name": "张伟", "title": "博士生", "image": "Images/example4.jpg", "description": "海洋地质学方向，研究海底地貌演变"},
         ]
         
-        # 使用列布局展示团队成员
-        cols = st.columns(3)  # 每行显示3个成员
+        # 使用卡片布局展示团队成员
+        st.markdown("<h2 style='text-align: center; color: #00008b;'>核心成员</h2>", unsafe_allow_html=True)
+        cols = st.columns(2)  # 每行显示2个成员
         for i, member in enumerate(members):
-            with cols[i % 3]:
-                st.image(member["image"], width=200)
-                st.subheader(member["name"])
-                st.write(f"**{member['title']}**")
-                st.write(member["description"])
-                st.markdown("---")
+            with cols[i % 2]:
+                st.markdown(f"""
+                <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); margin-bottom: 20px;">
+                    <img src="{member['image']}" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto;">
+                    <h3 style="text-align: center; color: #00008b; margin-top: 10px;">{member['name']}</h3>
+                    <p style="text-align: center; font-weight: bold;">{member['title']}</p>
+                    <p style="text-align: center;">{member['description']}</p>
+                </div>
+                """, unsafe_allow_html=True)
 
         # 团队成就
-        st.subheader("团队成就")
         st.markdown("""
-        - 获得国家自然科学基金重点项目支持
-        - 在Nature、Science等顶级期刊发表多篇研究论文
-        - 多次获得海洋科学领域国际会议最佳论文奖
-        - 开发的海洋环境监测技术已在多个沿海城市应用
-        """)
+        <div style="background-color: #e6f3ff; padding: 20px; border-radius: 10px; margin-top: 30px;">
+            <h2 style="color: #00008b;">团队成就</h2>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 10px;">🏆 获得国家自然科学基金重点项目支持</li>
+                <li style="margin-bottom: 10px;">📚 在Nature、Science等顶级期刊发表多篇研究论文</li>
+                <li style="margin-bottom: 10px;">🏅 多次获得海洋科学领域国际会议最佳论文奖</li>
+                <li style="margin-bottom: 10px;">🔬 开发的海洋环境监测技术已在多个沿海城市应用</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
         # 合作伙伴
-        st.subheader("合作伙伴")
         st.markdown("""
-        - 中国海洋大学
-        - 国家海洋局第一海洋研究所
-        - 美国伍兹霍尔海洋研究所
-        - 日本东京大学大气与海洋研究所
-        """)
+        <div style="background-color: #f0f8ff; padding: 20px; border-radius: 10px; margin-top: 30px;">
+            <h2 style="color: #00008b;">合作伙伴</h2>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                <div style="text-align: center; margin: 10px;">
+                    <img src="https://via.placeholder.com/100x100?text=OUC" style="border-radius: 50%;">
+                    <p>中国海洋大学</p>
+                </div>
+                <div style="text-align: center; margin: 10px;">
+                    <img src="https://via.placeholder.com/100x100?text=FIO" style="border-radius: 50%;">
+                    <p>国家海洋局第一海洋研究所</p>
+                </div>
+                <div style="text-align: center; margin: 10px;">
+                    <img src="https://via.placeholder.com/100x100?text=WHOI" style="border-radius: 50%;">
+                    <p>美国伍兹霍尔海洋研究所</p>
+                </div>
+                <div style="text-align: center; margin: 10px;">
+                    <img src="https://via.placeholder.com/100x100?text=AORI" style="border-radius: 50%;">
+                    <p>日本东京大学大气与海洋研究所</p>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
         # 加入我们
-        st.subheader("加入我们")
         st.markdown("""
-        我们始终欢迎优秀的研究人员加入团队。如果您对海洋科学充满热情,并希望在这个领域做出贡献,
-        请将您的简历发送至 recruitment@oceanlab.edu.cn
-        """)
+        <div style="background-color: #e6f3ff; padding: 20px; border-radius: 10px; margin-top: 30px; text-align: center;">
+            <h2 style="color: #00008b;">加入我们</h2>
+            <p style="font-size: 16px; line-height: 1.6;">
+            我们始终欢迎优秀的研究人员加入团队。如果您对海洋科学充满热情，并希望在这个领域做出贡献，
+            请将您的简历发送至 <a href="mailto:recruitment@oceanlab.edu.cn">recruitment@oceanlab.edu.cn</a>
+            </p>
+            <button style="background-color: #00008b; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                申请加入
+            </button>
+        </div>
+        """, unsafe_allow_html=True)
 
     def execute_file(self, file_path):
         try:
