@@ -191,19 +191,19 @@ def main_page():
         team_members = {
             '陈浩': {
                 'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-                'image': 'Images/example1.jpg'
+                'image': 'Images/chen_hao.jpg'
             }, 
             '王普': {
                 'description': '博士研究生，研究方向：海洋生物多样性',
-                'image': 'Images/example1.jpg'
+                'image': 'Images/wang_pu.jpg'
             },
             '王淑新': {
                 'description': '硕士研究生，研究方向：海洋污染治理',
-                'image': 'Images/example1.jpg'
+                'image': 'Images/wang_shuxin.jpg'
             },
             'bro': {
                 'description': '硕士研究生，研究方向：海洋污染治理',
-                'image': 'Images/example1.jpg'
+                'image': 'Images/bro.jpg'
             }
         }
 
@@ -211,7 +211,8 @@ def main_page():
         cols = st.columns(len(team_members))
         for i, (member, info) in enumerate(team_members.items()):
             with cols[i]:
-                st.markdown(f'<div class="team-member"><img src="{info["image"]}" alt="{member}" /><br><strong>{member}</strong><br>{info["description"]}</div>', unsafe_allow_html=True)
+                st.image(info["image"], caption=member, use_column_width=True)
+                st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
 
         # 修改研究项目展示
         st.markdown('<h2 class="section-title">研究项目</h2>', unsafe_allow_html=True)
