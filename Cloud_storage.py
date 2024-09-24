@@ -6,6 +6,7 @@ from pdf2image import convert_from_path
 import logging
 import random
 from datetime import datetime, timedelta
+import pandas as pd
 
 # 设置日志
 logging.basicConfig(level=logging.INFO)
@@ -52,216 +53,114 @@ def upload_zip_file(uploaded_file):
         logging.error(f'处理ZIP文件时出错: {e}')
         st.error(f'处理ZIP文件时出错: {e}')
 
-def upload_files_with_progress():
-    """处理文件上传，显示进度条"""
-    st.subheader('上传文件')
-    uploaded_file = st.file_uploader("选择要上传的文件（支持ZIP和其他类型）", type=['zip', 'csv', 'txt', 'pdf', 'png', 'jpg', 'jpeg'])
-    
-    if uploaded_file:
-        st.write(f'文件大小：{uploaded_file.size / 1024 / 1024:.2f} MB')
-        if uploaded_file.type == 'application/zip':
-            upload_zip_file(uploaded_file)
-        else:
-            handle_file(uploaded_file, '上传')
-
-def download_file():
-    """处理文件下载"""
-    st.subheader('下载文件')
-    files = list_files()
-    if files:
-        file_name = st.selectbox('选择要下载的文件', files)
-        if file_name and st.button('下载'):
-            try:
-                obj = bucket.get_object(file_name)
-                st.download_button(
-                    label='下载文件',
-                    data=obj.read(),
-                    file_name=file_name,
-                    mime='application/octet-stream'
-                )
-            except Exception as e:
-                logging.error(f'下载文件 {file_name} 时出错: {e}')
-                st.error(f'下载文件时出错: {e}')
-    else:
-        st.write('没有文件可供下载')
-
-def update_file():
-    """处理文件更新"""
-    st.subheader('更新文件')
-    files = list_files()
-    file_name = st.selectbox('选择要更新的文件', files)
-    
-    if file_name:
-        uploaded_file = st.file_uploader("选择新的文件来替换", type=['zip', 'csv', 'txt', 'pdf', 'png', 'jpg', 'jpeg'])
-        if uploaded_file:
-            if uploaded_file.type == 'application/zip':
-                upload_zip_file(uploaded_file)
-            else:
-                handle_file(uploaded_file, '更新')
-
-def delete_file():
-    """处理文件删除"""
-    st.subheader('删除文件')
-    files = list_files()
-    file_name = st.selectbox('选择要删除的文件', files)
-    
-    if file_name and st.button('删除'):
-        try:
-            bucket.delete_object(file_name)
-            st.success(f'文件 {file_name} 已成功删除', icon="✅")
-        except Exception as e:
-            logging.error(f'删除文件 {file_name} 时出错: {e}')
-            st.error(f'删除文件时出错: {e}')
-
-def preview_file():
-    """处理文件预览"""
-    st.subheader('预览文件')
-    files = list_files()
-    file_name = st.selectbox('选择要预览的文件', files)
-    
-    if file_name:
-        try:
-            obj = bucket.get_object(file_name)
-            file_content = obj.read()
-            if file_name.lower().endswith(('png', 'jpg', 'jpeg')):
-                st.image(file_content, caption=file_name)
-            elif file_name.lower().endswith('txt'):
-                st.text(file_content.decode('utf-8'))
-            elif file_name.lower().endswith('pdf'):
-                images = convert_from_path(io.BytesIO(file_content), first_page=5)
-                for image in images:
-                    st.image(image, caption=file_name)
-            else:
-                st.write(f'无法预览此文件类型：{file_name}')
-        except Exception as e:
-            logging.error(f'预览文件 {file_name} 时出错: {e}')
-            st.error(f'预览文件时出错: {e}')
-
-def search_files():
-    """处理文件搜索"""
-    st.subheader('搜索文件')
-    query = st.text_input('输入搜索关键词')
-    if query:
-        files = [file for file in list_files() if query.lower() in file.lower()]
-        if files:
-            st.write(f'找到 {len(files)} 个文件:')
-            for file in files:
-                st.write(f'- {file}')  # 列举找到的文件
-        else:
-            st.write('没有找到匹配的文件')
-    else:
-        st.write('请在上方输入关键词进行搜索')
-
-def batch_delete_files():
-    """处理批量文件删除"""
-    st.subheader('批量删除文件')
-    files = list_files()
-    selected_files = st.multiselect('选择要删除的文件', files)
-    
-    if selected_files and st.button('删除选中的文件'):
-        try:
-            for file_name in selected_files:
-                bucket.delete_object(file_name)
-            st.success(f'已成功删除 {len(selected_files)} 个文件', icon="✅")
-        except Exception as e:
-            logging.error(f'批量删除文件时出错: {e}')
-            st.error(f'批量删除文件时出错: {e}')
-
-def generate_simulated_data():
-    """生成模拟的每日流量、文件总数和占用率数据"""
-    daily_data = {
-        '日期': [],
-        '流量': [],
-        '文件总数': [],
-        '占用率': []
-    }
-    
-    start_date = datetime.now() - timedelta(days=30)  # 过去30天
-    for i in range(30):
-        date = start_date + timedelta(days=i)
-        daily_data['日期'].append(date.strftime('%Y-%m-%d'))
-        daily_data['流量'].append(random.randint(50, 300))  # 模拟流量（50MB到300MB）
-        daily_data['文件总数'].append(random.randint(20, 100))  # 模拟文件总数
-        daily_data['占用率'].append(random.uniform(0, 100))  # 模拟占用率（0%到100%）
-
-    return daily_data
-
-# 在 display_statistics 中调用生成的数据
-def display_statistics():
-    """展示云服务使用频率和占用率"""
-    st.subheader('云服务统计信息')
-
-    daily_data = generate_simulated_data()
-    
-    # 转换为 DataFrame 以便绘图
-    import pandas as pd
-    df = pd.DataFrame(daily_data)
-
-    # 使用折线图显示数据
-    st.line_chart(df.set_index('日期'))
-
-    # 显示操作日志
-    st.write('操作日志:')
-    for log in operation_log:
-        st.write(f"{log['time']} - {log['action']}")
 def cloud_storage_page(username=None):
     """显示云存储页面"""
-    st.title("云存储")
+    st.set_page_config(layout="wide")
     
-    if username:
-        st.write(f"欢迎，{username}！")
-    
-    # 添加使用说明
-    st.subheader("关于实验室云服务")
-    st.write("""欢迎使用实验室云服务平台！您可以在这里上传、下载、更新、删除文件，支持多种文件格式（如ZIP、PDF、图片等）。请根据侧边栏的选项选择您需要的服务。
-    """)
+    # 自定义CSS样式
     st.markdown("""
     <style>
-        body {
-            background-color: #f4f4f4;
-            color: #333;
-            font-family: 'Arial', sans-serif;
-        }
-        .sidebar .sidebar-content {
-            background-color: #001f3f;
-            color: white;
-        }
-        .stButton button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-        .stButton button:hover {
-            background-color: #0056b3;
-        }
+    .main {
+        background-color: #f0f2f5;
+        padding: 2rem;
+    }
+    .stApp {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .file-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    .file-icon {
+        font-size: 2rem;
+        margin-right: 1rem;
+    }
+    .file-info {
+        display: flex;
+        align-items: center;
+    }
+    .file-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .btn-action {
+        margin-left: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-download {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .btn-delete {
+        background-color: #f44336;
+        color: white;
+    }
+    .upload-area {
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-    display_statistics()
-
-    st.sidebar.title("导航")
-    options = st.sidebar.radio("选择操作", ("上传文件", "下载文件", "更新文件", "删除文件", "预览文件", "搜索文件", "批量删除文件"))
+    st.title("实验室云存储")
     
-    operations = {
-        "上传文件": upload_files_with_progress,
-        "下载文件": download_file,
-        "更新文件": update_file,
-        "删除文件": delete_file,
-        "预览文件": preview_file,
-        "搜索文件": search_files,
-        "批量删除文件": batch_delete_files
-    }
+    if username:
+        st.write(f"欢迎回来，{username}！")
     
-    operation_function = operations.get(options)
-    if operation_function:
-        operation_function()
-
-    st.markdown("""<style>.css-1xarl7p { padding: 1rem; }</style>""", unsafe_allow_html=True)
-
-
+    # 创建两列布局
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.subheader("我的文件")
+        files = list_files()
+        for file in files:
+            with st.container():
+                st.markdown(f"""
+                <div class="file-card">
+                    <div class="file-info">
+                        <span class="file-icon">📄</span>
+                        <span>{file}</span>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-action btn-download">下载</button>
+                        <button class="btn-action btn-delete">删除</button>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+    
+    with col2:
+        st.subheader("上传文件")
+        st.markdown("""
+        <div class="upload-area">
+            <p>拖拽文件到此处或点击上传</p>
+        </div>
+        """, unsafe_allow_html=True)
+        uploaded_file = st.file_uploader("选择文件", type=['zip', 'csv', 'txt', 'pdf', 'png', 'jpg', 'jpeg'])
+        if uploaded_file:
+            handle_file(uploaded_file, '上传')
+        
+        st.subheader("存储统计")
+        # 这里可以添加存储使用情况的图表
+        chart_data = pd.DataFrame(
+            {"使用量": [65, 35]},
+            index=["已用", "可用"]
+        )
+        st.bar_chart(chart_data)
+    
+    # 底部添加操作日志
+    st.subheader("最近操作")
+    for log in operation_log[-5:]:  # 只显示最近5条日志
+        st.text(f"{log['time']} - {log['action']}")
 
 # Run the cloud storage page
 if __name__ == "__main__":
