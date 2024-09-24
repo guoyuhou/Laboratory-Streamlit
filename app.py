@@ -19,7 +19,7 @@ def main():
         page_title="Frontier Lab",  # 设置网页标题
         page_icon="🚀",             # 使用火箭emoji作为favicon
         layout="wide",              # 设置页面布局为宽屏
-        initial_sidebar_state="expanded"  # 设置侧边栏初始状态为展开
+        initial_sidebar_state="collapsed"  # 设置侧边栏初始状态为折叠
     )
 
     # 优化自定义CSS
@@ -65,8 +65,6 @@ def main():
         if st.session_state['login_page']:
             handle_login(auth_manager)
         else:
-            st.title("欢迎来到前沿实验室")
-            st.write("探索科学的奥秘，创新未来的技术。")
             PageManager(None, users, auth_manager).display_pages()
             if st.sidebar.button("登录以访问更多内容", key="login_button"):
                 st.session_state['login_page'] = True
