@@ -170,20 +170,63 @@ class PageManager:
     def projects_page(self, username=None):
         st.title("研究项目")
         
+        st.markdown("""
+        <style>
+        .project-card {
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .project-title {
+            color: #0066cc;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .project-description {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .project-progress {
+            font-style: italic;
+            color: #666;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
         projects = [
-            {"name": "智能机器人", "description": "开发新一代智能机器人系统", "image": "Images/example1.jpg"},
-            {"name": "量子通信", "description": "研究量子通信技术及其应用", "image": "Images/example2.jpg"},
-            {"name": "基因编辑", "description": "探索CRISPR基因编辑技术", "image": "Images/example3.jpg"},
+            {
+                "name": "海洋生态系统监测",
+                "description": "利用先进的传感器技术和人工智能算法，实时监测和分析海洋生态系统的变化，为海洋保护和可持续发展提供科学依据。",
+                "image": "Images/ocean_ecosystem.jpg",
+                "progress": "正在进行数据收集和算法优化"
+            },
+            {
+                "name": "海洋能源开发",
+                "description": "研究和开发新型海洋能源技术，包括波浪能、潮汐能和海流能的高效转换系统，推动清洁能源的广泛应用。",
+                "image": "Images/ocean_energy.jpg",
+                "progress": "完成初步原型设计，准备进行实地测试"
+            },
+            {
+                "name": "深海资源勘探",
+                "description": "开发先进的深海探测设备和分析技术，用于发现和评估深海矿产资源，同时最小化对海洋环境的影响。",
+                "image": "Images/deep_sea_exploration.jpg",
+                "progress": "正在进行设备改进和环境影响评估"
+            },
         ]
         
         for project in projects:
-            with st.expander(project["name"]):
-                col1, col2 = st.columns([1, 2])
-                with col1:
-                    st.image(project["image"], width=200)
-                with col2:
-                    st.write(project["description"])
-                    st.write("项目进展：...")  # 添加项目进展
+            st.markdown(f"""
+            <div class="project-card">
+                <div class="project-title">{project["name"]}</div>
+                <img src="{project["image"]}" style="width:100%; max-width:400px; border-radius:5px; margin-bottom:15px;">
+                <div class="project-description">{project["description"]}</div>
+                <div class="project-progress">项目进展：{project["progress"]}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
     def publications_page(self, username=None):
         st.title("发表论文")
