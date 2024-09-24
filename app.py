@@ -40,7 +40,7 @@ def main():
         """, unsafe_allow_html=True)
 
     # 显示logo
-    st.image('Images/sdu_logo2.jpg', width=100)
+    st.logo('Images/sdu_logo2.jpg', width=100)
 
     users = load_users()
     auth_manager = AuthManager(users)
