@@ -160,17 +160,23 @@ def handle_login(auth_manager):
     
     remember_me = st.checkbox("记住我")
     
-    if st.button("登录", key="login_submit"):
-        if username and password:
-            user = auth_manager.authenticate_user(username, password)
-            if user:
-                st.balloons()
-                st.success("登录成功！正在跳转...")
-                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("登录", key="login_submit"):
+            if username and password:
+                user = auth_manager.authenticate_user(username, password)
+                if user:
+                    st.balloons()
+                    st.success("登录成功！正在跳转...")
+                    st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
+                else:
+                    st.error("用户名或密码无效")
             else:
-                st.error("用户名或密码无效")
-        else:
-            st.warning("用户名和密码不能为空")
+                st.warning("用户名和密码不能为空")
+    with col2:
+        if st.button("返回主页", key="return_home"):
+            st.session_state['login_page'] = False
+            st.experimental_rerun()
 
     st.markdown('<div class="login-footer">', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
