@@ -97,7 +97,7 @@ class PageManager:
         st.title("团队成员")
         
         members = [
-            {"name": "张教授", "title": "实验室主任", "image": "Images/example.jpg"},
+            {"name": "张教授", "title": "实验室主任", "image": "Images/example1.jpg"},
             {"name": "李博士", "title": "高级研究员", "image": "Images/example2.jpg"},
             {"name": "王工程师", "title": "技术专家", "image": "Images/example3.jpg"},
         ]
@@ -115,9 +115,9 @@ class PageManager:
         st.title("研究项目")
         
         projects = [
-            {"name": "智能机器人", "description": "开发新一代智能机器人系统", "image": "path/to/robot.jpg"},
-            {"name": "量子通信", "description": "研究量子通信技术及其应用", "image": "path/to/quantum.jpg"},
-            {"name": "基因编辑", "description": "探索CRISPR基因编辑技术", "image": "path/to/gene.jpg"},
+            {"name": "智能机器人", "description": "开发新一代智能机器人系统", "image": "Images/example1.jpg"},
+            {"name": "量子通信", "description": "研究量子通信技术及其应用", "image": "Images/example2.jpg"},
+            {"name": "基因编辑", "description": "探索CRISPR基因编辑技术", "image": "Images/example3.jpg"},
         ]
         
         for project in projects:
