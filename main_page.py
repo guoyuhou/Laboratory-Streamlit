@@ -203,7 +203,7 @@ def main_page():
             },
             'bro': {
                 'description': '硕士研究生，研究方向：海洋污染治理',
-                'image': 'Images/bro.jpg'
+                'image': 'Images/example4.jpg'
             }
         }
 
