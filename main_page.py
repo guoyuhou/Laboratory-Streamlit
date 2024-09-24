@@ -207,11 +207,18 @@ def main_page():
             }
         }
 
+        # 定义固定的图片尺寸
+        IMAGE_SIZE = (200, 200)
+
         # 创建团队成员展示
         cols = st.columns(len(team_members))
         for i, (member, info) in enumerate(team_members.items()):
             with cols[i]:
-                st.image(info["image"], caption=member, use_column_width=True)
+                # 使用PIL库调整图片大小
+                from PIL import Image
+                image = Image.open(info["image"])
+                image = image.resize(IMAGE_SIZE)
+                st.image(image, caption=member, use_column_width=True)
                 st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
 
         # 修改研究项目展示
