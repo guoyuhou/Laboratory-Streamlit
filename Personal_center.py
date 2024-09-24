@@ -12,7 +12,10 @@ def load_users(file_path='users.json'):
         return json.load(f)
 
 # 自定义CSS样式
-def set_custom_style():
+
+
+# 显示个人中心页面
+def display_personal_center(username, users):
     st.markdown("""
     <style>
     .main {
@@ -42,10 +45,6 @@ def set_custom_style():
     }
     </style>
     """, unsafe_allow_html=True)
-
-# 显示个人中心页面
-def display_personal_center(username, users):
-    set_custom_style()
     
     st.title("个人中心")
 
