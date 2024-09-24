@@ -113,42 +113,40 @@ def handle_login(auth_manager):
         .login-container {
             max-width: 400px;
             margin: 0 auto;
-            padding: 40px;
-            background-color: #ffffff;
-            border-radius: 8px;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .login-title {
-            font-size: 24px;
-            font-weight: bold;
             text-align: center;
+            color: #333;
+            font-size: 24px;
             margin-bottom: 20px;
-            color: #333333;
         }
         .login-input {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .login-button {
             width: 100%;
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
+            padding: 10px;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         .login-button:hover {
-            background-color: #45a049;
+            background-color: #0056b3;
         }
         .login-footer {
-            display: flex;
-            justify-content: space-between;
+            text-align: center;
             margin-top: 20px;
             font-size: 14px;
         }
         .login-footer a {
-            color: #4CAF50;
+            color: #007bff;
             text-decoration: none;
         }
         </style>
@@ -174,12 +172,13 @@ def handle_login(auth_manager):
         else:
             st.warning("用户名和密码不能为空")
 
-    st.markdown("""
-        <div class="login-footer">
-            <a href="#" onclick="alert('请联系管理员重置密码')">忘记密码？</a>
-            <a href="#" onclick="alert('请联系管理员创建新账号')">没有账号？注册</a>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="login-footer">', unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown('<a href="#" onclick="alert(\'请联系管理员重置密码\')">忘记密码？</a>', unsafe_allow_html=True)
+    with col2:
+        st.markdown('<a href="#" onclick="alert(\'请联系管理员创建新账号\')">没有账号？注册</a>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
