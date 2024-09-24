@@ -203,6 +203,8 @@ def set_theme(theme):
             <style>
             body { background-color: white; color: black; }
             .sidebar .sidebar-content { background-color: #f8f9fa; }
+            .stButton>button { background-color: #007bff; color: white; }
+            .stTextInput>div>input { background-color: white; color: black; }
             </style>
         """, unsafe_allow_html=True)
     elif theme == "Dark":
@@ -210,6 +212,8 @@ def set_theme(theme):
             <style>
             body { background-color: #2e2e2e; color: white; }
             .sidebar .sidebar-content { background-color: #333; }
+            .stButton>button { background-color: #444; color: white; }
+            .stTextInput>div>input { background-color: #555; color: white; }
             </style>
         """, unsafe_allow_html=True)
 

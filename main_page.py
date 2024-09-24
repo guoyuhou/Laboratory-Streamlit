@@ -40,7 +40,7 @@ def main_page():
                 background-color: rgba(0, 45, 114, 0.9);
                 border-radius: 15px;
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-                margin-top: 30px;
+                margin-top: 30px;   
                 letter-spacing: 2px;
                 text-transform: uppercase;
             }
