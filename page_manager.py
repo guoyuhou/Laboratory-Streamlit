@@ -31,7 +31,7 @@ class PageManager:
 
     def load_protected_pages(self):
         return {
-            '👤 个人中心': 'Personal_center.py',
+            '👤 个人中心': 'Personal_center.py',    
             '☁️ 云服务': lambda username: cloud_storage_page(username),
             '📂 项目列表': self.display_user_projects,
             '📊 仪表板': self.dashboard
@@ -40,29 +40,24 @@ class PageManager:
     def display_pages(self):
         st.sidebar.title("导航")
         
-        # 创建两个选项列表
-        public_pages = list(self.public_pages.keys())
-        protected_pages = list(self.protected_pages.keys())
+        # 创建一个包含所有页面的字典
+        all_pages = self.public_pages.copy()
         
-        # 显示公共页面选项
-        page_name = st.sidebar.radio('公共页面', public_pages)
-        
-        # 如果用户已登录，显示受保护的页面选项
+        # 如果用户已登录，添加受保护的页面
         if self.role:
-            st.sidebar.title("用户功能")
-            all_pages = public_pages + protected_pages
-            page_name = st.sidebar.radio('所有页面', all_pages, index=all_pages.index(page_name))
-
+            all_pages.update(self.protected_pages)
+        
+        # 使用单个radio按钮显示所有可用页面
+        page_name = st.sidebar.radio('选择页面', list(all_pages.keys()))
+        
         # 显示选中的页面
         if page_name in self.public_pages:
             self.public_pages[page_name]()
-        elif self.role and page_name in self.protected_pages:
+        elif page_name in self.protected_pages:
             if callable(self.protected_pages[page_name]):
                 self.protected_pages[page_name](st.session_state.get('username'))
             else:
                 self.execute_file(self.protected_pages[page_name])
-        else:
-            st.error("您没有权限访问此页面。请登录后再试。")
 
     def team_page(self, username=None):
         st.title("研究团队")
