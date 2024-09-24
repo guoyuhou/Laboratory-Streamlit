@@ -99,5 +99,10 @@ def handle_login(auth_manager):
     with col2:
         st.markdown("[没有账号？注册](#)", help="点击此处创建新账号")
 
+def handle_logout():
+    st.session_state.update({'username': None, 'role': None, 'login_page': False})
+    st.success("已退出登录")
+
+
 if __name__ == "__main__":
     main()
