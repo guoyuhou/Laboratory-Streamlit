@@ -8,6 +8,18 @@ GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
 GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"] 
 
+import streamlit as st
+from file_operations import edit_markdown, update_github_file
+import os
+from Cloud_storage import cloud_storage_page
+import json
+import folium
+from streamlit_folium import folium_static
+
+GITHUB_API_URL = "https://api.github.com"
+GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
+GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"] 
+
 class PageManager:
     def __init__(self, role, users, auth_manager):
         self.role = role
@@ -18,7 +30,11 @@ class PageManager:
 
     def load_public_pages(self):
         return {
-            '🏠 主页': 'main_page.py',
+            '🏠 主页': self.home_page,
+            '👥 团队': self.team_page,
+            '🔬 项目': self.projects_page,
+            '📚 论文': self.publications_page,
+            '📞 联系我们': self.contact_page,
             '🛠️ 工具包': {
                 '🧰 PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
                 '🔧 Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
@@ -30,31 +46,22 @@ class PageManager:
     def load_protected_pages(self):
         return {
             '👤 个人中心': 'Personal_center.py',
-            '☁️ 云服务': None,
-            '📂 项目列表': None
+            '☁️ 云服务': cloud_storage_page,
+            '📂 项目列表': self.display_user_projects,
+            '📊 仪表板': self.dashboard
         }
 
     def display_pages(self):
         pages = {**self.public_pages, **(self.protected_pages if st.session_state.get('username') else {})}
         page_name = st.sidebar.radio('导航', list(pages.keys()))
 
-        if page_name == '☁️ 云服务':
-            cloud_storage_page()
-        elif page_name == '📂 项目列表':
-            self.display_user_projects(st.session_state['username'])
-        else:
-            self.load_page(pages, page_name)
-
-    def load_page(self, pages, page_name):
-        page_file = self.get_page_file(pages, page_name)
-        if page_file:
-            self.execute_file(page_file)
-
-    def get_page_file(self, pages, page_name):
-        if isinstance(pages[page_name], dict):
+        if callable(pages[page_name]):
+            pages[page_name](st.session_state.get('username'))
+        elif isinstance(pages[page_name], dict):
             category_name = st.sidebar.radio('分类', list(pages[page_name].keys()))
-            return pages[page_name][category_name]
-        return pages[page_name]
+            self.execute_file(pages[page_name][category_name])
+        else:
+            self.execute_file(pages[page_name])
 
     def execute_file(self, file_path):
         try:
@@ -75,6 +82,118 @@ class PageManager:
         except Exception as e:
             st.error(f"文件读取错误: {e}")
 
+    def home_page(self, username):
+        st.title("欢迎来到前沿实验室")
+        st.write("我们致力于推动科技创新和前沿研究")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.subheader("研究方向")
+            st.write("- 人工智能")
+            st.write("- 量子计算")
+            st.write("- 生物技术")
+        with col2:
+            st.subheader("最新动态")
+            st.write("- 发表重要论文")
+            st.write("- 获得重大科研项目")
+            st.write("- 举办学术研讨会")
+        with col3:
+            st.subheader("合作伙伴")
+            st.write("- 顶尖高校")
+            st.write("- 知名企业")
+            st.write("- 研究机构")
+
+    def team_page(self, username):
+        st.title("团队成员")
+        
+        members = [
+            {"name": "张教授", "title": "实验室主任", "image": "path/to/zhang.jpg"},
+            {"name": "李博士", "title": "高级研究员", "image": "path/to/li.jpg"},
+            {"name": "王工程师", "title": "技术专家", "image": "path/to/wang.jpg"},
+        ]
+        
+        for member in members:
+            col1, col2 = st.columns([1, 3])
+            with col1:
+                st.image(member["image"], width=150)
+            with col2:
+                st.subheader(member["name"])
+                st.write(member["title"])
+                st.write("简介：...")  # 添加成员简介
+
+    def projects_page(self, username):
+        st.title("研究项目")
+        
+        projects = [
+            {"name": "智能机器人", "description": "开发新一代智能机器人系统", "image": "path/to/robot.jpg"},
+            {"name": "量子通信", "description": "研究量子通信技术及其应用", "image": "path/to/quantum.jpg"},
+            {"name": "基因编辑", "description": "探索CRISPR基因编辑技术", "image": "path/to/gene.jpg"},
+        ]
+        
+        for project in projects:
+            with st.expander(project["name"]):
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(project["image"], width=200)
+                with col2:
+                    st.write(project["description"])
+                    st.write("项目进展：...")  # 添加项目进展
+
+    def publications_page(self, username):
+        st.title("发表论文")
+        
+        publications = [
+            {"title": "人工智能在医疗诊断中的应用", "authors": "张三, 李四", "journal": "Nature", "year": 2023},
+            {"title": "量子计算在密码学中的突破", "authors": "王五, 赵六", "journal": "Science", "year": 2022},
+            {"title": "新型基因编辑技术的伦理考量", "authors": "刘七, 陈八", "journal": "Cell", "year": 2021},
+        ]
+        
+        for pub in publications:
+            st.write(f"**{pub['title']}**")
+            st.write(f"作者：{pub['authors']}")
+            st.write(f"发表于：{pub['journal']}, {pub['year']}")
+            st.write("---")
+
+    def contact_page(self, username):
+        st.title("联系我们")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("联系方式")
+            st.write("地址：XX市XX区XX路XX号")
+            st.write("电话：123-456-7890")
+            st.write("邮箱：contact@frontierlab.com")
+        
+        with col2:
+            st.subheader("实验室位置")
+            m = folium.Map(location=[31.2304, 121.4737], zoom_start=15)
+            folium.Marker([31.2304, 121.4737], popup="前沿实验室").add_to(m)
+            folium_static(m)
+
+    def dashboard(self, username):
+        st.title(f"欢迎回来，{username}！")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("最新通知")
+            st.info("下周三将举行实验室会议")
+            st.info("新的研究项目申请截止日期：2023年12月31日")
+        
+        with col2:
+            st.subheader("个人任务")
+            st.success("完成实验报告")
+            st.warning("准备下周的演讲")
+
+        st.subheader("实验室资源使用情况")
+        resource_usage = {
+            "计算集群": 75,
+            "存储空间": 60,
+            "实验设备": 40
+        }
+        for resource, usage in resource_usage.items():
+            st.write(f"{resource}：")
+            st.progress(usage)
+
     def display_user_projects(self, username):
         user_projects = self.auth_manager.get_user_projects(username)
         st.markdown("## 我的项目")
@@ -87,6 +206,7 @@ class PageManager:
 
         if self.users[username]['role'] != '本科生':
             self.display_permission_based_projects(username)
+
 
     def display_permission_based_projects(self, username):
         user = self.users.get(username)
