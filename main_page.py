@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-    def main_page(self, username=None):
+def main_page(self, username=None):
         # 背景动态效果
         st.markdown("""
             <style>
