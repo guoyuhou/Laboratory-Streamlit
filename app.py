@@ -108,6 +108,10 @@ def main():
         # 添加版本信息
         st.text(f"版本: {VERSION}")
 
+    # 主题切换
+    st.sidebar.title("主题切换")
+    theme = st.sidebar.radio("选择主题", ["Light", "Dark"])
+    set_theme(theme)
 
 def handle_login(auth_manager):
     st.markdown("""
@@ -192,6 +196,22 @@ def handle_login(auth_manager):
 def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
     st.success("已退出登录")
+
+def set_theme(theme):
+    if theme == "Light":
+        st.markdown("""
+            <style>
+            body { background-color: white; color: black; }
+            .sidebar .sidebar-content { background-color: #f8f9fa; }
+            </style>
+        """, unsafe_allow_html=True)
+    elif theme == "Dark":
+        st.markdown("""
+            <style>
+            body { background-color: #2e2e2e; color: white; }
+            .sidebar .sidebar-content { background-color: #333; }
+            </style>
+        """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
