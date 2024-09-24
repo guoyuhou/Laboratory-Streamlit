@@ -29,62 +29,44 @@ def main():
     st.markdown("""
         <style>
         .stApp {
-            background: linear-gradient(135deg, #f6f9fc, #e6eef7);
+            background-color: white;
             font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        .main .block-container {
+            padding-top: 1rem;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            padding-bottom: 1rem;
         }
         .stButton>button {
             background-color: #4a90e2;
             color: white;
-            border-radius: 25px;
-            padding: 10px 20px;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             border: none;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
         }
         .stButton>button:hover {
             background-color: #357ae8;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
         }
         .stTextInput>div>div>input {
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-            padding: 10px 15px;
-            transition: all 0.3s ease;
-        }
-        .stTextInput>div>div>input:focus {
-            border-color: #4a90e2;
-            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-            outline: none;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
         }
         .sidebar .sidebar-content {
-            background-color: #ffffff;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            background-color: #f8f9fa;
         }
         .stSelectbox {
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-            overflow: hidden;
-        }
-        .stSelectbox > div > div > div {
-            background-color: white;
-        }
-        .stCheckbox > label {
-            font-weight: 500;
-            color: #333;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
         }
         .stMarkdown a {
             color: #4a90e2;
             text-decoration: none;
-            border-bottom: 1px solid #4a90e2;
-            transition: all 0.3s ease;
         }
         .stMarkdown a:hover {
-            color: #357ae8;
-            border-bottom: 2px solid #357ae8;
+            text-decoration: underline;
         }
         </style>
         """, unsafe_allow_html=True)
