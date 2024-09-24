@@ -37,10 +37,12 @@ def main_page():
                 }
 
                 .section-title {
-                    color: #ffffff;
-                    border-bottom: 2px solid #ffa500;
-                    padding-bottom: 10px;
+                    color: #ffa500;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    padding: 10px;
+                    border-radius: 5px;
                     margin-bottom: 20px;
+                    display: inline-block;
                 }
 
                 .content-box {

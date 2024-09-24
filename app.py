@@ -98,7 +98,7 @@ def main():
     with st.sidebar:
         st.markdown("---")
         st.markdown(
-            '<h6 style="text-align: center;">由 <img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16"> 强力驱动 Made by Diary</h6>',
+            '<h6 style="text-align: center;">由 <img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16"> 强力驱动 Made by ModernY</h6>',
             unsafe_allow_html=True,
         )
         st.markdown(
