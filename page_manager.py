@@ -292,62 +292,8 @@ class PageManager:
         st.title("团队成员")
         
         members = [
-            {"name": "张教授", "title": "实验室主任", "image": "Images/example1.jpg"},
-import streamlit as st
-from file_operations import edit_markdown, update_github_file
-import os
-from Cloud_storage import cloud_storage_page
-import json
-import folium
-from streamlit_folium import folium_static
-
-GITHUB_API_URL = "https://api.github.com"
-GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
-GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"] 
-
-class PageManager:
-    def __init__(self, role, users, auth_manager):
-        self.role = role
-        self.users = users
-        self.auth_manager = auth_manager
-        self.public_pages = self.load_public_pages()
-        self.protected_pages = self.load_protected_pages()
-
-    def load_public_pages(self):
-        return {
-            '🏠 主页': self.home_page,
-            '👥 团队': self.team_page,
-            '🔬 项目': self.projects_page,
-            '📚 论文': self.publications_page,
-            '📞 联系我们': self.contact_page,
-            '🛠️ 工具包': {
-                '🧰 PyGWalker': os.path.join('工具包', 'PyGWalker.py'),
-                '🔧 Storm Genie': os.path.join('工具包', 'Storm_Genie.py'),
-                '📄 Papers': os.path.join('工具包', 'Papers.py')
-            },
-            '❓ 帮助': 'Help.py'
-        }
-
-    def load_protected_pages(self):
-        return {
-            '👤 个人中心': 'Personal_center.py',
-            '☁️ 云服务': cloud_storage_page,
-            '📂 项目列表': self.display_user_projects,
-            '📊 仪表板': self.dashboard
-        }
-
-    def display_pages(self):
-        pages = {**self.public_pages, **(self.protected_pages if st.session_state.get('username') else {})}
-        page_name = st.sidebar.radio('导航', list(pages.keys()))
-
-        if callable(pages[page_name]):
-            pages[page_name](st.session_state.get('username'))
-        elif isinstance(pages[page_name], dict):
-            category_name = st.sidebar.radio('分类', list(pages[page_name].keys()))
-            self.execute_file(pages[page_name][category_name])
-        else:
-            self.execute_file(pages[page_name])
-
+            {"name": "张教授", "title": "实验室主任", "image": "Images/example1.jpg"},]
+    
     def execute_file(self, file_path):
         try:
             if file_path.endswith('.py'):
