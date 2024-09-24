@@ -3,6 +3,8 @@ from file_operations import edit_markdown, update_github_file
 import os
 from Cloud_storage import cloud_storage_page
 from main_page import main_page
+import folium
+from streamlit_folium import folium_static
 
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
