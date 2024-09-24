@@ -22,7 +22,7 @@ def main():
         page_title="Frontier Lab",
         page_icon="🚀",
         layout="wide",
-        initial_sidebar_state="collapsed"
+        initial_sidebar_state="expanded"
     )
 
     # 优化自定义CSS
