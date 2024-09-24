@@ -49,7 +49,7 @@ class PageManager:
 
         # 显示选中的页面
         if page_name in self.public_pages:
-            self.public_pages[page_name]()
+            self.public_pages[page_name]()  # 修改这里，调用函数而不是直接使用函数名
         elif page_name in self.protected_pages:
             if callable(self.protected_pages[page_name]):
                 self.protected_pages[page_name](st.session_state.get('username'))
