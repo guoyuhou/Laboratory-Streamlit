@@ -13,6 +13,8 @@ from page_manager import PageManager
 from st_on_hover_tabs import on_hover_tabs
 from PIL import Image
 
+# 设置版本信息
+VERSION = "1.0.0"
 
 def main():
     st.set_page_config(
