@@ -19,7 +19,7 @@ def get_github_file(repo, path):
     if response.status_code == 200:
         return response.json()
     else:
-        st.error(f"无法获取文件: {response.json().get('message')}")
+        st.error(f"无法获取文件: {response.json().get('message')}", icon="❌")
         return None
 
 def update_github_file(repo, path, content, message):
@@ -28,7 +28,7 @@ def update_github_file(repo, path, content, message):
 
     file_data = get_github_file(repo, path)
     if not file_data:
-        st.error("无法获取文件信息，更新操作无法继续。")
+        st.error("无法获取文件信息，更新操作无法继续。", icon="❌")
         return False
 
     sha = file_data['sha']
@@ -42,10 +42,11 @@ def update_github_file(repo, path, content, message):
         with st.spinner("正在更新文件..."):
             response = requests.put(url, headers=headers, json=data)
             response.raise_for_status()
+            st.success("文件更新成功", icon="✅")
             logging.info("文件更新成功")
             return True
     except requests.exceptions.HTTPError as e:
-        st.error(f"更新失败: {e.response.status_code} - {e.response.json().get('message', '未知错误')}")
+        st.error(f"更新失败: {e.response.status_code} - {e.response.json().get('message', '未知错误')}", icon="❌")
         logging.error(f"更新错误: {e}")
         return False
 
@@ -55,3 +56,43 @@ def edit_markdown(repo, file_path):
         content = base64.b64decode(file_data['content']).decode("utf-8")
         return content
     return None
+
+# 美化界面
+st.set_page_config(page_title="实验室文件管理系统", page_icon="📁", layout="wide")
+
+st.markdown("""
+<style>
+    .reportview-container {
+        background: linear-gradient(to right, #f0f2f6, #e6e9ef);
+    }
+    .sidebar .sidebar-content {
+        background: linear-gradient(to bottom, #2e7bcf, #2a71b8);
+        color: white;
+    }
+    .Widget>label {
+        color: #1f4b77;
+        font-weight: bold;
+    }
+    .stButton>button {
+        color: #ffffff;
+        background-color: #2e7bcf;
+        border-radius: 5px;
+        border: none;
+        padding: 10px 24px;
+        transition: all 0.3s ease-in-out;
+    }
+    .stButton>button:hover {
+        background-color: #1f4b77;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .stTextInput>div>div>input {
+        border-radius: 5px;
+    }
+    .stAlert {
+        border-radius: 5px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.title("实验室文件管理系统")
+st.markdown("---")
