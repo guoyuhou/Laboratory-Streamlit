@@ -107,6 +107,7 @@ def main():
         # 添加版本信息
         st.text(f"版本: {VERSION}")
 
+
 def handle_login(auth_manager):
     st.markdown("""
         <style>
