@@ -108,9 +108,55 @@ def main():
         st.text(f"版本: {VERSION}")
 
 def handle_login(auth_manager):
-    st.title("欢迎登录")
-    st.write("请登录以访问更多精彩内容。")
-    
+    st.markdown("""
+        <style>
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .login-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+        .login-input {
+            margin-bottom: 20px;
+        }
+        .login-button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .login-button:hover {
+            background-color: #45a049;
+        }
+        .login-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .login-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
+    st.markdown('<h2 class="login-title">欢迎登录</h2>', unsafe_allow_html=True)
+
     username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
     password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
     
@@ -128,14 +174,14 @@ def handle_login(auth_manager):
         else:
             st.warning("用户名和密码不能为空")
 
-    st.markdown("---")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("忘记密码？"):
-            st.info("请联系管理员重置密码")
-    with col2:
-        if st.button("没有账号？注册"):
-            st.info("请联系管理员创建新账号")
+    st.markdown("""
+        <div class="login-footer">
+            <a href="#" onclick="alert('请联系管理员重置密码')">忘记密码？</a>
+            <a href="#" onclick="alert('请联系管理员创建新账号')">没有账号？注册</a>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
