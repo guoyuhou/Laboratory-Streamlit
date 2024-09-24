@@ -20,8 +20,8 @@ class PageManager:
         return {
             '🏠 主页': main_page,
             '👥 团队': self.team_page,
-            '🔬 项目': self.projects_page,
-            '📚 论文': self.publications_page,
+            '🔬 项目': lambda: self.projects_page(None),  # 修改这里
+            '📚 论文': lambda: self.publications_page(None),  # 修改这里
             '📞 联系我们': self.contact_page,
         }
 
@@ -56,7 +56,7 @@ class PageManager:
             else:
                 self.execute_file(self.protected_pages[page_name])
 
-    def team_page(self, username):
+    def team_page(self, username=None):
         st.title("团队成员")
         
         members = [
@@ -81,7 +81,7 @@ class PageManager:
         except Exception as e:
             st.error(f"文件读取错误: {e}")
 
-    def projects_page(self, username):
+    def projects_page(self, username=None):
         st.title("研究项目")
         
         projects = [
@@ -99,7 +99,7 @@ class PageManager:
                     st.write(project["description"])
                     st.write("项目进展：...")  # 添加项目进展
 
-    def publications_page(self, username):
+    def publications_page(self, username=None):
         st.title("发表论文")
         
         publications = [
@@ -114,7 +114,7 @@ class PageManager:
             st.write(f"发表于：{pub['journal']}, {pub['year']}")
             st.write("---")
 
-    def contact_page(self, username):
+    def contact_page(self, username=None):
         st.title("联系我们")
         
         col1, col2 = st.columns(2)
