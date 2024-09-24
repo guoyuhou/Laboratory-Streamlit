@@ -98,16 +98,16 @@ def main():
     if 'username' not in st.session_state:
         st.session_state.update({'username': None, 'role': None, 'login_page': False})
 
+    page_manager = PageManager(st.session_state.get('role'), users, auth_manager)
+
     if st.session_state['username'] is None:
         if st.session_state['login_page']:
             handle_login(auth_manager)
         else:
-            page_manager = PageManager(None, users, auth_manager)
             page_manager.display_pages()
             if st.sidebar.button("登录以访问更多内容", key="login_button"):
                 st.session_state['login_page'] = True
     else:
-        page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
 
     # 美化侧边栏内容
