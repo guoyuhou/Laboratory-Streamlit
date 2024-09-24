@@ -287,20 +287,81 @@ class PageManager:
             """, unsafe_allow_html=True)
 
     def contact_page(self, username=None):
+        st.markdown("""
+        <style>
+        .contact-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        .contact-info, .contact-form {
+            width: 48%;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .contact-info h3, .contact-form h3 {
+            color: #0066cc;
+            margin-bottom: 1rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .contact-icon {
+            margin-right: 10px;
+            color: #0066cc;
+        }
+        .map-container {
+            height: 300px;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
         st.title("联系我们")
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.subheader("联系方式")
-            st.write("地址：XX市XX区XX路XX号")
-            st.write("电话：123-456-7890")
-            st.write("邮箱：contact@frontierlab.com")
-        
-        with col2:
-            st.subheader("实验室位置")
-            m = folium.Map(location=[31.2304, 121.4737], zoom_start=15)
-            folium.Marker([31.2304, 121.4737], popup="前沿实验室").add_to(m)
-            folium_static(m)
+
+        st.markdown("""
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>联系方式</h3>
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span>
+                    <span>地址：山东省威海市文化西路180号</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <span>电话：0631-5688000</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">✉️</span>
+                    <span>邮箱：chenh@mail.sdu.edu.cn</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🌐</span>
+                    <span>网站：www.frontierlab.com</span>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3>联系表单</h3>
+                <form>
+                    <input type="text" placeholder="您的姓名" style="width:100%; margin-bottom:10px; padding:5px;">
+                    <input type="email" placeholder="您的邮箱" style="width:100%; margin-bottom:10px; padding:5px;">
+                    <textarea placeholder="您的留言" style="width:100%; height:100px; margin-bottom:10px; padding:5px;"></textarea>
+                    <button style="background-color:#0066cc; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">发送消息</button>
+                </form>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<div class="map-container">', unsafe_allow_html=True)
+        m = folium.Map(location=[37.5323, 122.0587], zoom_start=15)
+        folium.Marker([37.5323, 122.0587], popup="山东大学威海校区").add_to(m)
+        folium_static(m)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     def dashboard(self, username):
         st.title(f"欢迎回来，{username}！")
