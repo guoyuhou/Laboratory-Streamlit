@@ -10,6 +10,7 @@ attrs==24.2.0
 backoff==2.2.1
 bcrypt==4.2.0
 blinker==1.8.2
+branca==0.7.2
 cachetools==5.5.0
 captcha==0.6.0
 certifi==2024.7.4
@@ -27,6 +28,7 @@ exceptiongroup==1.2.2
 executing==2.1.0
 extra-streamlit-components==0.1.71
 feedparser==6.0.11
+folium==0.17.0
 gitdb==4.0.11
 GitPython==3.1.43
 greenlet==3.0.3
@@ -88,6 +90,7 @@ stack-data==0.6.3
 streamlit==1.38.0
 streamlit-authenticator==0.3.3
 streamlit-on-Hover-tabs==1.0.1
+streamlit_folium==0.22.1
 tenacity==8.5.0
 toml==0.10.2
 tornado==6.4.1
@@ -100,4 +103,5 @@ wasmtime==24.0.0
 watchdog==4.0.2
 wcwidth==0.2.13
 widgetsnbextension==4.0.13
+xyzservices==2024.9.0
 zipp==3.20.1
