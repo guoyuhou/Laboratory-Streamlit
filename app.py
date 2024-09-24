@@ -58,6 +58,8 @@ def main():
     else:
         page_manager = PageManager(st.session_state['role'], users, auth_manager)
         page_manager.display_pages()
+        if st.sidebar.button("退出登录", key="logout_button"):
+            handle_logout()
 
     # 美化侧边栏内容
     with st.sidebar:
