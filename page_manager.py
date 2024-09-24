@@ -39,16 +39,13 @@ class PageManager:
     def display_pages(self):
         st.sidebar.title("导航")
         
-        # 显示公共页面
-        page_name = st.sidebar.radio('公共页面', list(self.public_pages.keys()))
-        
-        # 如果用户已登录，显示受保护的页面
+        # 合并公共页面和受保护页面
+        all_pages = {**self.public_pages}
         if self.role:
-            st.sidebar.title("用户功能")
-            protected_page_name = st.sidebar.radio('用户功能', list(self.protected_pages.keys()))
-            
-            if protected_page_name:
-                page_name = protected_page_name
+            all_pages.update(self.protected_pages)
+        
+        # 使用单个选择框显示所有可用页面
+        page_name = st.sidebar.selectbox('选择页面', list(all_pages.keys()))
 
         # 显示选中的页面
         if page_name in self.public_pages:
