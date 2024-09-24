@@ -38,11 +38,10 @@ class PageManager:
     def load_protected_pages(self):
         return {
             '👤 个人中心': 'Personal_center.py',
-            '☁️ 云服务': cloud_storage_page,
+            '☁️ 云服务': lambda username: cloud_storage_page(username),
             '📂 项目列表': self.display_user_projects,
             '📊 仪表板': self.dashboard
         }
-
     def display_pages(self):
         if self.role is None:
             self.main_page()
