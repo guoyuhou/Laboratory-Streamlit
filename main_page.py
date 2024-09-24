@@ -191,15 +191,15 @@ def main_page():
         team_members = {
             '陈浩': {
                 'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-                'image': 'Images/chen_hao.jpg'
+                'image': 'Images/example1.jpg'
             }, 
             '王普': {
                 'description': '博士研究生，研究方向：海洋生物多样性',
-                'image': 'Images/wang_pu.jpg'
+                'image': 'Images/example2.jpg'
             },
             '王淑新': {
                 'description': '硕士研究生，研究方向：海洋污染治理',
-                'image': 'Images/wang_shuxin.jpg'
+                'image': 'Images/example3.jpg'
             },
             'bro': {
                 'description': '硕士研究生，研究方向：海洋污染治理',
