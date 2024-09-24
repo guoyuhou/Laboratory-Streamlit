@@ -17,15 +17,15 @@ class PageManager:
         self.role = role
         self.users = users
         self.auth_manager = auth_manager
-        self.public_pages = self.load_public_pages()
+        self.public_pages = self.load_public_pages()    
         self.protected_pages = self.load_protected_pages()
 
     def load_public_pages(self):
         return {
             '🏠 主页': main_page,
             '👥 团队': self.team_page,
-            '🔬 项目': lambda: self.projects_page(None),  # 修改这里
-            '📚 论文': lambda: self.publications_page(None),  # 修改这里
+            '🔬 项目': lambda: self.projects_page(None),  
+            '📚 论文': lambda: self.publications_page(None),  
             '📞 联系我们': self.contact_page,
         }
 
@@ -40,25 +40,29 @@ class PageManager:
     def display_pages(self):
         st.sidebar.title("导航")
         
-        # 显示公共页面
-        page_name = st.sidebar.radio('公共页面', list(self.public_pages.keys()))
+        # 创建两个选项列表
+        public_pages = list(self.public_pages.keys())
+        protected_pages = list(self.protected_pages.keys())
         
-        # 如果用户已登录，显示受保护的页面
+        # 显示公共页面选项
+        page_name = st.sidebar.radio('公共页面', public_pages)
+        
+        # 如果用户已登录，显示受保护的页面选项
         if self.role:
             st.sidebar.title("用户功能")
-            protected_page_name = st.sidebar.radio('用户功能', list(self.protected_pages.keys()))
-            
-            if protected_page_name:
-                page_name = protected_page_name
+            all_pages = public_pages + protected_pages
+            page_name = st.sidebar.radio('所有页面', all_pages, index=all_pages.index(page_name))
 
         # 显示选中的页面
         if page_name in self.public_pages:
             self.public_pages[page_name]()
-        elif page_name in self.protected_pages:
+        elif self.role and page_name in self.protected_pages:
             if callable(self.protected_pages[page_name]):
                 self.protected_pages[page_name](st.session_state.get('username'))
             else:
                 self.execute_file(self.protected_pages[page_name])
+        else:
+            st.error("您没有权限访问此页面。请登录后再试。")
 
     def team_page(self, username=None):
         st.title("研究团队")
