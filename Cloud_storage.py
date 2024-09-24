@@ -204,15 +204,17 @@ def display_statistics():
     st.write('操作日志:')
     for log in operation_log:
         st.write(f"{log['time']} - {log['action']}")
-def cloud_storage_page():
+def cloud_storage_page(username=None):
     """显示云存储页面"""
     st.title("云存储")
     
+    if username:
+        st.write(f"欢迎，{username}！")
+    
     # 添加使用说明
     st.subheader("关于实验室云服务")
-    st.write("""欢迎使用实验室云服务平台！您可以在这里上传、下载、更新、删除文件，支持多种文件格式（如ZIP、PDF、图片等）。请根据侧边栏的选项选择您需要的服务。""")
-
-    # 添加一些样式
+    st.write("""欢迎使用实验室云服务平台！您可以在这里上传、下载、更新、删除文件，支持多种文件格式（如ZIP、PDF、图片等）。请根据侧边栏的选项选择您需要的服务。
+    """)
     st.markdown("""
     <style>
         body {
