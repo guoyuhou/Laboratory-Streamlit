@@ -144,7 +144,7 @@ def main_page():
     """, unsafe_allow_html=True)
 
     # 实验室标题
-    st.markdown('<h1 class="main-title" style="margin-top: 10px;">Frontier Lab</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-title" style="margin-top: 10px;">Cosmos Lab</h1>', unsafe_allow_html=True)
 
     # 修改实验室简介部分
     st.markdown('<h2 class="section-title" style="color: #000000;">实验室简介</h2>', unsafe_allow_html=True)
