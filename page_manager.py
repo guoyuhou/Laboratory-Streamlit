@@ -39,22 +39,38 @@ class PageManager:
     def display_pages(self):
         st.sidebar.title("导航")
         
-        # 合并公共页面和受保护页面
-        all_pages = {**self.public_pages}
-        if self.role:
-            all_pages.update(self.protected_pages)
-        
-        # 使用单个选择框显示所有可用页面
-        page_name = st.sidebar.selectbox('选择页面', list(all_pages.keys()))
+        # 公共页面按钮
+        st.sidebar.markdown("### 公共页面")
+        for page_name, page_func in self.public_pages.items():
+            if st.sidebar.button(page_name, key=f"public_{page_name}"):
+                page_func()
 
-        # 显示选中的页面
-        if page_name in self.public_pages:
-            self.public_pages[page_name]()
-        elif page_name in self.protected_pages:
-            if callable(self.protected_pages[page_name]):
-                self.protected_pages[page_name](st.session_state.get('username'))
-            else:
-                self.execute_file(self.protected_pages[page_name])
+        # 如果用户已登录,显示用户功能按钮
+        if self.role:
+            st.sidebar.markdown("---")
+            st.sidebar.markdown("### 用户功能")
+            for page_name, page_func in self.protected_pages.items():
+                if st.sidebar.button(page_name, key=f"protected_{page_name}"):
+                    if callable(page_func):
+                        page_func(st.session_state.get('username'))
+                    else:
+                        self.execute_file(page_func)
+
+        # 添加一个占位符来显示选中的页面内容
+        main_content = st.empty()
+
+        # 根据按钮点击显示相应的页面内容
+        for page_name, page_func in {**self.public_pages, **self.protected_pages}.items():
+            if st.session_state.get(f"public_{page_name}") or st.session_state.get(f"protected_{page_name}"):
+                with main_content:
+                    if callable(page_func):
+                        if page_name in self.protected_pages:
+                            page_func(st.session_state.get('username'))
+                        else:
+                            page_func()
+                    else:
+                        self.execute_file(page_func)
+                break  # 找到被点击的按钮后,停止循环
 
     def team_page(self, username=None):
         st.title("研究团队")
