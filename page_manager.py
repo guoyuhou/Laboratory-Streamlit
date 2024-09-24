@@ -3,10 +3,7 @@ from file_operations import edit_markdown, update_github_file
 import os
 from Cloud_storage import cloud_storage_page
 from main_page import main_page
-import folium
-from streamlit_folium import folium_static
-import json
-
+import Personal_center
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = st.secrets["oss"]["GITHUB_TOKEN"]
 GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"] 
@@ -39,38 +36,25 @@ class PageManager:
     def display_pages(self):
         st.sidebar.title("导航")
         
-        # 公共页面按钮
-        st.sidebar.markdown("### 公共页面")
-        for page_name, page_func in self.public_pages.items():
-            if st.sidebar.button(page_name, key=f"public_{page_name}"):
-                page_func()
-
-        # 如果用户已登录,显示用户功能按钮
+        # 显示公共页面
+        page_name = st.sidebar.radio('公共页面', list(self.public_pages.keys()))
+        
+        # 如果用户已登录，显示受保护的页面
         if self.role:
-            st.sidebar.markdown("---")
-            st.sidebar.markdown("### 用户功能")
-            for page_name, page_func in self.protected_pages.items():
-                if st.sidebar.button(page_name, key=f"protected_{page_name}"):
-                    if callable(page_func):
-                        page_func(st.session_state.get('username'))
-                    else:
-                        self.execute_file(page_func)
+            st.sidebar.title("用户功能")
+            protected_page_name = st.sidebar.radio('用户功能', list(self.protected_pages.keys()))
+            
+            if protected_page_name:
+                page_name = protected_page_name
 
-        # 添加一个占位符来显示选中的页面内容
-        main_content = st.empty()
-
-        # 根据按钮点击显示相应的页面内容
-        for page_name, page_func in {**self.public_pages, **self.protected_pages}.items():
-            if st.session_state.get(f"public_{page_name}") or st.session_state.get(f"protected_{page_name}"):
-                with main_content:
-                    if callable(page_func):
-                        if page_name in self.protected_pages:
-                            page_func(st.session_state.get('username'))
-                        else:
-                            page_func()
-                    else:
-                        self.execute_file(page_func)
-                break  # 找到被点击的按钮后,停止循环
+        # 显示选中的页面
+        if page_name in self.public_pages:
+            self.public_pages[page_name]()
+        elif page_name in self.protected_pages:
+            if callable(self.protected_pages[page_name]):
+                self.protected_pages[page_name](st.session_state.get('username'))
+            else:
+                self.execute_file(self.protected_pages[page_name])
 
     def team_page(self, username=None):
         st.title("研究团队")
@@ -87,6 +71,7 @@ class PageManager:
             {"name": "李明", "title": "副教授", "image": "Images/example2.jpg", "description": "海洋化学专家,研究海洋污染物的迁移转化"},
             {"name": "王芳", "title": "博士后", "image": "Images/example3.jpg", "description": "海洋微生物学研究者,探索深海极端环境微生物"},
             {"name": "张伟", "title": "博士生", "image": "Images/example4.jpg", "description": "海洋地质学方向,研究海底地貌演变"},
+
         ]
         
         # 使用列布局展示团队成员
