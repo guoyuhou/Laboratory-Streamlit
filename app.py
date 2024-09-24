@@ -176,8 +176,7 @@ def handle_login(auth_manager):
     with col2:
         if st.button("返回主页", key="return_home"):
             st.session_state['login_page'] = False
-            st.experimental_rerun()
-
+            st.snow()
     st.markdown('<div class="login-footer">', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
