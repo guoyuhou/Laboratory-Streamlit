@@ -150,7 +150,7 @@ def main_page():
     st.markdown('<h2 class="section-title" style="color: #000000;">实验室简介</h2>', unsafe_allow_html=True)
     st.markdown("""
         <div class="content-box">
-            <p>Frontier Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们的使命是通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
+            <p>Cosmos Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们的使命是通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
             <p>我们的研究涵盖了从微观到宏观的多个层面，包括：</p>
             <ul>
                 <li>海洋生物多样性与生态系统功能</li>
