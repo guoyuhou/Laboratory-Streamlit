@@ -231,6 +231,46 @@ class PageManager:
     def publications_page(self, username=None):
         st.title("发表论文")
         
+        st.markdown("""
+        <style>
+        .publication-card {
+            background-color: #f9f9f9;
+            border-left: 5px solid #0066cc;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .publication-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .pub-title {
+            color: #0066cc;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .pub-authors {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .pub-journal {
+            color: #333;
+            font-weight: 500;
+        }
+        .pub-year {
+            background-color: #0066cc;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 14px;
+            float: right;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
         publications = [
             {"title": "人工智能在医疗诊断中的应用", "authors": "张三, 李四", "journal": "Nature", "year": 2023},
             {"title": "量子计算在密码学中的突破", "authors": "王五, 赵六", "journal": "Science", "year": 2022},
@@ -238,10 +278,13 @@ class PageManager:
         ]
         
         for pub in publications:
-            st.write(f"**{pub['title']}**")
-            st.write(f"作者：{pub['authors']}")
-            st.write(f"发表于：{pub['journal']}, {pub['year']}")
-            st.write("---")
+            st.markdown(f"""
+            <div class="publication-card">
+                <div class="pub-title">{pub['title']}</div>
+                <div class="pub-authors">{pub['authors']}</div>
+                <div class="pub-journal">{pub['journal']} <span class="pub-year">{pub['year']}</span></div>
+            </div>
+            """, unsafe_allow_html=True)
 
     def contact_page(self, username=None):
         st.title("联系我们")
