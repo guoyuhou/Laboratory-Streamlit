@@ -239,7 +239,7 @@ def cloud_storage_page(username=None):
             padding-top: 3rem;
         }
         h1, h2, h3 {
-            color: #1a73e8;
+            color: #333;
         }
     </style>
     """, unsafe_allow_html=True)
