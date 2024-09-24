@@ -37,12 +37,10 @@ def main_page():
                 }
 
                 .section-title {
-                    color: #ffa500;
-                    background-color: rgba(0, 0, 0, 0.7);
-                    padding: 10px;
-                    border-radius: 5px;
+                    color: #ffffff;
+                    border-bottom: 2px solid #ffa500;
+                    padding-bottom: 10px;
                     margin-bottom: 20px;
-                    display: inline-block;
                 }
 
                 .content-box {
@@ -119,7 +117,7 @@ def main_page():
         st.markdown('<h1 class="main-title" style="margin-top: 10px;">Frontier Lab</h1>', unsafe_allow_html=True)
 
         # 修改实验室简介部分
-        st.markdown('<h2 class="section-title">实验室简介</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="section-title" style="color: #000000;">实验室简介</h2>', unsafe_allow_html=True)
         st.markdown("""
             <div class="content-box">
                 <p>Frontier Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们的使命是通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
