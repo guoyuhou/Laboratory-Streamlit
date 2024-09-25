@@ -193,16 +193,82 @@ def main_page():
         </div>
     """, unsafe_allow_html=True)
     
-    # 使用folium创建地图
-    m = folium.Map(location=[36.0, 120.3], zoom_start=10)
-    folium.Marker(
-        [36.0, 120.3], 
-        popup="Cosmos Lab", 
-        tooltip="Cosmos Lab"
-    ).add_to(m)
-    
-    # 在Streamlit中显示地图
-    folium_static(m)
+    # 替换原有的地球模型，添加"全息投影"效果
+    st.markdown("""
+        <div class="hologram-container">
+            <div class="hologram-earth"></div>
+            <div class="hologram-ring"></div>
+            <div class="hologram-glow"></div>
+        </div>
+        <style>
+            .hologram-container {
+                width: 300px;
+                height: 300px;
+                position: relative;
+                margin: 50px auto;
+                perspective: 1000px;
+            }
+            .hologram-earth {
+                width: 100%;
+                height: 100%;
+                background: url('https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57735/land_ocean_ice_cloud_2048.jpg');
+                background-size: cover;
+                border-radius: 50%;
+                position: absolute;
+                animation: rotate 20s linear infinite;
+                box-shadow: inset 0 0 20px rgba(0,255,255,0.5),
+                            0 0 20px rgba(0,255,255,0.2);
+            }
+            .hologram-ring {
+                width: 110%;
+                height: 110%;
+                border: 2px solid rgba(0,255,255,0.3);
+                border-radius: 50%;
+                position: absolute;
+                top: -5%;
+                left: -5%;
+                animation: pulse 2s ease-out infinite;
+            }
+            .hologram-glow {
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle, rgba(0,255,255,0.3) 0%, rgba(0,255,255,0) 70%);
+                position: absolute;
+                animation: glow 4s ease-in-out infinite alternate;
+            }
+            @keyframes rotate {
+                0% { transform: rotateY(0deg); }
+                100% { transform: rotateY(360deg); }
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); opacity: 1; }
+                100% { transform: scale(1.1); opacity: 0; }
+            }
+            @keyframes glow {
+                0% { opacity: 0.5; }
+                100% { opacity: 1; }
+            }
+        </style>
+        <script>
+            // 添加鼠标交互效果
+            document.querySelector('.hologram-container').addEventListener('mousemove', (e) => {
+                const earth = document.querySelector('.hologram-earth');
+                const rect = earth.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                earth.style.transform = `rotateY(${x / 10}deg) rotateX(${-y / 10}deg)`;
+            });
+        </script>
+    """, unsafe_allow_html=True)
+
+    # 添加实验室位置标记
+    st.markdown("""
+        <div class="lab-location" style="text-align: center; margin-top: 20px;">
+            <span style="background: rgba(0,255,255,0.7); padding: 5px 10px; border-radius: 20px; color: white;">
+                Cosmos Lab 位置: 北纬36.0度，东经120.3度
+            </span>
+        </div>
+    """, unsafe_allow_html=True)
 
     # 动态数据图表
     st.markdown('<h2 class="section-title">实时数据展示</h2>', unsafe_allow_html=True)
