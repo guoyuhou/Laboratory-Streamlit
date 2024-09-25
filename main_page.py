@@ -1,35 +1,16 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-import streamlit as st
-import pandas as pd
-import json
-from PIL import Image
-import folium   
-from streamlit_folium import folium_static
 from streamlit_lottie import st_lottie
 import requests
 
-@st.cache
-def load_data():
-    # 示例数据
-    return pd.DataFrame({
-        '时间': ['2023-01', '2023-02', '2023-03', '2023-04'],
-        '研究成果': [10, 20, 15, 25]
-    })
-
+# 辅助函数
 def load_lottieurl(url: str):
     r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
+    return r.json() if r.status_code == 200 else None
 
 def load_data():
-    # 这里应该是加载实际数据的代码
-    # 为了演示，我们使用一些模拟数据
-    import pandas as pd
-    import numpy as np
-    
+    # 模拟数据加载
     dates = pd.date_range(start='1/1/2023', end='12/31/2023', freq='D')
     data = pd.DataFrame({
         '时间': dates,
@@ -37,8 +18,8 @@ def load_data():
     })
     return data
 
-def main_page():
-    # 修改背景样式
+# 页面样式
+def set_page_style():
     st.markdown("""
         <style>
             body {
@@ -153,7 +134,9 @@ def main_page():
             }
         </style>
     """, unsafe_allow_html=True)
-    # 导航栏
+
+# 导航栏
+def create_navigation():
     st.markdown("""
         <div class="nav">
             <a href="#实验室简介">实验室简介</a>
@@ -166,23 +149,9 @@ def main_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # 实验室标题
-    st.markdown("""
-        <h1 class="main-title" style="margin-top: 10px; animation: fadeInDown 1.5s;">
-            Cosmos Lab
-        </h1>
-        <style>
-            @keyframes fadeInDown {
-                from {opacity: 0; transform: translate3d(0, -100%, 0);}
-                to {opacity: 1; transform: translate3d(0, 0, 0);}
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
-    # 修改实验室简介部分
-    st.markdown('<h2 class="section-title" style="color: #000000;">实验室简介</h2>', unsafe_allow_html=True)
-    
-    # 添加 Lottie 动画到实验室简介旁边
+# 实验室简介
+def lab_introduction():
+    st.markdown('<h2 class="section-title">实验室简介</h2>', unsafe_allow_html=True)
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown("""
@@ -287,16 +256,8 @@ def main_page():
         </script>
     """, unsafe_allow_html=True)
 
-
-    # 动态数据图表
-    st.markdown('<h2 class="section-title">实时数据展示</h2>', unsafe_allow_html=True)
-    st.markdown('<div class="section" id="实时数据展示"></div>', unsafe_allow_html=True)
-
-    data = load_data()
-    fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
-    st.plotly_chart(fig)
-
-    # 添加研究重点部分
+# 研究重点
+def research_focus():
     st.markdown('<h2 class="section-title">研究重点</h2>', unsafe_allow_html=True)
     research_focus = [
         {
@@ -326,10 +287,16 @@ def main_page():
                 </div>
             """, unsafe_allow_html=True)
 
-    # 研究团队
-    st.markdown('<h2 class="section-title">研究团队</h2>', unsafe_allow_html=True)
-    st.markdown('<div class="section" id="研究团队"></div>', unsafe_allow_html=True)
+# 实时数据展示
+def real_time_data():
+    st.markdown('<h2 class="section-title">实时数据展示</h2>', unsafe_allow_html=True)
+    data = load_data()
+    fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
+    st.plotly_chart(fig)
 
+# 研究团队
+def research_team():
+    st.markdown('<h2 class="section-title">研究团队</h2>', unsafe_allow_html=True)
     team_members = {
         '陈浩': {
             'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
@@ -364,7 +331,8 @@ def main_page():
                 </div>
             """, unsafe_allow_html=True)
 
-    # 修改研究项目展示
+# 研究项目
+def research_projects():
     st.markdown('<h2 class="section-title">研究项目</h2>', unsafe_allow_html=True)
     
     projects = [
@@ -394,10 +362,9 @@ def main_page():
             </div>
         """, unsafe_allow_html=True)
 
-    # 发表论文
+# 发表论文
+def published_papers():
     st.markdown('<h2 class="section-title">发表论文</h2>', unsafe_allow_html=True)
-    st.markdown('<div class="section" id="发表论文"></div>', unsafe_allow_html=True)
-
     papers = [
         {
             'title': '海洋生态学的现状与展望',
@@ -416,10 +383,9 @@ def main_page():
             </div>
         """, unsafe_allow_html=True)
 
-    # 联系方式
+# 联系方式
+def contact_info():
     st.markdown('<h2 class="section-title">联系方式</h2>', unsafe_allow_html=True)
-    st.markdown('<div class="section" id="联系方式"></div>', unsafe_allow_html=True)
-
     contact_info = {
         'Email': 'chenh@mail.sdu.edu.cn',
         '电话': '+86 123 456 7890',
@@ -438,7 +404,8 @@ def main_page():
                 </div>
             """, unsafe_allow_html=True)
 
-    # 添加合作伙伴部分
+# 合作伙伴
+def partners():
     st.markdown('<h2 class="section-title">合作伙伴</h2>', unsafe_allow_html=True)
     partners = ['国家海洋局', '中国科学院海洋研究所', 'NOAA', 'Woods Hole 海洋研究所']
     st.markdown("""
@@ -450,10 +417,9 @@ def main_page():
         st.markdown(f'<div style="text-align: center; margin: 10px;"><img src="https://example.com/images/{partner.lower().replace(" ", "_")}.jpg" alt="{partner}" style="width: 100px; height: 50px; object-fit: contain;"><p>{partner}</p></div>', unsafe_allow_html=True)
     st.markdown('</div></div>', unsafe_allow_html=True)
 
-    # 新闻与更新
+# 新闻与更新
+def news_and_updates():
     st.markdown('<h2 class="section-title">新闻与更新</h2>', unsafe_allow_html=True)
-    st.markdown('<div class="section" id="新闻与更新"></div>', unsafe_allow_html=True)
-
     updates = [
         '2024年1月：实验室获得国家自然科学基金支持。',
         '2024年2月：实验室成员参加国际海洋会议。'
@@ -461,14 +427,37 @@ def main_page():
     for update in updates:  
         st.write(f"- {update}")
 
-    # 页脚
+# 页脚
+def footer():
     st.markdown('<div class="footer">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
 
-    # 自动跳转到实验研究成果趋势
+# 主函数
+def main_page():
+    set_page_style()
+    create_navigation()
+    
     st.markdown("""
-        <script>
-            window.onload = function() {
-                window.location.hash = '#实时数据展示';
+        <h1 class="main-title" style="margin-top: 10px; animation: fadeInDown 1.5s;">
+            Cosmos Lab
+        </h1>
+        <style>
+            @keyframes fadeInDown {
+                from {opacity: 0; transform: translate3d(0, -100%, 0);}
+                to {opacity: 1; transform: translate3d(0, 0, 0);}
             }
-        </script>
+        </style>
     """, unsafe_allow_html=True)
+    
+    lab_introduction()
+    research_focus()
+    real_time_data()
+    research_team()
+    research_projects()
+    published_papers()
+    contact_info()
+    partners()
+    news_and_updates()
+    footer()
+
+if __name__ == "__main__":
+    main_page()
