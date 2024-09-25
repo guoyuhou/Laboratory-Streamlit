@@ -87,7 +87,7 @@ def main():
     # 显示动画logo
     st.markdown("""
         <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
-            <img src="Images/sdu_logo2.jpg" alt="SDU Logo" style="max-height: 100%; max-width: 100%; animation: pulse 2s infinite;">
+            <img src="Images/sdu_logo2.jpg" alt="SDU Logo" style="max-height: 100%; max-width: 100%; object-fit: contain; animation: pulse 2s infinite;">
         </div>
         <style>
         @keyframes pulse {
@@ -97,6 +97,11 @@ def main():
         }
         </style>
     """, unsafe_allow_html=True)
+    
+    # 检查图片是否存在
+    import os
+    if not os.path.exists("Images/sdu_logo2.jpg"):
+        st.error("无法找到logo图片。请确保 'Images/sdu_logo2.jpg' 文件存在。")
 
     users = load_users()
     auth_manager = AuthManager(users)
