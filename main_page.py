@@ -67,10 +67,13 @@ def main_page():
             }
 
             .section-title {
-                color: #ffffff;
+                color: #000000;
                 border-bottom: 2px solid #ffa500;
                 padding-bottom: 10px;
                 margin-bottom: 20px;
+                background-color: rgba(255, 255, 255, 0.8);
+                padding: 10px;
+                border-radius: 5px;
             }
 
             .content-box {
@@ -363,8 +366,6 @@ def main_page():
 
     # 修改研究项目展示
     st.markdown('<h2 class="section-title">研究项目</h2>', unsafe_allow_html=True)
-    lottie_project = load_lottieurl("https://assets3.lottiefiles.com/private_files/lf30_P2uXE5.json")
-    st_lottie(lottie_project, height=200, key="project_animation")
     
     projects = [
         {
@@ -462,3 +463,12 @@ def main_page():
 
     # 页脚
     st.markdown('<div class="footer">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
+
+    # 自动跳转到实验研究成果趋势
+    st.markdown("""
+        <script>
+            window.onload = function() {
+                window.location.hash = '#实时数据展示';
+            }
+        </script>
+    """, unsafe_allow_html=True)
