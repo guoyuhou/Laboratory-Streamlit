@@ -7,6 +7,7 @@ import plotly.express as px
 import pandas as pd
 import json
 from PIL import Image
+import numpy as np
 
 @st.cache
 def load_data():
