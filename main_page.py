@@ -10,8 +10,6 @@ from streamlit_folium import folium_static
 from streamlit_lottie import st_lottie
 import requests
 
-
-
 @st.cache
 def load_data():
     # 示例数据
@@ -152,11 +150,6 @@ def main_page():
             }
         </style>
     """, unsafe_allow_html=True)
-
-    # 添加 Lottie 动画到页面顶部
-    lottie_ocean = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_jbrw3hcz.json")
-    st_lottie(lottie_ocean, height=300, key="ocean_animation")
-
     # 导航栏
     st.markdown("""
         <div class="nav">
