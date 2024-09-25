@@ -193,70 +193,61 @@ def main_page():
         </div>
     """, unsafe_allow_html=True)
     
-    # 替换原有的地球模型，添加"全息投影"效果
+    # 替换地球模型，添加悦动立方体效果
     st.markdown("""
-        <div class="hologram-container">
-            <div class="hologram-earth"></div>
-            <div class="hologram-ring"></div>
-            <div class="hologram-glow"></div>
+        <div class="cube-container">
+            <div class="cube">
+                <div class="face front"></div>
+                <div class="face back"></div>
+                <div class="face right"></div>
+                <div class="face left"></div>
+                <div class="face top"></div>
+                <div class="face bottom"></div>
+            </div>
         </div>
         <style>
-            .hologram-container {
+            .cube-container {
                 width: 300px;
                 height: 300px;
-                position: relative;
-                margin: 50px auto;
                 perspective: 1000px;
+                margin: 50px auto;
             }
-            .hologram-earth {
+            .cube {
                 width: 100%;
                 height: 100%;
-                background: url('https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57735/land_ocean_ice_cloud_2048.jpg');
-                background-size: cover;
-                border-radius: 50%;
-                position: absolute;
-                animation: rotate 20s linear infinite;
-                box-shadow: inset 0 0 20px rgba(0,255,255,0.5),
-                            0 0 20px rgba(0,255,255,0.2);
+                position: relative;
+                transform-style: preserve-3d;
+                animation: rotate 20s infinite linear;
             }
-            .hologram-ring {
-                width: 110%;
-                height: 110%;
-                border: 2px solid rgba(0,255,255,0.3);
-                border-radius: 50%;
+            .face {
                 position: absolute;
-                top: -5%;
-                left: -5%;
-                animation: pulse 2s ease-out infinite;
-            }
-            .hologram-glow {
                 width: 100%;
                 height: 100%;
-                background: radial-gradient(circle, rgba(0,255,255,0.3) 0%, rgba(0,255,255,0) 70%);
-                position: absolute;
-                animation: glow 4s ease-in-out infinite alternate;
+                background: rgba(0, 255, 255, 0.1);
+                border: 2px solid rgba(0, 255, 255, 0.5);
+                box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
             }
+            .front  { transform: rotateY(0deg) translateZ(150px); }
+            .back   { transform: rotateY(180deg) translateZ(150px); }
+            .right  { transform: rotateY(90deg) translateZ(150px); }
+            .left   { transform: rotateY(-90deg) translateZ(150px); }
+            .top    { transform: rotateX(90deg) translateZ(150px); }
+            .bottom { transform: rotateX(-90deg) translateZ(150px); }
             @keyframes rotate {
-                0% { transform: rotateY(0deg); }
-                100% { transform: rotateY(360deg); }
-            }
-            @keyframes pulse {
-                0% { transform: scale(1); opacity: 1; }
-                100% { transform: scale(1.1); opacity: 0; }
-            }
-            @keyframes glow {
-                0% { opacity: 0.5; }
-                100% { opacity: 1; }
+                0% { transform: rotateX(0deg) rotateY(0deg); }
+                100% { transform: rotateX(360deg) rotateY(360deg); }
             }
         </style>
         <script>
-            // 添加鼠标交互效果
-            document.querySelector('.hologram-container').addEventListener('mousemove', (e) => {
-                const earth = document.querySelector('.hologram-earth');
-                const rect = earth.getBoundingClientRect();
+            document.querySelector('.cube-container').addEventListener('mousemove', (e) => {
+                const cube = document.querySelector('.cube');
+                const rect = cube.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-                earth.style.transform = `rotateY(${x / 10}deg) rotateX(${-y / 10}deg)`;
+                cube.style.transform = `rotateY(${x / 5}deg) rotateX(${-y / 5}deg)`;
+            });
+            document.querySelector('.cube-container').addEventListener('mouseleave', () => {
+                document.querySelector('.cube').style.transform = '';
             });
         </script>
     """, unsafe_allow_html=True)
