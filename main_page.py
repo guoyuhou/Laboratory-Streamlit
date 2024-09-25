@@ -197,12 +197,12 @@ def main_page():
     st.markdown("""
         <div class="cube-container">
             <div class="cube">
-                <div class="face front"></div>
-                <div class="face back"></div>
-                <div class="face right"></div>
-                <div class="face left"></div>
-                <div class="face top"></div>
-                <div class="face bottom"></div>
+                <div class="face front">海洋生态</div>
+                <div class="face back">环境保护</div>
+                <div class="face right">资源利用</div>
+                <div class="face left">气候变化</div>
+                <div class="face top">生物多样性</div>
+                <div class="face bottom">科技创新</div>
             </div>
         </div>
         <style>
@@ -226,6 +226,12 @@ def main_page():
                 background: rgba(0, 100, 255, 0.3);
                 border: 2px solid rgba(0, 100, 255, 0.7);
                 box-shadow: 0 0 20px rgba(0, 100, 255, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 18px;
+                color: white;
+                text-shadow: 1px 1px 2px black;
             }
             .front  { transform: rotateY(0deg) translateZ(100px); }
             .back   { transform: rotateY(180deg) translateZ(100px); }
@@ -236,6 +242,13 @@ def main_page():
             @keyframes rotate {
                 0% { transform: rotateX(0deg) rotateY(0deg); }
                 100% { transform: rotateX(360deg) rotateY(360deg); }
+            }
+            .cube:hover {
+                animation-play-state: paused;
+            }
+            .face:hover {
+                background: rgba(0, 255, 100, 0.5);
+                cursor: pointer;
             }
         </style>
         <script>
@@ -249,17 +262,14 @@ def main_page():
             document.querySelector('.cube-container').addEventListener('mouseleave', () => {
                 document.querySelector('.cube').style.transform = '';
             });
+            document.querySelectorAll('.face').forEach(face => {
+                face.addEventListener('click', () => {
+                    alert('您点击了：' + face.textContent + '。这里可以链接到相关研究内容。');
+                });
+            });
         </script>
     """, unsafe_allow_html=True)
 
-    # 添加实验室位置标记
-    st.markdown("""
-        <div class="lab-location" style="text-align: center; margin-top: 20px;">
-            <span style="background: rgba(0,255,255,0.7); padding: 5px 10px; border-radius: 20px; color: white;">
-                Cosmos Lab 位置: 北纬36.0度，东经120.3度
-            </span>
-        </div>
-    """, unsafe_allow_html=True)
 
     # 动态数据图表
     st.markdown('<h2 class="section-title">实时数据展示</h2>', unsafe_allow_html=True)
