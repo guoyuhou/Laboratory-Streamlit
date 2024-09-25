@@ -7,6 +7,8 @@ import plotly.express as px
 import pandas as pd
 import json
 from PIL import Image
+import folium   
+from streamlit_folium import folium_static
 
 @st.cache
 def load_data():
@@ -184,25 +186,23 @@ def main_page():
     """, unsafe_allow_html=True)
 
     # 添加交互式3D地球模型
+    st.markdown('<h2 class="section-title">实验室位置</h2>', unsafe_allow_html=True)
     st.markdown("""
-        <div id="earth-container" style="width: 100%; height: 400px;"></div>
-        <script src="https://www.webglearth.com/v2/api.js"></script>
-        <script>
-            var earth = new WE.map('earth-container');
-            WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
-            earth.setView([0, 0], 2.5);
-            
-            // 添加实验室位置标记
-            var marker = WE.marker([36.0, 120.3]).addTo(earth);
-            marker.bindPopup("<b>Cosmos Lab</b><br>青岛", {maxWidth: 120, closeButton: true});
-
-            // 添加动画效果
-            (function animate() {
-                requestAnimationFrame(animate);
-                earth.setCenter([36.0 + Math.random() * 0.1, 120.3 + Math.random() * 0.1]);
-            }());
-        </script>
+        <div class="content-box">
+            <p>Cosmos Lab 位于美丽的海滨城市青岛，地理坐标为北纬36.0度，东经120.3度。</p>
+        </div>
     """, unsafe_allow_html=True)
+    
+    # 使用folium创建地图
+    m = folium.Map(location=[36.0, 120.3], zoom_start=10)
+    folium.Marker(
+        [36.0, 120.3], 
+        popup="Cosmos Lab", 
+        tooltip="Cosmos Lab"
+    ).add_to(m)
+    
+    # 在Streamlit中显示地图
+    folium_static(m)
 
     # 动态数据图表
     st.markdown('<h2 class="section-title">实时数据展示</h2>', unsafe_allow_html=True)
