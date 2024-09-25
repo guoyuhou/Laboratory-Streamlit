@@ -193,7 +193,7 @@ def main_page():
         </div>
     """, unsafe_allow_html=True)
     
-    # 替换地球模型，添加悦动立方体效果
+    # 悦动的立方体
     st.markdown("""
         <div class="cube-container">
             <div class="cube">
@@ -207,10 +207,10 @@ def main_page():
         </div>
         <style>
             .cube-container {
-                width: 300px;
-                height: 300px;
+                width: 200px;
+                height: 200px;
                 perspective: 1000px;
-                margin: 50px auto;
+                margin: 30px auto;
             }
             .cube {
                 width: 100%;
@@ -223,16 +223,16 @@ def main_page():
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 255, 255, 0.1);
-                border: 2px solid rgba(0, 255, 255, 0.5);
-                box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+                background: rgba(0, 100, 255, 0.3);
+                border: 2px solid rgba(0, 100, 255, 0.7);
+                box-shadow: 0 0 20px rgba(0, 100, 255, 0.5);
             }
-            .front  { transform: rotateY(0deg) translateZ(150px); }
-            .back   { transform: rotateY(180deg) translateZ(150px); }
-            .right  { transform: rotateY(90deg) translateZ(150px); }
-            .left   { transform: rotateY(-90deg) translateZ(150px); }
-            .top    { transform: rotateX(90deg) translateZ(150px); }
-            .bottom { transform: rotateX(-90deg) translateZ(150px); }
+            .front  { transform: rotateY(0deg) translateZ(100px); }
+            .back   { transform: rotateY(180deg) translateZ(100px); }
+            .right  { transform: rotateY(90deg) translateZ(100px); }
+            .left   { transform: rotateY(-90deg) translateZ(100px); }
+            .top    { transform: rotateX(90deg) translateZ(100px); }
+            .bottom { transform: rotateX(-90deg) translateZ(100px); }
             @keyframes rotate {
                 0% { transform: rotateX(0deg) rotateY(0deg); }
                 100% { transform: rotateX(360deg) rotateY(360deg); }
