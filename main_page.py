@@ -21,7 +21,7 @@ def main_page():
     st.markdown("""
         <style>
             body {
-                background: linear-gradient(135deg, #002d72, #0056b3);
+                background: linear-gradient(-45deg, #002d72, #0056b3, #00a8e8, #0077be);
                 background-size: 400% 400%;
                 animation: gradientBG 15s ease infinite;
             }
@@ -130,6 +130,24 @@ def main_page():
         </style>
     """, unsafe_allow_html=True)
 
+    # 添加粒子效果
+    st.markdown("""
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+        <script>
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {"value": 80},
+                    "color": {"value": "#ffffff"},
+                    "shape": {"type": "circle"},
+                    "opacity": {"value": 0.5, "random": true},
+                    "size": {"value": 3, "random": true},
+                    "move": {"enable": true, "speed": 1}
+                }
+            });
+        </script>
+    """, unsafe_allow_html=True)
+
     # 导航栏
     st.markdown("""
         <div class="nav">
@@ -144,7 +162,17 @@ def main_page():
     """, unsafe_allow_html=True)
 
     # 实验室标题
-    st.markdown('<h1 class="main-title" style="margin-top: 10px;">Cosmos Lab</h1>', unsafe_allow_html=True)
+    st.markdown("""
+        <h1 class="main-title" style="margin-top: 10px; animation: fadeInDown 1.5s;">
+            Cosmos Lab
+        </h1>
+        <style>
+            @keyframes fadeInDown {
+                from {opacity: 0; transform: translate3d(0, -100%, 0);}
+                to {opacity: 1; transform: translate3d(0, 0, 0);}
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
     # 修改实验室简介部分
     st.markdown('<h2 class="section-title" style="color: #000000;">实验室简介</h2>', unsafe_allow_html=True)
@@ -171,12 +199,49 @@ def main_page():
         </div>
     """, unsafe_allow_html=True)
 
+    # 添加交互式3D地球模型
+    st.markdown("""
+        <div id="earth-container" style="width: 100%; height: 400px;"></div>
+        <script src="https://www.webglearth.com/v2/api.js"></script>
+        <script>
+            var earth = new WE.map('earth-container');
+            WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
+            earth.setView([0, 0], 2.5);
+            
+            // 添加实验室位置标记
+            var marker = WE.marker([36.0, 120.3]).addTo(earth);
+            marker.bindPopup("<b>Cosmos Lab</b><br>青岛", {maxWidth: 120, closeButton: true});
+
+            // 添加动画效果
+            (function animate() {
+                requestAnimationFrame(animate);
+                earth.setCenter([36.0 + Math.random() * 0.1, 120.3 + Math.random() * 0.1]);
+            }());
+        </script>
+    """, unsafe_allow_html=True)
+
     # 动态数据图表
     st.markdown('<h2 class="section-title">实时数据展示</h2>', unsafe_allow_html=True)
     st.markdown('<div class="section" id="实时数据展示"></div>', unsafe_allow_html=True)
 
     data = load_data()
     fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
+    st.plotly_chart(fig)
+
+    # 添加实时海洋数据展示
+    st.markdown('<h2 class="section-title">实时海洋数据</h2>', unsafe_allow_html=True)
+    
+    # 模拟实时数据
+    ocean_data = pd.DataFrame({
+        '时间': pd.date_range(start='2024-01-01', periods=24, freq='H'),
+        '温度': np.random.normal(20, 2, 24),
+        '盐度': np.random.normal(35, 0.5, 24),
+        '溶解氧': np.random.normal(7, 0.3, 24)
+    })
+    
+    fig = px.line(ocean_data, x='时间', y=['温度', '盐度', '溶解氧'], 
+                  title='实时海洋环境数据',
+                  labels={'value': '数值', 'variable': '参数'})
     st.plotly_chart(fig)
 
     # 添加研究重点部分
@@ -245,6 +310,17 @@ def main_page():
             st.image(image, caption=member, use_column_width=True)
             st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
 
+    # 添加团队成员互动功能
+    for member, info in team_members.items():
+        with st.expander(f"了解更多关于 {member}"):
+            st.write(info['description'])
+            st.write("研究兴趣:")
+            st.write("- 海洋生态系统")
+            st.write("- 海洋污染治理")
+            st.write("- 海洋资源可持续利用")
+            if st.button(f"联系 {member}"):
+                st.success(f"已发送邮件给 {member}！")
+
     # 修改研究项目展示
     st.markdown('<h2 class="section-title">研究项目</h2>', unsafe_allow_html=True)
     projects = [
@@ -274,6 +350,17 @@ def main_page():
             </div>
         """, unsafe_allow_html=True)
 
+    # 添加交互式项目时间线
+    st.markdown('<h2 class="section-title">项目时间线</h2>', unsafe_allow_html=True)
+    timeline_data = [
+        {"项目": "深海生态系统探索", "开始": "2023-01-01", "结束": "2024-12-31"},
+        {"项目": "海洋微塑料污染研究", "开始": "2023-06-01", "结束": "2025-05-31"},
+        {"项目": "海洋生物多样性调查", "开始": "2024-03-01", "结束": "2026-02-28"}
+    ]
+    fig = px.timeline(timeline_data, x_start="开始", x_end="结束", y="项目", color="项目")
+    fig.update_yaxes(autorange="reversed")
+    st.plotly_chart(fig)
+
     # 发表论文
     st.markdown('<h2 class="section-title">发表论文</h2>', unsafe_allow_html=True)
     st.markdown('<div class="section" id="发表论文"></div>', unsafe_allow_html=True)
@@ -295,6 +382,15 @@ def main_page():
                 <p><a href="{paper['link']}">{paper['title']}</a></p>
             </div>
         """, unsafe_allow_html=True)
+
+    # 添加论文引用统计
+    st.markdown('<h3>论文引用统计</h3>', unsafe_allow_html=True)
+    citations_data = pd.DataFrame({
+        '论文': ['海洋生态学的现状与展望', '海洋污染治理的新方法'],
+        '引用次数': [120, 85]
+    })
+    fig = px.bar(citations_data, x='论文', y='引用次数', title='论文引用统计')
+    st.plotly_chart(fig)
 
     # 联系方式
     st.markdown('<h2 class="section-title">联系方式</h2>', unsafe_allow_html=True)
@@ -325,6 +421,15 @@ def main_page():
         st.markdown(f'<div style="text-align: center; margin: 10px;"><img src="https://via.placeholder.com/100x50?text={partner}" alt="{partner}"><p>{partner}</p></div>', unsafe_allow_html=True)
     st.markdown('</div></div>', unsafe_allow_html=True)
 
+    # 添加互动式实验室参观
+    st.markdown('<h2 class="section-title">虚拟实验室参观</h2>', unsafe_allow_html=True)
+    st.markdown("""
+        <div style="width: 100%; height: 400px; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center;">
+            <p style="font-size: 24px;">这里将是一个360度全景虚拟实验室参观</p>
+        </div>
+    """, unsafe_allow_html=True)
+    st.write("正在开发中，敬请期待！")
+
     # 新闻与更新
     st.markdown('<h2 class="section-title">新闻与更新</h2>', unsafe_allow_html=True)
     st.markdown('<div class="section" id="新闻与更新"></div>', unsafe_allow_html=True)
@@ -336,5 +441,21 @@ def main_page():
     for update in updates:  
         st.write(f"- {update}")
 
-    # 页脚
-    st.markdown('<div class="footer">© 2024 陈浩实验室. 保留所有权利.</div>', unsafe_allow_html=True)
+    # 添加订阅功能
+    st.markdown('<h2 class="section-title">订阅我们的通讯</h2>', unsafe_allow_html=True)
+    email = st.text_input("输入您的邮箱地址")
+    if st.button("订阅"):
+        st.success("感谢您的订阅！")
+
+    # 改进页脚
+    st.markdown("""
+        <div class="footer">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>© 2024 陈浩实验室. 保留所有权利.</div>
+                <div>
+                    <a href="#" style="color: white; margin-right: 10px;">隐私政策</a>
+                    <a href="#" style="color: white;">使用条款</a>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
