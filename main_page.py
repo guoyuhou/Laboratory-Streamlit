@@ -330,21 +330,36 @@ def main_page():
     team_members = {
         '陈浩': {
             'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-            'image': 'https://img2.baidu.com/it/u=1814268193,3619863984&fm=253&fmt=auto&app=138&f=JPEG?w=632&h=500'
+            'image': 'https://img1.baidu.com/it/u=1978093910,2102820411&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
         }, 
         '王普': {
             'description': '博士研究生，研究方向：海洋生物多样性',
-            'image': 'https://img1.baidu.com/it/u=1407750889,3441968730&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=799'
+            'image': 'https://img2.baidu.com/it/u=2521851051,2189866243&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500'
         },
         '王淑新': {
             'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'https://img0.baidu.com/it/u=2521851051,2189866243&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500'
+            'image': 'https://img0.baidu.com/it/u=1407750889,3441968730&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=799'
         },
-        'bro': {
+        '张明': {
             'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'https://img1.baidu.com/it/u=1978093910,2102820411&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
+            'image': 'https://img2.baidu.com/it/u=1814268193,3619863984&fm=253&fmt=auto&app=138&f=JPEG?w=632&h=500'
         }
     }
+
+    # 定义固定的图片尺寸
+    IMAGE_SIZE = (150, 150)
+
+    # 创建团队成员展示
+    cols = st.columns(len(team_members))
+    for i, (member, info) in enumerate(team_members.items()):
+        with cols[i]:
+            st.image(info["image"], caption=member, width=IMAGE_SIZE[0])
+            st.markdown(f"""
+                <div style='text-align: center;'>
+                    <strong>{member}</strong><br>
+                    <small>{info['description']}</small>
+                </div>
+            """, unsafe_allow_html=True)
 
     # 定义固定的图片尺寸
     IMAGE_SIZE = (200, 200)
