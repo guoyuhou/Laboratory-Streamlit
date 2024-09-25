@@ -110,6 +110,9 @@ def set_page_style():
             .card-3d-inner {
                 transition: transform 0.6s;
                 transform-style: preserve-3d;
+                position: relative;
+                width: 100%;
+                height: 100%;
             }
 
             .card-3d:hover .card-3d-inner {
@@ -125,6 +128,18 @@ def set_page_style():
 
             .card-3d-back {
                 transform: rotateY(180deg);
+                background-color: rgba(0, 168, 232, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+            }
+
+            /* 新增：圆形团队照片 */
+            .team-member-img {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid #00a8e8;
             }
         </style>
         <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -155,51 +170,138 @@ def lab_introduction():
     with col1:
         st.markdown("""
             <div class="content-box hover-effect">
-                <p>Cosmos Lab 是一个致力于探索宇宙奥秘的前沿实验室。我们运用尖端科技和创新方法，深入研究宇宙的起源、结构和演化。</p>
+                <p>Cosmos Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
                 <p>我们的主要研究方向包括：</p>
                 <ul>
-                    <li>暗物质和暗能量</li>
-                    <li>引力波探测</li>
-                    <li>系外行星和宜居性</li>
+                    <li>海洋生物多样性与生态系统功能</li>
+                    <li>气候变化对海洋环境的影响</li>
+                    <li>海洋污染监测与治理</li>
                 </ul>
             </div>
         """, unsafe_allow_html=True)
     with col2:
-        lottie_space = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_KUFdS6.json")
-        st_lottie(lottie_space, height=300, key="space_animation")
+        lottie_research = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_kkflmtur.json")
+        st_lottie(lottie_research, height=300, key="research_animation")
+    
+    # 悦动的立方体和研究重点
+    st.markdown("""
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="cube-container" style="width: 200px; height: 200px;">
+                <div class="cube">
+                    <div class="face front">海洋生态</div>
+                    <div class="face back">环境保护</div>
+                    <div class="face right">资源利用</div>
+                    <div class="face left">气候变化</div>
+                    <div class="face top">生物多样性</div>
+                    <div class="face bottom">科技创新</div>
+                </div>
+            </div>
+            <div style="width: 60%; padding: 20px;">
+                <h3 style="color: #ffffff;">研究重点</h3>
+                <div class="content-box">
+                    <ul>
+                        <li><strong>海洋生态系统动态：</strong>研究海洋生态系统的结构、功能和变化，以及人类活动对其的影响。</li>
+                        <li><strong>海洋生物技术：</strong>开发基于海洋生物的新型材料、药物和能源解决方案。</li>
+                        <li><strong>海洋环境监测：</strong>利用先进传感器和人工智能技术，实现海洋环境的实时监测和预警。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <style>
+            .cube-container {
+                perspective: 1000px;
+                margin: 30px auto;
+            }
+            .cube {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                transform-style: preserve-3d;
+                animation: rotate 20s infinite linear;
+            }
+            .face {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 100, 255, 0.3);
+                border: 2px solid rgba(0, 100, 255, 0.7);
+                box-shadow: 0 0 20px rgba(0, 100, 255, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 18px;
+                color: white;
+                text-shadow: 1px 1px 2px black;
+            }
+            .front  { transform: rotateY(0deg) translateZ(100px); }
+            .back   { transform: rotateY(180deg) translateZ(100px); }
+            .right  { transform: rotateY(90deg) translateZ(100px); }
+            .left   { transform: rotateY(-90deg) translateZ(100px); }
+            .top    { transform: rotateX(90deg) translateZ(100px); }
+            .bottom { transform: rotateX(-90deg) translateZ(100px); }
+            @keyframes rotate {
+                0% { transform: rotateX(0deg) rotateY(0deg); }
+                100% { transform: rotateX(360deg) rotateY(360deg); }
+            }
+            .cube:hover {
+                animation-play-state: paused;
+            }
+            .face:hover {
+                background: rgba(0, 255, 100, 0.5);
+                cursor: pointer;
+            }
+        </style>
+        <script>
+            document.querySelector('.cube-container').addEventListener('mousemove', (e) => {
+                const cube = document.querySelector('.cube');
+                const rect = cube.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                cube.style.transform = `rotateY(${x / 5}deg) rotateX(${-y / 5}deg)`;
+            });
+            document.querySelector('.cube-container').addEventListener('mouseleave', () => {
+                document.querySelector('.cube').style.transform = '';
+            });
+            document.querySelectorAll('.face').forEach(face => {
+                face.addEventListener('click', () => {
+                    alert('您点击了：' + face.textContent + '。这里可以链接到相关研究内容。');
+                });
+            });
+        </script>
+    """, unsafe_allow_html=True)
 
 # 研究重点
 def research_focus():
     st.markdown('<h2 class="section-title">研究重点</h2>', unsafe_allow_html=True)
-    research_areas = [
+    research_focus = [
         {
-            'title': '暗物质探测',
-            'description': '利用先进的粒子探测器和数据分析技术，揭示暗物质的本质。',
-            'icon': '🔭'
-        },
-        {
-            'title': '引力波天文学',
-            'description': '通过LIGO等设备，探测和分析引力波信号，开启多信使天文学新时代。',
+            'title': '海洋生态系统动态',
+            'description': '研究海洋生态系统的结构、功能和变化，以及人类活动对其的影响。',
             'icon': '🌊'
         },
         {
-            'title': '系外行星研究',
-            'description': '搜寻和研究系外行星，评估其宜居性，探索地外生命的可能性。',
-            'icon': '🪐'
+            'title': '海洋生物技术',
+            'description': '开发基于海洋生物的新型材料、药物和能源解决方案。',
+            'icon': '🧬'
+        },
+        {
+            'title': '海洋环境监测',
+            'description': '利用先进传感器和人工智能技术，实现海洋环境的实时监测和预警。',
+            'icon': '📡'
         }
     ]
 
-    cols = st.columns(len(research_areas))
-    for i, area in enumerate(research_areas):
+    cols = st.columns(len(research_focus))
+    for i, focus in enumerate(research_focus):
         with cols[i]:
             st.markdown(f"""
                 <div class="content-box hover-effect card-3d">
                     <div class="card-3d-inner">
                         <div class="card-3d-front">
-                            <h3>{area['icon']} {area['title']}</h3>
+                            <h3>{focus['icon']} {focus['title']}</h3>
                         </div>
                         <div class="card-3d-back">
-                            <p>{area['description']}</p>
+                            <p>{focus['description']}</p>
                         </div>
                     </div>
                 </div>
@@ -210,16 +312,20 @@ def research_team():
     st.markdown('<h2 class="section-title">研究团队</h2>', unsafe_allow_html=True)
     team_members = {
         '陈浩': {
-            'description': '实验室主任，研究方向：理论宇宙学',
-            'image': 'https://example.com/images/chen_hao.jpg'
-        },
+            'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
+            'image': 'https://img1.baidu.com/it/u=1978093910,2102820411&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
+        }, 
         '王普': {
-            'description': '首席科学家，研究方向：引力波物理',
-            'image': 'https://example.com/images/wang_pu.jpg'
+            'description': '博士研究生，研究方向：海洋生物多样性',
+            'image': 'https://img2.baidu.com/it/u=2521851051,2189866243&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500'
+        },
+        '王淑新': {
+            'description': '硕士研究生，研究方向：海洋污染治理',
+            'image': 'https://img0.baidu.com/it/u=1407750889,3441968730&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=799'
         },
         '张明': {
-            'description': '高级研究员，研究方向：系外行星探测',
-            'image': 'https://example.com/images/zhang_ming.jpg'
+            'description': '硕士研究生，研究方向：海洋污染治理',
+            'image': 'https://img2.baidu.com/it/u=1814268193,3619863984&fm=253&fmt=auto&app=138&f=JPEG?w=632&h=500'
         }
     }
 
@@ -228,7 +334,7 @@ def research_team():
         with cols[i]:
             st.markdown(f"""
                 <div class="content-box hover-effect" style="text-align: center;">
-                    <img src="{info['image']}" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
+                    <img src="{info['image']}" class="team-member-img">
                     <h3>{member}</h3>
                     <p>{info['description']}</p>
                 </div>
@@ -255,7 +361,7 @@ def research_projects():
 
     for project in projects:
         st.markdown(f"""
-            <div class="content-box" style="display: flex; align-items: center;">
+            <div class="content-box hover-effect" style="display: flex; align-items: center;">
                 <img src="{project['image']}" style="width: 150px; height: 150px; object-fit: cover; margin-right: 20px; border-radius: 10px;">
                 <div>
                     <h3>{project['name']}</h3>
@@ -281,7 +387,7 @@ def published_papers():
 
     for paper in papers:
         st.markdown(f"""
-            <div class="section">
+            <div class="content-box hover-effect">
                 <p><a href="{paper['link']}">{paper['title']}</a></p>
             </div>
         """, unsafe_allow_html=True)
@@ -302,7 +408,7 @@ def contact_info():
     with col2:
         for key, value in contact_info.items():
             st.markdown(f"""
-                <div style="display: flex; align-items: center;">
+                <div class="content-box hover-effect" style="display: flex; align-items: center;">
                     <span class="icon">🔗</span><strong>{key}:</strong> {value}
                 </div>
             """, unsafe_allow_html=True)
@@ -312,7 +418,7 @@ def partners():
     st.markdown('<h2 class="section-title">合作伙伴</h2>', unsafe_allow_html=True)
     partners = ['国家海洋局', '中国科学院海洋研究所', 'NOAA', 'Woods Hole 海洋研究所']
     st.markdown("""
-        <div class="content-box">
+        <div class="content-box hover-effect">
             <p>我们与以下机构保持密切合作关系：</p>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
     """, unsafe_allow_html=True)
@@ -328,7 +434,11 @@ def news_and_updates():
         '2024年2月：实验室成员参加国际海洋会议。'
     ]
     for update in updates:  
-        st.write(f"- {update}")
+        st.markdown(f"""
+            <div class="content-box hover-effect">
+                <p>- {update}</p>
+            </div>
+        """, unsafe_allow_html=True)
 
 # 页脚
 def footer():
@@ -340,9 +450,15 @@ def main_page():
     create_navigation()
     
     st.markdown("""
-        <h1 class="main-title">
+        <h1 class="main-title" style="margin-top: 10px; animation: fadeInDown 1.5s;">
             Cosmos Lab
         </h1>
+        <style>
+            @keyframes fadeInDown {
+                from {opacity: 0; transform: translate3d(0, -100%, 0);}
+                to {opacity: 1; transform: translate3d(0, 0, 0);}
+            }
+        </style>
     """, unsafe_allow_html=True)
     
     lab_introduction()
