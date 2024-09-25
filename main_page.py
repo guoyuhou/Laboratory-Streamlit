@@ -347,21 +347,6 @@ def main_page():
     }
 
     # 定义固定的图片尺寸
-    IMAGE_SIZE = (150, 150)
-
-    # 创建团队成员展示
-    cols = st.columns(len(team_members))
-    for i, (member, info) in enumerate(team_members.items()):
-        with cols[i]:
-            st.image(info["image"], caption=member, width=IMAGE_SIZE[0])
-            st.markdown(f"""
-                <div style='text-align: center;'>
-                    <strong>{member}</strong><br>
-                    <small>{info['description']}</small>
-                </div>
-            """, unsafe_allow_html=True)
-
-    # 定义固定的图片尺寸
     IMAGE_SIZE = (200, 200)
 
     # 创建团队成员展示
@@ -369,7 +354,12 @@ def main_page():
     for i, (member, info) in enumerate(team_members.items()):
         with cols[i]:
             st.image(info["image"], caption=member, use_column_width=True)
-            st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
+            st.markdown(f"""
+                <div style='text-align: center;'>
+                    <strong>{member}</strong><br>
+                    <small>{info['description']}</small>
+                </div>
+            """, unsafe_allow_html=True)
 
     # 修改研究项目展示
     st.markdown('<h2 class="section-title">研究项目</h2>', unsafe_allow_html=True)
