@@ -176,14 +176,6 @@ def main_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # 实验室宣传片
-    st.video('videos/elon_mask.mp4')
-
-    st.markdown("""
-        <div style='text-align: center; font-size: 20px; font-weight: bold;'>
-            向未知之境的探索者致敬<br>
-        </div>
-    """, unsafe_allow_html=True)
     
     # 悦动的立方体和研究重点
     st.markdown("""
