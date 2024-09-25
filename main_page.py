@@ -26,60 +26,41 @@ def set_page_style():
             @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
             
             body {
-                background: linear-gradient(45deg, #000000, #0a192f);
-                color: #ffffff;
+                background-color: #ffffff;
+                color: #000000;
                 font-family: 'Orbitron', sans-serif;
             }
 
             .main-title {
                 font-size: 4rem;
                 text-align: center;
-                color: #64ffda;
-                text-shadow: 0 0 10px #64ffda, 0 0 20px #64ffda, 0 0 30px #64ffda;
+                color: #0066cc;
                 animation: glow 2s ease-in-out infinite alternate;
             }
 
             @keyframes glow {
                 from {
-                    text-shadow: 0 0 5px #64ffda, 0 0 10px #64ffda, 0 0 15px #64ffda;
+                    text-shadow: 0 0 5px #0066cc, 0 0 10px #0066cc;
                 }
                 to {
-                    text-shadow: 0 0 10px #64ffda, 0 0 20px #64ffda, 0 0 30px #64ffda;
+                    text-shadow: 0 0 10px #0066cc, 0 0 20px #0066cc;
                 }
             }
 
             .section-title {
-                color: #ccd6f6;
-                border-bottom: 2px solid #64ffda;
+                color: #0066cc;
+                border-bottom: 2px solid #0066cc;
                 padding-bottom: 10px;
                 margin-bottom: 20px;
             }
 
             .content-box {
-                background-color: rgba(10, 25, 47, 0.7);
-                border: 1px solid #64ffda;
+                background-color: #f0f8ff;
+                border: 1px solid #0066cc;
                 border-radius: 10px;
                 padding: 20px;
                 margin-bottom: 20px;
-                box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
-            }
-
-            .nav {
-                background-color: rgba(10, 25, 47, 0.9);
-                padding: 10px;
-                border-bottom: 1px solid #64ffda;
-            }
-
-            .nav a {
-                color: #64ffda;
-                margin: 0 15px;
-                text-decoration: none;
-                transition: all 0.3s ease;
-            }
-
-            .nav a:hover {
-                color: #ffffff;
-                text-shadow: 0 0 5px #64ffda;
+                box-shadow: 0 0 15px rgba(0, 102, 204, 0.3);
             }
 
             /* 新增：悬浮效果 */
@@ -89,17 +70,7 @@ def set_page_style():
 
             .hover-effect:hover {
                 transform: translateY(-5px);
-                box-shadow: 0 5px 15px rgba(100, 255, 218, 0.5);
-            }
-
-            /* 新增：粒子背景 */
-            #particles-js {
-                position: fixed;
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
-                z-index: -1;
+                box-shadow: 0 5px 15px rgba(0, 102, 204, 0.5);
             }
 
             /* 新增：3D卡片效果 */
@@ -128,7 +99,7 @@ def set_page_style():
 
             .card-3d-back {
                 transform: rotateY(180deg);
-                background-color: rgba(0, 168, 232, 0.1);
+                background-color: rgba(0, 102, 204, 0.1);
                 border-radius: 10px;
                 padding: 10px;
             }
@@ -139,28 +110,9 @@ def set_page_style():
                 height: 150px;
                 border-radius: 50%;
                 object-fit: cover;
-                border: 3px solid #00a8e8;
+                border: 3px solid #0066cc;
             }
         </style>
-        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-        <script>
-            particlesJS.load('particles-js', 'assets/particles.json', function() {
-                console.log('particles.js loaded');
-            });
-        </script>
-        <div id="particles-js"></div>
-    """, unsafe_allow_html=True)
-
-# 导航栏
-def create_navigation():
-    st.markdown("""
-        <div class="nav">
-            <a href="#实验室简介">实验室简介</a>
-            <a href="#研究重点">研究重点</a>
-            <a href="#研究团队">研究团队</a>
-            <a href="#研究项目">研究项目</a>
-            <a href="#联系方式">联系方式</a>
-        </div>
     """, unsafe_allow_html=True)
 
 # 实验室简介
@@ -197,7 +149,7 @@ def lab_introduction():
                 </div>
             </div>
             <div style="width: 60%; padding: 20px;">
-                <h3 style="color: #ffffff;">研究重点</h3>
+                <h3 style="color: #0066cc;">研究重点</h3>
                 <div class="content-box">
                     <ul>
                         <li><strong>海洋生态系统动态：</strong>研究海洋生态系统的结构、功能和变化，以及人类活动对其的影响。</li>
@@ -223,15 +175,14 @@ def lab_introduction():
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 100, 255, 0.3);
-                border: 2px solid rgba(0, 100, 255, 0.7);
-                box-shadow: 0 0 20px rgba(0, 100, 255, 0.5);
+                background: rgba(0, 102, 204, 0.3);
+                border: 2px solid rgba(0, 102, 204, 0.7);
+                box-shadow: 0 0 20px rgba(0, 102, 204, 0.5);
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-size: 18px;
-                color: white;
-                text-shadow: 1px 1px 2px black;
+                color: #0066cc;
             }
             .front  { transform: rotateY(0deg) translateZ(100px); }
             .back   { transform: rotateY(180deg) translateZ(100px); }
@@ -247,7 +198,7 @@ def lab_introduction():
                 animation-play-state: paused;
             }
             .face:hover {
-                background: rgba(0, 255, 100, 0.5);
+                background: rgba(0, 102, 204, 0.5);
                 cursor: pointer;
             }
         </style>
@@ -447,7 +398,6 @@ def footer():
 # 主函数
 def main_page():
     set_page_style()
-    create_navigation()
     
     st.markdown("""
         <h1 class="main-title" style="margin-top: 10px; animation: fadeInDown 1.5s;">
