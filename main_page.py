@@ -130,23 +130,7 @@ def main_page():
         </style>
     """, unsafe_allow_html=True)
 
-    # 添加粒子效果
-    st.markdown("""
-        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-        <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
-        <script>
-            particlesJS("particles-js", {
-                "particles": {
-                    "number": {"value": 80},
-                    "color": {"value": "#ffffff"},
-                    "shape": {"type": "circle"},
-                    "opacity": {"value": 0.5, "random": true},
-                    "size": {"value": 3, "random": true},
-                    "move": {"enable": true, "speed": 1}
-                }
-            });
-        </script>
-    """, unsafe_allow_html=True)
+ 
 
     # 导航栏
     st.markdown("""
