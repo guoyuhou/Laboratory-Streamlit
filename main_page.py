@@ -330,19 +330,19 @@ def main_page():
     team_members = {
         '陈浩': {
             'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-            'image': 'Images/example1.jpg'
+            'image': 'https://example.com/images/chen_hao.jpg'
         }, 
         '王普': {
             'description': '博士研究生，研究方向：海洋生物多样性',
-            'image': 'Images/example2.jpg'
+            'image': 'https://example.com/images/wang_pu.jpg'
         },
         '王淑新': {
             'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'Images/example3.jpg'
+            'image': 'https://example.com/images/wang_shuxin.jpg'
         },
         'bro': {
             'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'Images/example4.jpg'
+            'image': 'https://example.com/images/bro.jpg'
         }
     }
 
@@ -353,10 +353,7 @@ def main_page():
     cols = st.columns(len(team_members))
     for i, (member, info) in enumerate(team_members.items()):
         with cols[i]:
-            # 使用PIL库调整图片大小
-            image = Image.open(info["image"])
-            image = image.resize(IMAGE_SIZE)
-            st.image(image, caption=member, use_column_width=True)
+            st.image(info["image"], caption=member, use_column_width=True)
             st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
 
     # 修改研究项目展示
@@ -368,13 +365,13 @@ def main_page():
         {
             'name': '深海生态系统探索',
             'description': '利用先进的水下机器人技术，探索深海生态系统的未知领域。',
-            'image': 'https://example.com/deep_sea_project.jpg',
+            'image': 'https://example.com/images/deep_sea_project.jpg',
             'link': 'https://example.com/project1'
         },
         {
             'name': '海洋微塑料污染研究',
             'description': '开发新型检测方法，评估微塑料对海洋生态系统的影响。',
-            'image': 'https://example.com/microplastics_project.jpg',
+            'image': 'https://example.com/images/microplastics_project.jpg',
             'link': 'https://example.com/project2'
         }
     ]
@@ -444,7 +441,7 @@ def main_page():
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
     """, unsafe_allow_html=True)
     for partner in partners:
-        st.markdown(f'<div style="text-align: center; margin: 10px;"><img src="https://via.placeholder.com/100x50?text={partner}" alt="{partner}"><p>{partner}</p></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center; margin: 10px;"><img src="https://example.com/images/{partner.lower().replace(" ", "_")}.jpg" alt="{partner}" style="width: 100px; height: 50px; object-fit: contain;"><p>{partner}</p></div>', unsafe_allow_html=True)
     st.markdown('</div></div>', unsafe_allow_html=True)
 
     # 新闻与更新
