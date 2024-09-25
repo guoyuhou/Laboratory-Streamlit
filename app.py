@@ -15,12 +15,11 @@ from PIL import Image
 import folium
 from streamlit_folium import folium_static
 st.set_page_config(
-        page_title="Cosmos Lab",
+        page_title="Frontier Lab",
         page_icon="🚀",
         layout="wide",
         initial_sidebar_state="expanded"
     )
-
 
 # 设置版本信息
 VERSION = "1.0.0"
@@ -31,50 +30,73 @@ def main():
     st.markdown("""
         <style>
         .stApp {
-            background-color: white;
+            background-color: #f0f2f6;
             font-family: 'Helvetica Neue', Arial, sans-serif;
         }
         .main .block-container {
-            padding-top: 1rem;
-            padding-right: 1rem;
-            padding-left: 1rem;
-            padding-bottom: 1rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .stButton>button {
             background-color: #4a90e2;
             color: white;
-            border-radius: 4px;
-            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            padding: 0.6rem 1.2rem;
             font-weight: bold;
             border: none;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(74, 144, 226, 0.3);
         }
         .stButton>button:hover {
             background-color: #357ae8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(74, 144, 226, 0.4);
         }
         .stTextInput>div>div>input {
-            border-radius: 4px;
-            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            border: 2px solid #e0e0e0;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .stTextInput>div>div>input:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
         }
         .sidebar .sidebar-content {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
         }
         .stSelectbox {
-            border-radius: 4px;
-            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            border: 2px solid #e0e0e0;
         }
         .stMarkdown a {
             color: #4a90e2;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
         .stMarkdown a:hover {
+            color: #357ae8;
             text-decoration: underline;
         }
         </style>
         """, unsafe_allow_html=True)
 
-    # 显示logo
-    st.logo('Images/sdu_logo2.jpg')
+    # 显示动画logo
+    st.markdown("""
+        <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
+            <img src="Images/sdu_logo2.jpg" alt="SDU Logo" style="max-height: 100%; max-width: 100%; animation: pulse 2s infinite;">
+        </div>
+        <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
     users = load_users()
     auth_manager = AuthManager(users)
@@ -98,7 +120,7 @@ def main():
     with st.sidebar:
         st.markdown("---")
         st.markdown(
-            '<h6 style="text-align: center;">由 <img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16"> 强力驱动 Made by ModernY</h6>',
+            '<h6 style="text-align: center;">由 <img src="https://streamlit.io/images/brand/streamlit-mark-color.png" alt="Streamlit logo" height="16"> 强力驱动</h6>',
             unsafe_allow_html=True,
         )
         st.markdown(
@@ -109,60 +131,16 @@ def main():
         st.text(f"版本: {VERSION}")
 
 def handle_login(auth_manager):
-    st.markdown("""
-        <style>
-        .login-container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 30px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .login-title {
-            text-align: center;
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .login-input {
-            margin-bottom: 15px;
-        }
-        .login-button {
-            width: 100%;
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .login-button:hover {
-            background-color: #0056b3;
-        }
-        .login-footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        .login-footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown('<div class="login-container">', unsafe_allow_html=True)
-    st.markdown('<h2 class="login-title">欢迎登录</h2>', unsafe_allow_html=True)
-
-    username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
-    password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
+    st.markdown("<h1 style='text-align: center; color: #4a90e2;'>欢迎登录</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 18px;'>请登录以访问更多精彩内容。</p>", unsafe_allow_html=True)
     
-    remember_me = st.checkbox("记住我")
-    
-    col1, col2 = st.columns(2)
-    with col1:
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
+        password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
+        
+        remember_me = st.checkbox("记住我")
+        
         if st.button("登录", key="login_submit"):
             if username and password:
                 user = auth_manager.authenticate_user(username, password)
@@ -174,19 +152,15 @@ def handle_login(auth_manager):
                     st.error("用户名或密码无效")
             else:
                 st.warning("用户名和密码不能为空")
-    with col2:
-        if st.button("返回主页", key="return_home"):
-            st.session_state['login_page'] = False
-            st.snow()
-    st.markdown('<div class="login-footer">', unsafe_allow_html=True)
+
+    st.markdown("---")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown('<a href="#" onclick="alert(\'请联系管理员重置密码\')">忘记密码？</a>', unsafe_allow_html=True)
+        if st.button("忘记密码？", key="forgot_password"):
+            st.info("请联系管理员重置密码")
     with col2:
-        st.markdown('<a href="#" onclick="alert(\'请联系管理员创建新账号\')">没有账号？注册</a>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("没有账号？注册", key="register"):
+            st.info("请联系管理员创建新账号")
 
 def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
