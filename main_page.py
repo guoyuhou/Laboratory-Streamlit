@@ -21,7 +21,7 @@ def main_page():
     st.markdown("""
         <style>
             body {
-                background: linear-gradient(135deg, #002d72, #0056b3);
+                background: linear-gradient(-45deg, #002d72, #0056b3, #00a8e8, #0077be);
                 background-size: 400% 400%;
                 animation: gradientBG 15s ease infinite;
             }
@@ -130,6 +130,24 @@ def main_page():
         </style>
     """, unsafe_allow_html=True)
 
+    # 添加粒子效果
+    st.markdown("""
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+        <script>
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {"value": 80},
+                    "color": {"value": "#ffffff"},
+                    "shape": {"type": "circle"},
+                    "opacity": {"value": 0.5, "random": true},
+                    "size": {"value": 3, "random": true},
+                    "move": {"enable": true, "speed": 1}
+                }
+            });
+        </script>
+    """, unsafe_allow_html=True)
+
     # 导航栏
     st.markdown("""
         <div class="nav">
@@ -144,7 +162,17 @@ def main_page():
     """, unsafe_allow_html=True)
 
     # 实验室标题
-    st.markdown('<h1 class="main-title" style="margin-top: 10px;">Cosmos Lab</h1>', unsafe_allow_html=True)
+    st.markdown("""
+        <h1 class="main-title" style="margin-top: 10px; animation: fadeInDown 1.5s;">
+            Cosmos Lab
+        </h1>
+        <style>
+            @keyframes fadeInDown {
+                from {opacity: 0; transform: translate3d(0, -100%, 0);}
+                to {opacity: 1; transform: translate3d(0, 0, 0);}
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
     # 修改实验室简介部分
     st.markdown('<h2 class="section-title" style="color: #000000;">实验室简介</h2>', unsafe_allow_html=True)
@@ -169,6 +197,27 @@ def main_page():
         <div style='text-align: center; font-size: 20px; font-weight: bold;'>
             向未知之境的探索者致敬<br>
         </div>
+    """, unsafe_allow_html=True)
+
+    # 添加交互式3D地球模型
+    st.markdown("""
+        <div id="earth-container" style="width: 100%; height: 400px;"></div>
+        <script src="https://www.webglearth.com/v2/api.js"></script>
+        <script>
+            var earth = new WE.map('earth-container');
+            WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
+            earth.setView([0, 0], 2.5);
+            
+            // 添加实验室位置标记
+            var marker = WE.marker([36.0, 120.3]).addTo(earth);
+            marker.bindPopup("<b>Cosmos Lab</b><br>青岛", {maxWidth: 120, closeButton: true});
+
+            // 添加动画效果
+            (function animate() {
+                requestAnimationFrame(animate);
+                earth.setCenter([36.0 + Math.random() * 0.1, 120.3 + Math.random() * 0.1]);
+            }());
+        </script>
     """, unsafe_allow_html=True)
 
     # 动态数据图表
