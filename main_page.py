@@ -288,13 +288,6 @@ def research_focus():
                 </div>
             """, unsafe_allow_html=True)
 
-# 实时数据展示
-def real_time_data():
-    st.markdown('<h2 class="section-title">实时数据展示</h2>', unsafe_allow_html=True)
-    data = load_data()
-    fig = px.line(data, x='时间', y='研究成果', title='实验室研究成果趋势', markers=True)
-    st.plotly_chart(fig)
-
 # 研究团队
 def research_team():
     st.markdown('<h2 class="section-title">研究团队</h2>', unsafe_allow_html=True)
@@ -451,7 +444,6 @@ def main_page():
     
     lab_introduction()
     research_focus()
-    real_time_data()
     research_team()
     research_projects()
     published_papers()
