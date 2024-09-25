@@ -353,6 +353,7 @@ def main_page():
     cols = st.columns(len(team_members))
     for i, (member, info) in enumerate(team_members.items()):
         with cols[i]:
+            # 使用st.image()代替HTML中的<img>标签
             st.image(info["image"], caption=member, use_column_width=True)
             st.markdown(f"<strong>{member}</strong><br>{info['description']}", unsafe_allow_html=True)
 
@@ -377,16 +378,16 @@ def main_page():
     ]
 
     for project in projects:
-        st.markdown(f"""
-            <div class="content-box" style="display: flex; align-items: center;">
-                <img src="{project['image']}" style="width: 150px; height: 150px; object-fit: cover; margin-right: 20px; border-radius: 10px;">
-                <div>
-                    <h3>{project['name']}</h3>
-                    <p>{project['description']}</p>
-                    <a href="{project['link']}" target="_blank">了解更多 →</a>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            # 使用st.image()代替HTML中的<img>标签
+            st.image(project['image'], width=150)
+        with col2:
+            st.markdown(f"""
+                <h3>{project['name']}</h3>
+                <p>{project['description']}</p>
+                <a href="{project['link']}" target="_blank">了解更多 →</a>
+            """, unsafe_allow_html=True)
 
     # 发表论文
     st.markdown('<h2 class="section-title">发表论文</h2>', unsafe_allow_html=True)
@@ -441,7 +442,8 @@ def main_page():
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
     """, unsafe_allow_html=True)
     for partner in partners:
-        st.markdown(f'<div style="text-align: center; margin: 10px;"><img src="https://example.com/images/{partner.lower().replace(" ", "_")}.jpg" alt="{partner}" style="width: 100px; height: 50px; object-fit: contain;"><p>{partner}</p></div>', unsafe_allow_html=True)
+        # 使用st.image()代替HTML中的<img>标签
+        st.image(f"https://example.com/images/{partner.lower().replace(' ', '_')}.jpg", width=100, caption=partner)
     st.markdown('</div></div>', unsafe_allow_html=True)
 
     # 新闻与更新
