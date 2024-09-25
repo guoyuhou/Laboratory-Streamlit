@@ -23,117 +23,117 @@ def load_data():
 def set_page_style():
     st.markdown("""
         <style>
+            @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+            
             body {
-                background: linear-gradient(-45deg, #002d72, #0056b3, #00a8e8, #0077be);
-                background-size: 400% 400%;
-                animation: gradientBG 15s ease infinite;
-            }
-
-            @keyframes gradientBG {
-                0% {background-position: 0% 50%;}
-                50% {background-position: 100% 50%;}
-                100% {background-position: 0% 50%;}
+                background: linear-gradient(45deg, #000000, #0a192f);
+                color: #ffffff;
+                font-family: 'Orbitron', sans-serif;
             }
 
             .main-title {
+                font-size: 4rem;
                 text-align: center;
-                font-size: 3.5rem;
-                color: #ffffff;
-                padding: 30px;
-                background-color: rgba(0, 45, 114, 0.9);
-                border-radius: 15px;
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-                margin-top: 30px;   
-                letter-spacing: 2px;
-                text-transform: uppercase;
+                color: #64ffda;
+                text-shadow: 0 0 10px #64ffda, 0 0 20px #64ffda, 0 0 30px #64ffda;
+                animation: glow 2s ease-in-out infinite alternate;
+            }
+
+            @keyframes glow {
+                from {
+                    text-shadow: 0 0 5px #64ffda, 0 0 10px #64ffda, 0 0 15px #64ffda;
+                }
+                to {
+                    text-shadow: 0 0 10px #64ffda, 0 0 20px #64ffda, 0 0 30px #64ffda;
+                }
             }
 
             .section-title {
-                color: #000000;
-                border-bottom: 2px solid #ffa500;
+                color: #ccd6f6;
+                border-bottom: 2px solid #64ffda;
                 padding-bottom: 10px;
                 margin-bottom: 20px;
-                background-color: rgba(255, 255, 255, 0.8);
-                padding: 10px;
-                border-radius: 5px;
             }
 
             .content-box {
-                background-color: rgba(255, 255, 255, 0.9);
-                padding: 20px;
+                background-color: rgba(10, 25, 47, 0.7);
+                border: 1px solid #64ffda;
                 border-radius: 10px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                padding: 20px;
                 margin-bottom: 20px;
+                box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
             }
 
             .nav {
-                position: fixed;
-                top: 0;
-                width: 100%;
-                background-color: rgba(0, 0, 0, 0.8);
-                color: white;
+                background-color: rgba(10, 25, 47, 0.9);
                 padding: 10px;
-                text-align: center;
-                z-index: 1000;
+                border-bottom: 1px solid #64ffda;
             }
 
             .nav a {
-                color: white;
+                color: #64ffda;
                 margin: 0 15px;
                 text-decoration: none;
-                transition: color 0.3s;
+                transition: all 0.3s ease;
             }
 
             .nav a:hover {
-                color: #ffa500;
-            }
-
-            .team-member img {
-                border-radius: 75px;
-                transition: transform 0.2s;
-                border: 3px solid #ffffff;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            }
-
-            .team-member img:hover {
-                transform: scale(1.1);
-            }
-
-            .footer {
-                text-align: center;
-                padding: 20px;
-                background-color: #002d72;
                 color: #ffffff;
-                position: relative;
-                bottom: 0;
+                text-shadow: 0 0 5px #64ffda;
+            }
+
+            /* 新增：悬浮效果 */
+            .hover-effect {
+                transition: all 0.3s ease;
+            }
+
+            .hover-effect:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(100, 255, 218, 0.5);
+            }
+
+            /* 新增：粒子背景 */
+            #particles-js {
+                position: fixed;
                 width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: -1;
             }
 
-            .icon {
-                margin-right: 5px;
+            /* 新增：3D卡片效果 */
+            .card-3d {
+                perspective: 1000px;
             }
 
-            /* 响应式设计 */
-            @media (max-width: 768px) {
-                .main-title {
-                    font-size: 2.5rem;
-                    padding: 20px;
-                }
-                .section-title {
-                    font-size: 1.5rem;
-                }
-                .content-box {
-                    padding: 15px;
-                }
-                .nav a {
-                    margin: 0 10px;
-                }
-                .team-member img {
-                    width: 100px;
-                    height: 100px;
-                }
+            .card-3d-inner {
+                transition: transform 0.6s;
+                transform-style: preserve-3d;
+            }
+
+            .card-3d:hover .card-3d-inner {
+                transform: rotateY(180deg);
+            }
+
+            .card-3d-front, .card-3d-back {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+            }
+
+            .card-3d-back {
+                transform: rotateY(180deg);
             }
         </style>
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <script>
+            particlesJS.load('particles-js', 'assets/particles.json', function() {
+                console.log('particles.js loaded');
+            });
+        </script>
+        <div id="particles-js"></div>
     """, unsafe_allow_html=True)
 
 # 导航栏
@@ -141,12 +141,10 @@ def create_navigation():
     st.markdown("""
         <div class="nav">
             <a href="#实验室简介">实验室简介</a>
-            <a href="#实时数据展示">实时数据展示</a>
+            <a href="#研究重点">研究重点</a>
             <a href="#研究团队">研究团队</a>
             <a href="#研究项目">研究项目</a>
-            <a href="#发表论文">发表论文</a>
             <a href="#联系方式">联系方式</a>
-            <a href="#新闻与更新">新闻与更新</a>
         </div>
     """, unsafe_allow_html=True)
 
@@ -156,135 +154,54 @@ def lab_introduction():
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown("""
-            <div class="content-box">
-                <p>Cosmos Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
+            <div class="content-box hover-effect">
+                <p>Cosmos Lab 是一个致力于探索宇宙奥秘的前沿实验室。我们运用尖端科技和创新方法，深入研究宇宙的起源、结构和演化。</p>
                 <p>我们的主要研究方向包括：</p>
                 <ul>
-                    <li>海洋生物多样性与生态系统功能</li>
-                    <li>气候变化对海洋环境的影响</li>
-                    <li>海洋污染监测与治理</li>
+                    <li>暗物质和暗能量</li>
+                    <li>引力波探测</li>
+                    <li>系外行星和宜居性</li>
                 </ul>
             </div>
         """, unsafe_allow_html=True)
     with col2:
-        lottie_research = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_kkflmtur.json")
-        st_lottie(lottie_research, height=300, key="research_animation")
-    
-    # 悦动的立方体和研究重点
-    st.markdown("""
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="cube-container" style="width: 200px; height: 200px;">
-                <div class="cube">
-                    <div class="face front">海洋生态</div>
-                    <div class="face back">环境保护</div>
-                    <div class="face right">资源利用</div>
-                    <div class="face left">气候变化</div>
-                    <div class="face top">生物多样性</div>
-                    <div class="face bottom">科技创新</div>
-                </div>
-            </div>
-            <div style="width: 60%; padding: 20px;">
-                <h3 style="color: #ffffff;">研究重点</h3>
-                <div class="content-box">
-                    <ul>
-                        <li><strong>海洋生态系统动态：</strong>研究海洋生态系统的结构、功能和变化，以及人类活动对其的影响。</li>
-                        <li><strong>海洋生物技术：</strong>开发基于海洋生物的新型材料、药物和能源解决方案。</li>
-                        <li><strong>海洋环境监测：</strong>利用先进传感器和人工智能技术，实现海洋环境的实时监测和预警。</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <style>
-            .cube-container {
-                perspective: 1000px;
-                margin: 30px auto;
-            }
-            .cube {
-                width: 100%;
-                height: 100%;
-                position: relative;
-                transform-style: preserve-3d;
-                animation: rotate 20s infinite linear;
-            }
-            .face {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 100, 255, 0.3);
-                border: 2px solid rgba(0, 100, 255, 0.7);
-                box-shadow: 0 0 20px rgba(0, 100, 255, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 18px;
-                color: white;
-                text-shadow: 1px 1px 2px black;
-            }
-            .front  { transform: rotateY(0deg) translateZ(100px); }
-            .back   { transform: rotateY(180deg) translateZ(100px); }
-            .right  { transform: rotateY(90deg) translateZ(100px); }
-            .left   { transform: rotateY(-90deg) translateZ(100px); }
-            .top    { transform: rotateX(90deg) translateZ(100px); }
-            .bottom { transform: rotateX(-90deg) translateZ(100px); }
-            @keyframes rotate {
-                0% { transform: rotateX(0deg) rotateY(0deg); }
-                100% { transform: rotateX(360deg) rotateY(360deg); }
-            }
-            .cube:hover {
-                animation-play-state: paused;
-            }
-            .face:hover {
-                background: rgba(0, 255, 100, 0.5);
-                cursor: pointer;
-            }
-        </style>
-        <script>
-            document.querySelector('.cube-container').addEventListener('mousemove', (e) => {
-                const cube = document.querySelector('.cube');
-                const rect = cube.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                cube.style.transform = `rotateY(${x / 5}deg) rotateX(${-y / 5}deg)`;
-            });
-            document.querySelector('.cube-container').addEventListener('mouseleave', () => {
-                document.querySelector('.cube').style.transform = '';
-            });
-            document.querySelectorAll('.face').forEach(face => {
-                face.addEventListener('click', () => {
-                    alert('您点击了：' + face.textContent + '。这里可以链接到相关研究内容。');
-                });
-            });
-        </script>
-    """, unsafe_allow_html=True)
+        lottie_space = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_KUFdS6.json")
+        st_lottie(lottie_space, height=300, key="space_animation")
 
 # 研究重点
 def research_focus():
     st.markdown('<h2 class="section-title">研究重点</h2>', unsafe_allow_html=True)
-    research_focus = [
+    research_areas = [
         {
-            'title': '海洋生态系统动态',
-            'description': '研究海洋生态系统的结构、功能和变化，以及人类活动对其的影响。',
+            'title': '暗物质探测',
+            'description': '利用先进的粒子探测器和数据分析技术，揭示暗物质的本质。',
+            'icon': '🔭'
+        },
+        {
+            'title': '引力波天文学',
+            'description': '通过LIGO等设备，探测和分析引力波信号，开启多信使天文学新时代。',
             'icon': '🌊'
         },
         {
-            'title': '海洋生物技术',
-            'description': '开发基于海洋生物的新型材料、药物和能源解决方案。',
-            'icon': '🧬'
-        },
-        {
-            'title': '海洋环境监测',
-            'description': '利用先进传感器和人工智能技术，实现海洋环境的实时监测和预警。',
-            'icon': '📡'
+            'title': '系外行星研究',
+            'description': '搜寻和研究系外行星，评估其宜居性，探索地外生命的可能性。',
+            'icon': '🪐'
         }
     ]
 
-    cols = st.columns(len(research_focus))
-    for i, focus in enumerate(research_focus):
+    cols = st.columns(len(research_areas))
+    for i, area in enumerate(research_areas):
         with cols[i]:
             st.markdown(f"""
-                <div class="content-box" style="text-align: center;">
-                    <h3>{focus['icon']} {focus['title']}</h3>
-                    <p>{focus['description']}</p>
+                <div class="content-box hover-effect card-3d">
+                    <div class="card-3d-inner">
+                        <div class="card-3d-front">
+                            <h3>{area['icon']} {area['title']}</h3>
+                        </div>
+                        <div class="card-3d-back">
+                            <p>{area['description']}</p>
+                        </div>
+                    </div>
                 </div>
             """, unsafe_allow_html=True)
 
@@ -293,35 +210,27 @@ def research_team():
     st.markdown('<h2 class="section-title">研究团队</h2>', unsafe_allow_html=True)
     team_members = {
         '陈浩': {
-            'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-            'image': 'https://img1.baidu.com/it/u=1978093910,2102820411&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
-        }, 
-        '王普': {
-            'description': '博士研究生，研究方向：海洋生物多样性',
-            'image': 'https://img2.baidu.com/it/u=2521851051,2189866243&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500'
+            'description': '实验室主任，研究方向：理论宇宙学',
+            'image': 'https://example.com/images/chen_hao.jpg'
         },
-        '王淑新': {
-            'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'https://img0.baidu.com/it/u=1407750889,3441968730&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=799'
+        '王普': {
+            'description': '首席科学家，研究方向：引力波物理',
+            'image': 'https://example.com/images/wang_pu.jpg'
         },
         '张明': {
-            'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'https://img2.baidu.com/it/u=1814268193,3619863984&fm=253&fmt=auto&app=138&f=JPEG?w=632&h=500'
+            'description': '高级研究员，研究方向：系外行星探测',
+            'image': 'https://example.com/images/zhang_ming.jpg'
         }
     }
 
-    # 定义固定的图片尺寸
-    IMAGE_SIZE = (200, 200)
-
-    # 创建团队成员展示
     cols = st.columns(len(team_members))
     for i, (member, info) in enumerate(team_members.items()):
         with cols[i]:
-            st.image(info["image"], caption=member, use_column_width=True)
             st.markdown(f"""
-                <div style='text-align: center;'>
-                    <strong>{member}</strong><br>
-                    <small>{info['description']}</small>
+                <div class="content-box hover-effect" style="text-align: center;">
+                    <img src="{info['image']}" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
+                    <h3>{member}</h3>
+                    <p>{info['description']}</p>
                 </div>
             """, unsafe_allow_html=True)
 
@@ -431,15 +340,9 @@ def main_page():
     create_navigation()
     
     st.markdown("""
-        <h1 class="main-title" style="margin-top: 10px; animation: fadeInDown 1.5s;">
+        <h1 class="main-title">
             Cosmos Lab
         </h1>
-        <style>
-            @keyframes fadeInDown {
-                from {opacity: 0; transform: translate3d(0, -100%, 0);}
-                to {opacity: 1; transform: translate3d(0, 0, 0);}
-            }
-        </style>
     """, unsafe_allow_html=True)
     
     lab_introduction()
