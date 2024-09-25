@@ -184,31 +184,33 @@ def main_page():
             向未知之境的探索者致敬<br>
         </div>
     """, unsafe_allow_html=True)
-
-    # 添加交互式3D地球模型
-    st.markdown('<h2 class="section-title">实验室位置</h2>', unsafe_allow_html=True)
-    st.markdown("""
-        <div class="content-box">
-            <p>Cosmos Lab 位于美丽的海滨城市青岛，地理坐标为北纬36.0度，东经120.3度。</p>
-        </div>
-    """, unsafe_allow_html=True)
     
-    # 悦动的立方体
+    # 悦动的立方体和研究重点
     st.markdown("""
-        <div class="cube-container">
-            <div class="cube">
-                <div class="face front">海洋生态</div>
-                <div class="face back">环境保护</div>
-                <div class="face right">资源利用</div>
-                <div class="face left">气候变化</div>
-                <div class="face top">生物多样性</div>
-                <div class="face bottom">科技创新</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="cube-container" style="width: 200px; height: 200px;">
+                <div class="cube">
+                    <div class="face front">海洋生态</div>
+                    <div class="face back">环境保护</div>
+                    <div class="face right">资源利用</div>
+                    <div class="face left">气候变化</div>
+                    <div class="face top">生物多样性</div>
+                    <div class="face bottom">科技创新</div>
+                </div>
+            </div>
+            <div style="width: 60%; padding: 20px;">
+                <h3 style="color: #ffffff;">研究重点</h3>
+                <div class="content-box">
+                    <ul>
+                        <li><strong>海洋生态系统动态：</strong>研究海洋生态系统的结构、功能和变化，以及人类活动对其的影响。</li>
+                        <li><strong>海洋生物技术：</strong>开发基于海洋生物的新型材料、药物和能源解决方案。</li>
+                        <li><strong>海洋环境监测：</strong>利用先进传感器和人工智能技术，实现海洋环境的实时监测和预警。</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <style>
             .cube-container {
-                width: 200px;
-                height: 200px;
                 perspective: 1000px;
                 margin: 30px auto;
             }
