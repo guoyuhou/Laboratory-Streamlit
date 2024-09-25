@@ -1,14 +1,16 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-import json
 import streamlit as st
-import plotly.express as px
 import pandas as pd
 import json
 from PIL import Image
 import folium   
 from streamlit_folium import folium_static
+from streamlit_lottie import st_lottie
+import requests
+
+
 
 @st.cache
 def load_data():
@@ -17,6 +19,25 @@ def load_data():
         '时间': ['2023-01', '2023-02', '2023-03', '2023-04'],
         '研究成果': [10, 20, 15, 25]
     })
+
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+def load_data():
+    # 这里应该是加载实际数据的代码
+    # 为了演示，我们使用一些模拟数据
+    import pandas as pd
+    import numpy as np
+    
+    dates = pd.date_range(start='1/1/2023', end='12/31/2023', freq='D')
+    data = pd.DataFrame({
+        '时间': dates,
+        '研究成果': np.cumsum(np.random.randn(len(dates))) + 50
+    })
+    return data
 
 def main_page():
     # 修改背景样式
@@ -132,7 +153,9 @@ def main_page():
         </style>
     """, unsafe_allow_html=True)
 
- 
+    # 添加 Lottie 动画到页面顶部
+    lottie_ocean = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_jbrw3hcz.json")
+    st_lottie(lottie_ocean, height=300, key="ocean_animation")
 
     # 导航栏
     st.markdown("""
@@ -162,20 +185,26 @@ def main_page():
 
     # 修改实验室简介部分
     st.markdown('<h2 class="section-title" style="color: #000000;">实验室简介</h2>', unsafe_allow_html=True)
-    st.markdown("""
-        <div class="content-box">
-            <p>Cosmos Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们的使命是通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
-            <p>我们的研究涵盖了从微观到宏观的多个层面，包括：</p>
-            <ul>
-                <li>海洋生物多样性与生态系统功能</li>
-                <li>气候变化对海洋环境的影响</li>
-                <li>海洋污染监测与治理</li>
-                <li>海洋资源可持续利用</li>
-            </ul>
-            <p>通过跨学科合作和国际交流，我们致力于为全球海洋科学研究做出重大贡献。</p>
-        </div>
-    """, unsafe_allow_html=True)
-
+    
+    # 添加 Lottie 动画到实验室简介旁边
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown("""
+            <div class="content-box">
+                <p>Cosmos Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们的使命是通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
+                <p>我们的研究涵盖了从微观到宏观的多个层面，包括：</p>
+                <ul>
+                    <li>海洋生物多样性与生态系统功能</li>
+                    <li>气候变化对海洋环境的影响</li>
+                    <li>海洋污染监测与治理</li>
+                    <li>海洋资源可持续利用</li>
+                </ul>
+                <p>通过跨学科合作和国际交流，我们致力于为全球海洋科学研究做出重大贡献。</p>
+            </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        lottie_research = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_kkflmtur.json")
+        st_lottie(lottie_research, height=300, key="research_animation")
     
     # 悦动的立方体和研究重点
     st.markdown("""
@@ -341,6 +370,9 @@ def main_page():
 
     # 修改研究项目展示
     st.markdown('<h2 class="section-title">研究项目</h2>', unsafe_allow_html=True)
+    lottie_project = load_lottieurl("https://assets3.lottiefiles.com/private_files/lf30_P2uXE5.json")
+    st_lottie(lottie_project, height=200, key="project_animation")
+    
     projects = [
         {
             'name': '深海生态系统探索',
@@ -400,12 +432,17 @@ def main_page():
         '社交媒体': '[Twitter](https://twitter.com/example), [ResearchGate](https://www.researchgate.net/)'
     }
 
-    for key, value in contact_info.items():
-        st.markdown(f"""
-            <div style="display: flex; align-items: center;">
-                <span class="icon">🔗</span><strong>{key}:</strong> {value}
-            </div>
-        """, unsafe_allow_html=True)
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        lottie_contact = load_lottieurl("https://assets7.lottiefiles.com/packages/lf20_u25cckyh.json")
+        st_lottie(lottie_contact, height=200, key="contact_animation")
+    with col2:
+        for key, value in contact_info.items():
+            st.markdown(f"""
+                <div style="display: flex; align-items: center;">
+                    <span class="icon">🔗</span><strong>{key}:</strong> {value}
+                </div>
+            """, unsafe_allow_html=True)
 
     # 添加合作伙伴部分
     st.markdown('<h2 class="section-title">合作伙伴</h2>', unsafe_allow_html=True)
