@@ -149,6 +149,17 @@ def set_page_style():
                 object-fit: cover;
                 border: 3px solid #0066cc;
             }
+
+            /* 新增：用于滚动动画的样式 */
+            .scroll-animation {
+                opacity: 0;
+                transform: translateY(50px);
+                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            .scroll-animation.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
         </style>
 
         <!-- 添加粒子效果库 -->
@@ -214,16 +225,34 @@ def set_page_style():
                 },
                 retina_detect: true
             });
+
+            // 滚动动画函数
+            function handleScrollAnimations() {
+                const elements = document.querySelectorAll('.scroll-animation');
+                elements.forEach((element) => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementBottom = element.getBoundingClientRect().bottom;
+                    const isVisible = (elementTop < window.innerHeight) && (elementBottom >= 0);
+                    if (isVisible) {
+                        element.classList.add('show');
+                    }
+                });
+            }
+
+            // 监听滚动事件
+            window.addEventListener('scroll', handleScrollAnimations);
+            // 初始检查
+            document.addEventListener('DOMContentLoaded', handleScrollAnimations);
         </script>
     """, unsafe_allow_html=True)
 
 # 实验室简介
 def lab_introduction():
-    st.markdown('<h2 class="section-title">实验室简介</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title scroll-animation">实验室简介</h2>', unsafe_allow_html=True)
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown("""
-            <div class="content-box">
+            <div class="content-box scroll-animation">
                 <p>Cosmos Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
                 <p>我们的主要研究方向包括：</p>
                 <ul>
@@ -234,8 +263,10 @@ def lab_introduction():
             </div>
         """, unsafe_allow_html=True)
     with col2:
+        st.markdown('<div class="scroll-animation">', unsafe_allow_html=True)
         lottie_research = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_kkflmtur.json")
         st_lottie(lottie_research, height=300, key="research_animation")
+        st.markdown('</div>', unsafe_allow_html=True)
     
     # 悦动的立方体和研究重点
     st.markdown("""
@@ -325,7 +356,7 @@ def lab_introduction():
 
 # 研究重点
 def research_focus():
-    st.markdown('<h2 class="section-title">研究重点</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title scroll-animation">研究重点</h2>', unsafe_allow_html=True)
     research_focus = [
         {
             'title': '海洋生态系统动态',
@@ -348,7 +379,7 @@ def research_focus():
     for i, focus in enumerate(research_focus):
         with cols[i]:
             st.markdown(f"""
-                <div class="content-box hover-effect card-3d">
+                <div class="content-box hover-effect card-3d scroll-animation">
                     <div class="card-3d-inner">
                         <div class="card-3d-front">
                             <h3>{focus['icon']} {focus['title']}</h3>
@@ -522,34 +553,6 @@ def main_page():
     partners()
     news_and_updates()
     footer()
-
-    # 新增：滚动动画效果
-    st.markdown("""
-        <script>
-            function isElementInViewport(el) {
-                var rect = el.getBoundingClientRect();
-                return (
-                    rect.top >= 0 &&
-                    rect.left >= 0 &&
-                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-                );
-            }
-
-            function handleScroll() {
-                var elements = document.querySelectorAll('.content-box');
-                elements.forEach(function(element) {
-                    if (isElementInViewport(element)) {
-                        element.style.opacity = '1';
-                        element.style.transform = 'translateY(0)';
-                    }
-                });
-            }
-
-            window.addEventListener('scroll', handleScroll);
-            handleScroll(); // 初始检查
-        </script>
-    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main_page()
