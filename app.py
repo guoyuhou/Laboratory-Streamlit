@@ -61,34 +61,110 @@ def main():
         st.text(f"版本: {VERSION}")
 
 def handle_login(auth_manager):
-    st.title("欢迎登录")
-    st.write("请登录以访问更多精彩内容。")
-    
-    username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
-    password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
-    
-    remember_me = st.checkbox("记住我")
-    
-    if st.button("登录", key="login_submit"):
-        if username and password:
-            user = auth_manager.authenticate_user(username, password)
-            if user:
-                st.balloons()
-                st.success("登录成功！正在跳转...")
-                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
-            else:
-                st.error("用户名或密码无效")
-        else:
-            st.warning("用户名和密码不能为空")
+    # CSS 样式
+    st.markdown("""
+    <style>
+    .login-container {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    .login-title {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .stTextInput > div > div > input {
+        background-color: #fff;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .stButton > button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .stButton > button:hover {
+        background-color: #2980b9;
+    }
+    .forgot-register {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    .forgot-register button {
+        background: none;
+        border: none;
+        color: #3498db;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .forgot-register button:hover {
+        text-decoration: underline;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-    st.markdown("---")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("忘记密码？"):
-            st.info("请联系管理员重置密码")
-    with col2:
-        if st.button("没有账号？注册"):
-            st.info("请联系管理员创建新账号")
+    # JavaScript 动画
+    st.markdown("""
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const loginContainer = document.querySelector('.login-container');
+        loginContainer.style.opacity = '0';
+        loginContainer.style.transform = 'translateY(-20px)';
+        setTimeout(() => {
+            loginContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            loginContainer.style.opacity = '1';
+            loginContainer.style.transform = 'translateY(0)';
+        }, 100);
+    });
+    </script>
+    """, unsafe_allow_html=True)
+
+    # 登录表单
+    with st.container():
+        st.markdown('<div class="login-container">', unsafe_allow_html=True)
+        st.markdown('<h2 class="login-title">欢迎登录</h2>', unsafe_allow_html=True)
+        
+        username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
+        password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
+        
+        remember_me = st.checkbox("记住我")
+        
+        if st.button("登录", key="login_submit"):
+            if username and password:
+                user = auth_manager.authenticate_user(username, password)
+                if user:
+                    st.balloons()
+                    st.success("登录成功！正在跳转...")
+                    st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
+                else:
+                    st.error("用户名或密码无效")
+            else:
+                st.warning("用户名和密码不能为空")
+
+        st.markdown('<div class="forgot-register">', unsafe_allow_html=True)
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("忘记密码？"):
+                st.info("请联系管理员重置密码")
+        with col2:
+            if st.button("没有账号？注册"):
+                st.info("请联系管理员创建新账号")
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
