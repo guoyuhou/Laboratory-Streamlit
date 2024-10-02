@@ -14,9 +14,6 @@ from st_on_hover_tabs import on_hover_tabs
 from PIL import Image
 import folium
 from streamlit_folium import folium_static
-from streamlit_lottie import st_lottie
-import streamlit.components.v1 as components
-
 st.set_page_config(
         page_title="Frontier Lab",
         page_icon="🚀",
@@ -33,112 +30,43 @@ def main():
     st.markdown("""
         <style>
         .stApp {
-            background-color: #f0f2f6;
+            background-color: white;
             font-family: 'Helvetica Neue', Arial, sans-serif;
         }
         .main .block-container {
-            padding-top: 2rem;
-            padding-right: 2rem;
-            padding-left: 2rem;
-            padding-bottom: 2rem;
+            padding-top: 1rem;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            padding-bottom: 1rem;
         }
         .stButton>button {
             background-color: #4a90e2;
             color: white;
-            border-radius: 25px;
-            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
             font-weight: bold;
             border: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
         }
         .stButton>button:hover {
             background-color: #357ae8;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
         }
         .stTextInput>div>div>input {
-            border-radius: 20px;
-            border: 2px solid #e0e0e0;
-            padding: 10px 15px;
-            transition: all 0.3s ease;
-        }
-        .stTextInput>div>div>input:focus {
-            border-color: #4a90e2;
-            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
         }
         .sidebar .sidebar-content {
-            background-color: #ffffff;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            background-color: #f8f9fa;
         }
         .stSelectbox {
-            border-radius: 20px;
-            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
         }
         .stMarkdown a {
             color: #4a90e2;
             text-decoration: none;
-            transition: all 0.3s ease;
         }
         .stMarkdown a:hover {
-            color: #357ae8;
-            text-decoration: underline;
-        }
-        .login-container {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-            max-width: 400px;
-            margin: auto;
-        }
-        .login-title {
-            text-align: center;
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 1.5rem;
-        }
-        .login-input {
-            margin-bottom: 1rem;
-        }
-        .login-checkbox {
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-        .login-button {
-            width: 100%;
-        }
-        .login-divider {
-            margin: 1.5rem 0;
-            text-align: center;
-            position: relative;
-        }
-        .login-divider::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            border-top: 1px solid #e0e0e0;
-        }
-        .login-divider span {
-            background-color: white;
-            padding: 0 10px;
-            position: relative;
-            color: #777;
-        }
-        .login-options {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-        }
-        .login-option {
-            color: #4a90e2;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .login-option:hover {
-            color: #357ae8;
             text-decoration: underline;
         }
         </style>
@@ -180,64 +108,111 @@ def main():
         st.text(f"版本: {VERSION}")
 
 def handle_login(auth_manager):
+    st.markdown("""
+    <style>
+    .login-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f0f2f6;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .login-title {
+        text-align: center;
+        color: #1f77b4;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .stTextInput > div > div > input {
+        border-radius: 20px;
+    }
+    .stButton > button {
+        border-radius: 20px;
+        background-color: #1f77b4;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .stButton > button:hover {
+        background-color: #135a8c;
+        transform: translateY(-2px);
+    }
+    .forgot-register {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+    .forgot-register button {
+        background: none;
+        border: none;
+        color: #1f77b4;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.markdown('<div class="login-container">', unsafe_allow_html=True)
     st.markdown('<h1 class="login-title">欢迎登录</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align: center; color: #777;">请登录以访问更多精彩内容。</p>', unsafe_allow_html=True)
-    
-    # 添加Lottie动画
-    lottie_url = "https://assets5.lottiefiles.com/packages/lf20_jcikwtux.json"
-    st_lottie(lottie_url, height=200)
+    st.markdown('<p style="text-align: center;">请登录以访问更多精彩内容。</p>', unsafe_allow_html=True)
     
     username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
     password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
     
-    remember_me = st.checkbox("记住我", key="remember_me")
+    remember_me = st.checkbox("记住我")
     
     if st.button("登录", key="login_submit"):
         if username and password:
             user = auth_manager.authenticate_user(username, password)
             if user:
-                st.balloons()
+                st.markdown("""
+                <script>
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                </script>
+                """, unsafe_allow_html=True)
                 st.success("登录成功！正在跳转...")
                 st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
-                
-                # 添加成功登录的动画效果
-                components.html(
-                    """
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-                    <div id="success-animation" style="width: 100px; height: 100px; margin: auto;">
-                        <svg viewBox="0 0 52 52">
-                            <circle cx="26" cy="26" r="25" fill="none" stroke="#4CAF50" stroke-width="2"/>
-                            <path fill="none" stroke="#4CAF50" stroke-width="2" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-                        </svg>
-                    </div>
-                    <script>
-                        gsap.set("#success-animation", {scale: 0, opacity: 0});
-                        gsap.to("#success-animation", {duration: 0.5, scale: 1, opacity: 1, ease: "back.out(1.7)"});
-                        gsap.to("#success-animation circle", {duration: 0.6, strokeDasharray: 157, strokeDashoffset: 0, ease: "power2.out"});
-                        gsap.to("#success-animation path", {duration: 0.6, strokeDasharray: 38, strokeDashoffset: 0, ease: "power2.out", delay: 0.3});
-                    </script>
-                    """,
-                    height=150,
-                )
             else:
                 st.error("用户名或密码无效")
         else:
             st.warning("用户名和密码不能为空")
 
-    st.markdown('<div class="login-divider"><span>或</span></div>', unsafe_allow_html=True)
-    
+    st.markdown('<div class="forgot-register">', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown('<div class="login-option" onclick="alert(\'请联系管理员重置密码\')">忘记密码？</div>', unsafe_allow_html=True)
+        if st.button("忘记密码？"):
+            st.info("请联系管理员重置密码")
     with col2:
-        st.markdown('<div class="login-option" onclick="alert(\'请联系管理员创建新账号\')">没有账号？注册</div>', unsafe_allow_html=True)
+        if st.button("没有账号？注册"):
+            st.info("请联系管理员创建新账号")
+    st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
 def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
     st.success("已退出登录")
+    st.markdown("""
+    <script>
+    setTimeout(function() {
+        const elements = window.parent.document.querySelectorAll('.stAlert');
+        elements.forEach(function(element) {
+            element.style.animation = 'fadeOut 1s forwards';
+        });
+    }, 2000);
+    </script>
+    <style>
+    @keyframes fadeOut {
+        from {opacity: 1;}
+        to {opacity: 0;}
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
