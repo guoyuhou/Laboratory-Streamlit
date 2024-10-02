@@ -247,13 +247,14 @@ def research_focus():
     for i, focus in enumerate(research_focus):
         with cols[i]:
             st.markdown(f"""
-                <div class="content-box hover-effect card-3d">
-                    <div class="card-3d-inner">
-                        <div class="card-3d-front">
-                            <h3>{focus['icon']} {focus['title']}</h3>
+                <div class="content-box hover-effect card-3d" style="height: 250px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div class="card-3d-inner" style="flex-grow: 1;">
+                        <div class="card-3d-front" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <h3 style="font-size: 24px; margin-bottom: 10px;">{focus['icon']}</h3>
+                            <h3 style="font-size: 18px; text-align: center;">{focus['title']}</h3>
                         </div>
-                        <div class="card-3d-back">
-                            <p>{focus['description']}</p>
+                        <div class="card-3d-back" style="display: flex; align-items: center; justify-content: center;">
+                            <p style="font-size: 14px; text-align: center;">{focus['description']}</p>
                         </div>
                     </div>
                 </div>
