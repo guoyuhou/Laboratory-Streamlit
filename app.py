@@ -26,51 +26,6 @@ VERSION = "1.0.0"
 
 def main():
     
-    # 优化自定义CSS
-    st.markdown("""
-        <style>
-        .stApp {
-            background-color: white;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-        }
-        .main .block-container {
-            padding-top: 1rem;
-            padding-right: 1rem;
-            padding-left: 1rem;
-            padding-bottom: 1rem;
-        }
-        .stButton>button {
-            background-color: #4a90e2;
-            color: white;
-            border-radius: 4px;
-            padding: 0.5rem 1rem;
-            font-weight: bold;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        .stButton>button:hover {
-            background-color: #357ae8;
-        }
-        .stTextInput>div>div>input {
-            border-radius: 4px;
-            border: 1px solid #e0e0e0;
-        }
-        .sidebar .sidebar-content {
-            background-color: #f8f9fa;
-        }
-        .stSelectbox {
-            border-radius: 4px;
-            border: 1px solid #e0e0e0;
-        }
-        .stMarkdown a {
-            color: #4a90e2;
-            text-decoration: none;
-        }
-        .stMarkdown a:hover {
-            text-decoration: underline;
-        }
-        </style>
-        """, unsafe_allow_html=True)
 
     # 显示logo
     st.logo('Images/sdu_logo2.jpg')
