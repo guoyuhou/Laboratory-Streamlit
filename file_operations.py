@@ -11,6 +11,7 @@ GITHUB_REPO = st.secrets["oss"]["GITHUB_REPO"]
 
 logging.basicConfig(level=logging.INFO)
 
+
 def get_github_file(repo, path):
     url = f"{GITHUB_API_URL}/repos/{repo}/contents/{path}"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
