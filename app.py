@@ -26,8 +26,8 @@ VERSION = "1.0.0"
 
 def main():
     # 显示logo
-    logo_url = "https://www.sdu.edu.cn/__local/B/F5/E4/8CE4E92C6E7C9C3FD9C2B85A14C_C506D93E_17680.jpg"
-    st.logo(logo_url)  # 调整宽度以适应页面
+    logo_url = "https://www.sdu.edu.cn/__local/D/3A/B3/822D6B3E9A2EA1B0A9D6E7F9F5C_B2A3AAFD_1D4A0.png"
+    st.image(logo_url, width=200)  # 调整宽度以适应页面
 
     users = load_users()
     auth_manager = AuthManager(users)
