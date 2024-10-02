@@ -138,7 +138,7 @@ class PageManager:
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">中国海洋大学</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1527100673774-cce25eafaf7f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">国家海洋局第一海洋研究所</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
