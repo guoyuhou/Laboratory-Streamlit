@@ -69,13 +69,10 @@ def handle_login(auth_manager):
         font-family: 'Roboto', sans-serif;
         max-width: 400px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: 40px;
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         border-radius: 10px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         animation: fadeIn 0.5s ease-out;
     }
     
@@ -86,20 +83,19 @@ def handle_login(auth_manager):
     
     .login-title {
         color: #2c3e50;
-        font-size: 2.5rem;
+        font-size: 28px;
         font-weight: 700;
         text-align: center;
-        margin-bottom: 1.5rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
     }
     
     .login-input {
         width: 100%;
-        padding: 0.75rem;
-        margin-bottom: 1rem;
+        padding: 12px;
+        margin-bottom: 20px;
         border: none;
         border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(255,255,255,0.8);
         transition: all 0.3s ease;
     }
     
@@ -110,97 +106,100 @@ def handle_login(auth_manager):
     
     .login-button {
         width: 100%;
-        padding: 0.75rem;
+        padding: 12px;
         background-color: #3498db;
         color: white;
         border: none;
         border-radius: 5px;
-        font-size: 1rem;
-        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
     }
     
     .login-button:hover {
         background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     
     .login-options {
         display: flex;
         justify-content: space-between;
-        margin-top: 1rem;
+        margin-top: 20px;
     }
     
     .login-option {
-        color: #34495e;
+        color: #3498db;
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 14px;
         transition: all 0.3s ease;
     }
     
     .login-option:hover {
-        color: #3498db;
-        text-decoration: underline;
+        color: #2980b9;
     }
     </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""
+    
+    <script>
+    function animateLogin() {
+        const inputs = document.querySelectorAll('.login-input');
+        inputs.forEach((input, index) => {
+            setTimeout(() => {
+                input.style.opacity = 1;
+                input.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', animateLogin);
+    </script>
+    
     <div class="login-container">
-        <h1 class="login-title">欢迎登录</h1>
-        <p style="text-align: center; color: #7f8c8d;">请登录以访问更多精彩内容</p>
+        <h2 class="login-title">欢迎登录</h2>
+        <input type="text" class="login-input" id="username" placeholder="请输入用户名" style="opacity: 0; transform: translateY(-20px);">
+        <input type="password" class="login-input" id="password" placeholder="请输入密码" style="opacity: 0; transform: translateY(-20px);">
+        <button class="login-button" onclick="handleLogin()">登录</button>
+        <div class="login-options">
+            <a href="#" class="login-option" onclick="forgotPassword()">忘记密码？</a>
+            <a href="#" class="login-option" onclick="register()">没有账号？注册</a>
+        </div>
     </div>
     """, unsafe_allow_html=True)
-    
-    username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
-    password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
-    
-    remember_me = st.checkbox("记住我")
-    
-    if st.button("登录", key="login_submit"):
-        if username and password:
-            user = auth_manager.authenticate_user(username, password)
+
+    # Streamlit 组件用于获取输入值
+    username = st.empty()
+    password = st.empty()
+    remember_me = st.checkbox("记住我", key="remember_me")
+
+    if st.button("登录", key="login_submit", style="display:none;"):
+        username_value = username.text_input("", key="username_input")
+        password_value = password.text_input("", type="password", key="password_input")
+        if username_value and password_value:
+            user = auth_manager.authenticate_user(username_value, password_value)
             if user:
                 st.balloons()
                 st.success("登录成功！正在跳转...")
-                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
-                
-                # 添加登录成功动画
-                st.markdown("""
-                <style>
-                @keyframes successAnimation {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.1); }
-                    100% { transform: scale(1); }
-                }
-                .success-message {
-                    animation: successAnimation 0.5s ease-in-out;
-                }
-                </style>
-                <div class="success-message">
-                    <h2 style="text-align: center; color: #27ae60;">登录成功！</h2>
-                </div>
-                """, unsafe_allow_html=True)
+                st.session_state.update({'username': username_value, 'role': user['role'], 'login_page': False})
             else:
                 st.error("用户名或密码无效")
         else:
             st.warning("用户名和密码不能为空")
 
     st.markdown("""
-    <div class="login-options">
-        <a href="#" class="login-option" onclick="showResetPassword()">忘记密码？</a>
-        <a href="#" class="login-option" onclick="showRegister()">没有账号？注册</a>
-    </div>
-    
     <script>
-    function showResetPassword() {
-        alert("请联系管理员重置密码");
+    function handleLogin() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        if (username && password) {
+            document.querySelector('.stButton button').click();
+        } else {
+            alert('用户名和密码不能为空');
+        }
     }
-    
-    function showRegister() {
-        alert("请联系管理员创建新账号");
+
+    function forgotPassword() {
+        alert('请联系管理员重置密码');
+    }
+
+    function register() {
+        alert('请联系管理员创建新账号');
     }
     </script>
     """, unsafe_allow_html=True)
@@ -208,20 +207,18 @@ def handle_login(auth_manager):
 def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
     st.success("已退出登录")
-    
-    # 添加退出登录动画
     st.markdown("""
     <style>
-    @keyframes logoutAnimation {
-        0% { opacity: 1; transform: translateY(0); }
-        100% { opacity: 0; transform: translateY(-20px); }
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
     }
     .logout-message {
-        animation: logoutAnimation 0.5s ease-in-out forwards;
+        animation: fadeOut 2s ease-out forwards;
     }
     </style>
     <div class="logout-message">
-        <h2 style="text-align: center; color: #3498db;">已安全退出登录</h2>
+        <h3>感谢使用，再见！</h3>
     </div>
     """, unsafe_allow_html=True)
 
