@@ -25,10 +25,9 @@ st.set_page_config(
 VERSION = "1.0.0"
 
 def main():
-    
-
     # 显示logo
-    st.logo('Images/sdu_logo2.jpg')
+    logo_url = "https://www.sdu.edu.cn/__local/B/F5/E4/8CE4E92C6E7C9C3FD9C2B85A14C_C506D93E_17680.jpg"
+    st.logo(logo_url)  # 调整宽度以适应页面
 
     users = load_users()
     auth_manager = AuthManager(users)
