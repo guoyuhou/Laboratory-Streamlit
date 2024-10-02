@@ -61,114 +61,169 @@ def main():
         st.text(f"版本: {VERSION}")
 
 def handle_login(auth_manager):
-    # CSS 样式
     st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+    
     .login-container {
+        font-family: 'Roboto', sans-serif;
         max-width: 400px;
-        margin: auto;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        padding: 2rem;
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 10px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        animation: fadeIn 0.5s ease-out;
     }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
     .login-title {
-        text-align: center;
         color: #2c3e50;
-        font-size: 24px;
-        margin-bottom: 20px;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
-    .stTextInput > div > div > input {
-        background-color: #fff;
-        border: 1px solid #bdc3c7;
+    
+    .login-input {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: none;
         border-radius: 5px;
-        padding: 10px;
-        font-size: 16px;
+        background-color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
     }
-    .stButton > button {
+    
+    .login-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #3498db;
+    }
+    
+    .login-button {
+        width: 100%;
+        padding: 0.75rem;
         background-color: #3498db;
         color: white;
         border: none;
         border-radius: 5px;
-        padding: 10px 20px;
-        font-size: 16px;
+        font-size: 1rem;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
     }
-    .stButton > button:hover {
+    
+    .login-button:hover {
         background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
-    .forgot-register {
+    
+    .login-options {
         display: flex;
         justify-content: space-between;
-        margin-top: 20px;
+        margin-top: 1rem;
     }
-    .forgot-register button {
-        background: none;
-        border: none;
+    
+    .login-option {
+        color: #34495e;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .login-option:hover {
         color: #3498db;
-        cursor: pointer;
-        font-size: 14px;
-    }
-    .forgot-register button:hover {
         text-decoration: underline;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # JavaScript 动画
     st.markdown("""
+    <div class="login-container">
+        <h1 class="login-title">欢迎登录</h1>
+        <p style="text-align: center; color: #7f8c8d;">请登录以访问更多精彩内容</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
+    password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
+    
+    remember_me = st.checkbox("记住我")
+    
+    if st.button("登录", key="login_submit"):
+        if username and password:
+            user = auth_manager.authenticate_user(username, password)
+            if user:
+                st.balloons()
+                st.success("登录成功！正在跳转...")
+                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
+                
+                # 添加登录成功动画
+                st.markdown("""
+                <style>
+                @keyframes successAnimation {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                    100% { transform: scale(1); }
+                }
+                .success-message {
+                    animation: successAnimation 0.5s ease-in-out;
+                }
+                </style>
+                <div class="success-message">
+                    <h2 style="text-align: center; color: #27ae60;">登录成功！</h2>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.error("用户名或密码无效")
+        else:
+            st.warning("用户名和密码不能为空")
+
+    st.markdown("""
+    <div class="login-options">
+        <a href="#" class="login-option" onclick="showResetPassword()">忘记密码？</a>
+        <a href="#" class="login-option" onclick="showRegister()">没有账号？注册</a>
+    </div>
+    
     <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const loginContainer = document.querySelector('.login-container');
-        loginContainer.style.opacity = '0';
-        loginContainer.style.transform = 'translateY(-20px)';
-        setTimeout(() => {
-            loginContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            loginContainer.style.opacity = '1';
-            loginContainer.style.transform = 'translateY(0)';
-        }, 100);
-    });
+    function showResetPassword() {
+        alert("请联系管理员重置密码");
+    }
+    
+    function showRegister() {
+        alert("请联系管理员创建新账号");
+    }
     </script>
     """, unsafe_allow_html=True)
-
-    # 登录表单
-    with st.container():
-        st.markdown('<div class="login-container">', unsafe_allow_html=True)
-        st.markdown('<h2 class="login-title">欢迎登录</h2>', unsafe_allow_html=True)
-        
-        username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
-        password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
-        
-        remember_me = st.checkbox("记住我")
-        
-        if st.button("登录", key="login_submit"):
-            if username and password:
-                user = auth_manager.authenticate_user(username, password)
-                if user:
-                    st.balloons()
-                    st.success("登录成功！正在跳转...")
-                    st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
-                else:
-                    st.error("用户名或密码无效")
-            else:
-                st.warning("用户名和密码不能为空")
-
-        st.markdown('<div class="forgot-register">', unsafe_allow_html=True)
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("忘记密码？"):
-                st.info("请联系管理员重置密码")
-        with col2:
-            if st.button("没有账号？注册"):
-                st.info("请联系管理员创建新账号")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
 
 def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
     st.success("已退出登录")
+    
+    # 添加退出登录动画
+    st.markdown("""
+    <style>
+    @keyframes logoutAnimation {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); }
+    }
+    .logout-message {
+        animation: logoutAnimation 0.5s ease-in-out forwards;
+    }
+    </style>
+    <div class="logout-message">
+        <h2 style="text-align: center; color: #3498db;">已安全退出登录</h2>
+    </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
