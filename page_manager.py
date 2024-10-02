@@ -41,77 +41,34 @@ class PageManager:
         st.sidebar.markdown("""
         <style>
         .sidebar .sidebar-content {
-            background-image: linear-gradient(180deg, #f0f8ff, #e6f3ff);
+            background-image: linear-gradient(#f0f8ff, #e6f3ff);
         }
         .sidebar .sidebar-content .block-container {
-            padding-top: 5rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
         }
-        .sidebar-title {
-            font-size: 24px;
-            color: #003366;
-            text-align: center;
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        .sidebar-nav {
-            list-style-type: none;
-            padding: 0;
-        }
-        .sidebar-nav li {
-            margin-bottom: 1rem;
+        .sidebar .sidebar-content .stRadio > label {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
             transition: all 0.3s ease;
         }
-        .sidebar-nav li:hover {
-            transform: translateX(10px);
-        }
-        .sidebar-nav a {
-            display: block;
-            padding: 10px 15px;
-            background-color: rgba(255,255,255,0.7);
-            border-radius: 8px;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .sidebar-nav a:hover {
-            background-color: #003366;
-            color: white;
-        }
-        .sidebar-nav a.active {
-            background-color: #003366;
-            color: white;
+        .sidebar .sidebar-content .stRadio > label:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         </style>
-        
-        <h1 class="sidebar-title">导航</h1>
         """, unsafe_allow_html=True)
         
+        st.sidebar.title("导航")
+        
         all_pages = self.public_pages.copy()
+        
         if self.role:
             all_pages.update(self.protected_pages)
         
-        st.sidebar.markdown('<ul class="sidebar-nav">', unsafe_allow_html=True)
-        for page_name in all_pages.keys():
-            st.sidebar.markdown(f'<li><a href="#" id="{page_name}">{page_name}</a></li>', unsafe_allow_html=True)
-        st.sidebar.markdown('</ul>', unsafe_allow_html=True)
-        
-        st.sidebar.markdown("""
-        <script>
-        const nav_items = document.querySelectorAll('.sidebar-nav a');
-        nav_items.forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                nav_items.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-                // 这里可以添加页面切换的逻辑
-            });
-        });
-        </script>
-        """, unsafe_allow_html=True)
-        
-        page_name = st.sidebar.radio('选择页面', list(all_pages.keys()), key='page_selector', label_visibility='collapsed')
+        page_name = st.sidebar.radio('选择页面', list(all_pages.keys()), format_func=lambda x: f"<span style='font-size:18px;'>{x}</span>")
         
         if page_name in self.public_pages:
             self.public_pages[page_name]()
