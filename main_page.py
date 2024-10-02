@@ -266,19 +266,19 @@ def research_team():
     team_members = {
         '陈浩': {
             'description': '实验室主任，研究方向:(1)海洋天然产物开发,',
-            'image': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
+            'image': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
         },
         '王普': {
             'description': '博士研究生，研究方向：海洋生物多样性',
-            'image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
+            'image': 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
         },
         '王淑新': {
             'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
+            'image': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
         },
         '张明': {
             'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
+            'image': 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
         }
     }
 
@@ -370,10 +370,10 @@ def contact_info():
 def partners():
     st.markdown('<h2 class="section-title">合作伙伴</h2>', unsafe_allow_html=True)
     partners = [
-        {'name': '国家海洋局', 'image': 'https://via.placeholder.com/100x50.png?text=国家海洋局'},
-        {'name': '中国科学院海洋研究所', 'image': 'https://via.placeholder.com/100x50.png?text=中科院海洋所'},
-        {'name': 'NOAA', 'image': 'https://via.placeholder.com/100x50.png?text=NOAA'},
-        {'name': 'Woods Hole 海洋研究所', 'image': 'https://via.placeholder.com/100x50.png?text=Woods+Hole'}
+        {'name': '国家海洋局', 'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Logo_of_the_State_Oceanic_Administration.svg/200px-Logo_of_the_State_Oceanic_Administration.svg.png'},
+        {'name': '中国科学院海洋研究所', 'image': 'https://www.qdio.cas.cn/xwzx/xwdt/202006/W020200619359067699671.png'},
+        {'name': 'NOAA', 'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/NOAA_logo.svg/200px-NOAA_logo.svg.png'},
+        {'name': 'Woods Hole 海洋研究所', 'image': 'https://www.whoi.edu/wp-content/themes/whoi-home/images/logo-whoi.svg'}
     ]
     st.markdown("""
         <div class="content-box hover-effect">
