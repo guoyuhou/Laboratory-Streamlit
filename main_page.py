@@ -266,19 +266,19 @@ def research_team():
     team_members = {
         '陈浩': {
             'description': '实验室主任，研究方向:(1)海洋天然产物开发,',
-            'image': 'https://img0.baidu.com/it/u=2521851051,2189866243&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500'
+            'image': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
         },
         '王普': {
             'description': '博士研究生，研究方向：海洋生物多样性',
-            'image': 'https://img2.baidu.com/it/u=2521851051,2189866243&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500'
+            'image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
         },
         '王淑新': {
             'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'https://img0.baidu.com/it/u=1407750889,3441968730&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=799'
+            'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
         },
         '张明': {
             'description': '硕士研究生，研究方向：海洋污染治理',
-            'image': 'https://img2.baidu.com/it/u=1814268193,3619863984&fm=253&fmt=auto&app=138&f=JPEG?w=632&h=500'
+            'image': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'
         }
     }
 
@@ -301,13 +301,13 @@ def research_projects():
         {
             'name': '深海生态系统探索',
             'description': '利用先进的水下机器人技术，探索深海生态系统的未知领域。',
-            'image': 'https://example.com/images/deep_sea_project.jpg',
+            'image': 'https://images.unsplash.com/photo-1551244072-5d12893278ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80',
             'link': 'https://example.com/project1'
         },
         {
             'name': '海洋微塑料污染研究',
             'description': '开发新型检测方法，评估微塑料对海洋生态系统的影响。',
-            'image': 'https://example.com/images/microplastics_project.jpg',
+            'image': 'https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80',
             'link': 'https://example.com/project2'
         }
     ]
@@ -369,14 +369,19 @@ def contact_info():
 # 合作伙伴
 def partners():
     st.markdown('<h2 class="section-title">合作伙伴</h2>', unsafe_allow_html=True)
-    partners = ['国家海洋局', '中国科学院海洋研究所', 'NOAA', 'Woods Hole 海洋研究所']
+    partners = [
+        {'name': '国家海洋局', 'image': 'https://via.placeholder.com/100x50.png?text=国家海洋局'},
+        {'name': '中国科学院海洋研究所', 'image': 'https://via.placeholder.com/100x50.png?text=中科院海洋所'},
+        {'name': 'NOAA', 'image': 'https://via.placeholder.com/100x50.png?text=NOAA'},
+        {'name': 'Woods Hole 海洋研究所', 'image': 'https://via.placeholder.com/100x50.png?text=Woods+Hole'}
+    ]
     st.markdown("""
         <div class="content-box hover-effect">
             <p>我们与以下机构保持密切合作关系：</p>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
     """, unsafe_allow_html=True)
     for partner in partners:
-        st.markdown(f'<div style="text-align: center; margin: 10px;"><img src="https://example.com/images/{partner.lower().replace(" ", "_")}.jpg" alt="{partner}" style="width: 100px; height: 50px; object-fit: contain;"><p>{partner}</p></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center; margin: 10px;"><img src="{partner["image"]}" alt="{partner["name"]}" style="width: 100px; height: 50px; object-fit: contain;"><p>{partner["name"]}</p></div>', unsafe_allow_html=True)
     st.markdown('</div></div>', unsafe_allow_html=True)
 
 # 新闻与更新
