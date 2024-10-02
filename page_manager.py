@@ -64,71 +64,90 @@ class PageManager:
         
         # 团队介绍
         st.markdown("""
-        <div style="background-color: #f0f8ff; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-            <h2 style="color: #00008b;">团队简介</h2>
-            <p style="font-size: 16px; line-height: 1.6;">
-            我们的研究团队由来自不同背景的优秀科研人员组成，致力于海洋科学的前沿研究。
-            团队成员涵盖教授、副教授、博士后、博士生和硕士生，形成了一个多层次、多学科的研究群体。
-            我们秉持创新、协作、卓越的理念，不断推动海洋科学的发展。
+        <div style="background: linear-gradient(135deg, #f0f8ff, #e6f3ff); padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+            <h2 style="color: #003366; font-size: 2.5em; margin-bottom: 20px; text-shadow: 1px 1px 2px #aaa;">团队愿景</h2>
+            <p style="font-size: 18px; line-height: 1.8; color: #333;">
+            在浩瀚无垠的海洋中探索未知，我们是海洋科学的先锋。我们的团队由充满激情的科研精英组成，致力于揭示海洋的奥秘，保护海洋生态，推动可持续发展。
+            我们不仅是研究者，更是海洋的守护者。通过跨学科合作，创新技术应用，我们正在重新定义海洋科学的边界。
+            加入我们，与海洋共呼吸，让科学之光照亮深海的每一个角落。
             </p>
         </div>
         """, unsafe_allow_html=True)
 
         # 团队成员数据
         members = [
-            {"name": "陈浩", "title": "实验室主任", "image": "Images/example1.jpg", "description": "海洋生态学教授，专注于海洋生物多样性研究"},
-            {"name": "李明", "title": "副教授", "image": "Images/example2.jpg", "description": "海洋化学专家，研究海洋污染物的迁移转化"},
-            {"name": "王芳", "title": "博士后", "image": "Images/example3.jpg", "description": "海洋微生物学研究者，探索深海极端环境微生物"},
-            {"name": "张伟", "title": "博士生", "image": "Images/example4.jpg", "description": "海洋地质学方向，研究海底地貌演变"},
+            {"name": "陈浩", "title": "实验室主任", "image": "Images/example1.jpg", "description": "海洋生态学教授，专注于海洋生物多样性研究", "quote": "海洋是地球的生命之源，我们的使命是守护这片蓝色家园。"},
+            {"name": "李明", "title": "副教授", "image": "Images/example2.jpg", "description": "海洋化学专家，研究海洋污染物的迁移转化", "quote": "每一滴水都讲述着海洋的故事，我们要倾听并理解它们。"},
+            {"name": "王芳", "title": "博士后", "image": "Images/example3.jpg", "description": "海洋微生物学研究者，探索深海极端环境微生物", "quote": "在最极端的环境中，生命总能找到方式绽放。"},
+            {"name": "张伟", "title": "博士生", "image": "Images/example4.jpg", "description": "海洋地质学方向，研究海底地貌演变", "quote": "海底的每一寸变化都是地球历史的见证。"},
         ]
         
-        # 使用卡片布局展示团队成员
-        st.markdown("<h2 style='text-align: center; color: #00008b;'>核心成员</h2>", unsafe_allow_html=True)
+        # 使用高级卡片布局展示团队成员
+        st.markdown("<h2 style='text-align: center; color: #003366; font-size: 2.5em; margin: 40px 0; text-shadow: 2px 2px 4px #aaa;'>核心成员</h2>", unsafe_allow_html=True)
         cols = st.columns(2)  # 每行显示2个成员
         for i, member in enumerate(members):
             with cols[i % 2]:
                 st.markdown(f"""
-                <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); margin-bottom: 20px;">
-                    <img src="{member['image']}" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto;">
-                    <h3 style="text-align: center; color: #00008b; margin-top: 10px;">{member['name']}</h3>
-                    <p style="text-align: center; font-weight: bold;">{member['title']}</p>
-                    <p style="text-align: center;">{member['description']}</p>
+                <div style="background: linear-gradient(45deg, #ffffff, #f0f8ff); padding: 30px; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); margin-bottom: 30px; transition: all 0.3s ease;">
+                    <img src="{member['image']}" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 5px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.2);">
+                    <h3 style="text-align: center; color: #003366; margin-top: 20px; font-size: 1.8em;">{member['name']}</h3>
+                    <p style="text-align: center; font-weight: bold; color: #0066cc; font-size: 1.2em;">{member['title']}</p>
+                    <p style="text-align: center; color: #333; font-size: 1em; margin: 15px 0;">{member['description']}</p>
+                    <blockquote style="font-style: italic; color: #666; border-left: 4px solid #0066cc; padding-left: 15px; margin: 20px 0;">
+                        "{member['quote']}"
+                    </blockquote>
                 </div>
                 """, unsafe_allow_html=True)
 
         # 团队成就
         st.markdown("""
-        <div style="background-color: #e6f3ff; padding: 20px; border-radius: 10px; margin-top: 30px;">
-            <h2 style="color: #00008b;">团队成就</h2>
-            <ul style="list-style-type: none; padding-left: 0;">
-                <li style="margin-bottom: 10px;">🏆 获得国家自然科学基金重点项目支持</li>
-                <li style="margin-bottom: 10px;">📚 在Nature、Science等顶级期刊发表多篇研究论文</li>
-                <li style="margin-bottom: 10px;">🏅 多次获得海洋科学领域国际会议最佳论文奖</li>
-                <li style="margin-bottom: 10px;">🔬 开发的海洋环境监测技术已在多个沿海城市应用</li>
-            </ul>
+        <div style="background: linear-gradient(135deg, #e6f3ff, #ccebff); padding: 30px; border-radius: 15px; margin-top: 40px; box-shadow: 0 15px 30px rgba(0,0,0,0.1);">
+            <h2 style="color: #003366; font-size: 2.5em; margin-bottom: 30px; text-align: center; text-shadow: 2px 2px 4px #aaa;">团队里程碑</h2>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                <div style="text-align: center; margin: 20px; flex: 1;">
+                    <i class="fas fa-trophy" style="font-size: 3em; color: #ffd700;"></i>
+                    <h3 style="color: #0066cc; margin-top: 15px;">国家自然科学基金重点项目</h3>
+                    <p>连续三年获得支持，总经费超过1000万元</p>
+                </div>
+                <div style="text-align: center; margin: 20px; flex: 1;">
+                    <i class="fas fa-book" style="font-size: 3em; color: #4caf50;"></i>
+                    <h3 style="color: #0066cc; margin-top: 15px;">顶级期刊发表</h3>
+                    <p>在Nature、Science等期刊发表20余篇研究论文</p>
+                </div>
+                <div style="text-align: center; margin: 20px; flex: 1;">
+                    <i class="fas fa-medal" style="font-size: 3em; color: #ff9800;"></i>
+                    <h3 style="color: #0066cc; margin-top: 15px;">国际会议最佳论文奖</h3>
+                    <p>连续5年获得海洋科学领域国际会议最佳论文奖</p>
+                </div>
+                <div style="text-align: center; margin: 20px; flex: 1;">
+                    <i class="fas fa-microscope" style="font-size: 3em; color: #9c27b0;"></i>
+                    <h3 style="color: #0066cc; margin-top: 15px;">技术应用</h3>
+                    <p>开发的海洋环境监测技术已在20个沿海城市成功应用</p>
+                </div>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
         # 合作伙伴
         st.markdown("""
-        <div style="background-color: #f0f8ff; padding: 20px; border-radius: 10px; margin-top: 30px;">
-            <h2 style="color: #00008b;">合作伙伴</h2>
+        <div style="background: linear-gradient(135deg, #f0f8ff, #e6f3ff); padding: 30px; border-radius: 15px; margin-top: 40px; box-shadow: 0 15px 30px rgba(0,0,0,0.1);">
+            <h2 style="color: #003366; font-size: 2.5em; margin-bottom: 30px; text-align: center; text-shadow: 2px 2px 4px #aaa;">全球合作网络</h2>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-                <div style="text-align: center; margin: 10px;">
-                    <img src="https://via.placeholder.com/100x100?text=OUC" style="border-radius: 50%;">
-                    <p>中国海洋大学</p>
+                <div style="text-align: center; margin: 20px;">
+                    <img src="https://via.placeholder.com/150x150?text=OUC" style="border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">中国海洋大学</p>
                 </div>
-                <div style="text-align: center; margin: 10px;">
-                    <img src="https://via.placeholder.com/100x100?text=FIO" style="border-radius: 50%;">
-                    <p>国家海洋局第一海洋研究所</p>
+                <div style="text-align: center; margin: 20px;">
+                    <img src="https://via.placeholder.com/150x150?text=FIO" style="border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">国家海洋局第一海洋研究所</p>
                 </div>
-                <div style="text-align: center; margin: 10px;">
-                    <img src="https://via.placeholder.com/100x100?text=WHOI" style="border-radius: 50%;">
-                    <p>美国伍兹霍尔海洋研究所</p>
+                <div style="text-align: center; margin: 20px;">
+                    <img src="https://via.placeholder.com/150x150?text=WHOI" style="border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">美国伍兹霍尔海洋研究所</p>
                 </div>
-                <div style="text-align: center; margin: 10px;">
-                    <img src="https://via.placeholder.com/100x100?text=AORI" style="border-radius: 50%;">
-                    <p>日本东京大学大气与海洋研究所</p>
+                <div style="text-align: center; margin: 20px;">
+                    <img src="https://via.placeholder.com/150x150?text=AORI" style="border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">日本东京大学大气与海洋研究所</p>
                 </div>
             </div>
         </div>
@@ -136,15 +155,15 @@ class PageManager:
 
         # 加入我们
         st.markdown("""
-        <div style="background-color: #e6f3ff; padding: 20px; border-radius: 10px; margin-top: 30px; text-align: center;">
-            <h2 style="color: #00008b;">加入我们</h2>
-            <p style="font-size: 16px; line-height: 1.6;">
-            我们始终欢迎优秀的研究人员加入团队。如果您对海洋科学充满热情，并希望在这个领域做出贡献，
-            请将您的简历发送至 <a href="mailto:recruitment@oceanlab.edu.cn">recruitment@oceanlab.edu.cn</a>
+        <div style="background: linear-gradient(135deg, #003366, #0066cc); padding: 40px; border-radius: 15px; margin-top: 40px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+            <h2 style="color: #ffffff; font-size: 2.5em; margin-bottom: 20px; text-shadow: 2px 2px 4px #000;">与我们一起探索海洋的奥秘</h2>
+            <p style="font-size: 18px; line-height: 1.8; color: #ffffff; margin-bottom: 30px;">
+            我们正在寻找充满激情、勇于创新的海洋科学家。如果你梦想着在这片蓝色疆域中留下自己的足迹，
+            如果你渴望为保护海洋、造福人类贡献自己的力量，那么，加入我们吧！
             </p>
-            <button style="background-color: #00008b; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-                申请加入
-            </button>
+            <a href="mailto:recruitment@oceanlab.edu.cn" style="background-color: #ffffff; color: #003366; padding: 15px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 18px; transition: all 0.3s ease;">
+                开启你的海洋之旅
+            </a>
         </div>
         """, unsafe_allow_html=True)
 
