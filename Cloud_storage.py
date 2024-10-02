@@ -225,7 +225,6 @@ def display_statistics():
 
 def cloud_storage_page(username=None):
     """显示云存储页面"""
-    st.title("智能云存储管理系统")
     
     # 自定义CSS样式
     st.markdown("""
