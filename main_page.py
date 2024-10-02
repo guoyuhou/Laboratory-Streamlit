@@ -183,6 +183,7 @@ def lab_introduction():
                 align-items: center;
                 font-size: 18px;
                 color: #0066cc;
+                transition: background-color 0.3s ease;
             }
             .front  { transform: rotateY(0deg) translateZ(100px); }
             .back   { transform: rotateY(180deg) translateZ(100px); }
@@ -198,7 +199,7 @@ def lab_introduction():
                 animation-play-state: paused;
             }
             .face:hover {
-                background: rgba(0, 102, 204, 0.5);
+                background: rgba(0, 255, 0, 0.5);
                 cursor: pointer;
             }
         </style>
