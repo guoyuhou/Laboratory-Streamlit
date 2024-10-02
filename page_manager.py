@@ -629,37 +629,101 @@ class PageManager:
     def contact_page(self, username=None):
         st.markdown("""
         <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+        
         .contact-container {
+            font-family: 'Roboto', sans-serif;
             display: flex;
             justify-content: space-between;
             margin-top: 2rem;
+            perspective: 1000px;
         }
         .contact-info, .contact-form {
             width: 48%;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            border-radius: 20px;
+            box-shadow: 20px 20px 60px #d0d0d0, -20px -20px 60px #ffffff;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .contact-info:hover, .contact-form:hover {
+            transform: rotateY(10deg);
         }
         .contact-info h3, .contact-form h3 {
             color: #0066cc;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         .contact-item {
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .contact-item:hover {
+            transform: translateX(10px);
         }
         .contact-icon {
-            margin-right: 10px;
+            margin-right: 15px;
             color: #0066cc;
+            font-size: 1.5em;
         }
-        .map-container {
-            height: 300px;
+        input, textarea {
             width: 100%;
-            margin-top: 2rem;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            transition: all 0.3s ease;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #0066cc;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+        button:hover {
+            background-color: #004499;
+            transform: scale(1.05);
         }
         </style>
+        <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const contactItems = document.querySelectorAll('.contact-item');
+            contactItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const button = form.querySelector('button');
+                button.innerHTML = '发送中...';
+                button.style.backgroundColor = '#004499';
+                setTimeout(() => {
+                    button.innerHTML = '发送成功！';
+                    button.style.backgroundColor = '#00cc66';
+                }, 2000);
+            });
+        });
+        </script>
         """, unsafe_allow_html=True)
 
         st.title("联系我们")
@@ -684,24 +748,22 @@ class PageManager:
                     <span class="contact-icon">🌐</span>
                     <span>网站：www.frontierlab.com</span>
                 </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🕒</span>
+                    <span>工作时间：周一至周五 9:00-17:00</span>
+                </div>
             </div>
             <div class="contact-form">
                 <h3>联系表单</h3>
                 <form>
-                    <input type="text" placeholder="您的姓名" style="width:100%; margin-bottom:10px; padding:5px;">
-                    <input type="email" placeholder="您的邮箱" style="width:100%; margin-bottom:10px; padding:5px;">
-                    <textarea placeholder="您的留言" style="width:100%; height:100px; margin-bottom:10px; padding:5px;"></textarea>
-                    <button style="background-color:#0066cc; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">发送消息</button>
+                    <input type="text" placeholder="您的姓名" required>
+                    <input type="email" placeholder="您的邮箱" required>
+                    <textarea placeholder="您的留言" required></textarea>
+                    <button type="submit">发送消息</button>
                 </form>
             </div>
         </div>
         """, unsafe_allow_html=True)
-
-        st.markdown('<div class="map-container">', unsafe_allow_html=True)
-        m = folium.Map(location=[37.5323, 122.0587], zoom_start=15)
-        folium.Marker([37.5323, 122.0587], popup="山东大学威海校区").add_to(m)
-        folium_static(m)
-        st.markdown('</div>', unsafe_allow_html=True)
 
     def dashboard(self, username):
         st.title(f"欢迎回来，{username}！")
