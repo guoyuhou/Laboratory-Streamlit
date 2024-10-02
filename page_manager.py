@@ -134,19 +134,19 @@ class PageManager:
             <h2 style="color: #003366; font-size: 2.5em; margin-bottom: 30px; text-align: center; text-shadow: 2px 2px 4px #aaa;">全球合作网络</h2>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/4/4e/Ocean_University_of_China_logo.svg/1200px-Ocean_University_of_China_logo.svg.png" style="width: 150px; height: 150px; object-fit: contain; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">中国海洋大学</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://www.fio.org.cn/images/logo.png" style="width: 150px; height: 150px; object-fit: contain; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">国家海洋局第一海洋研究所</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://www.whoi.edu/wp-content/themes/whoi-home/images/logo-whoi-blue.svg" style="width: 150px; height: 150px; object-fit: contain; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">美国伍兹霍尔海洋研究所</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://www.aori.u-tokyo.ac.jp/wp-content/themes/aori/images/logo.png" style="width: 150px; height: 150px; object-fit: contain; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1484291470158-b8f8d608850d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">日本东京大学大气与海洋研究所</p>
                 </div>
             </div>
