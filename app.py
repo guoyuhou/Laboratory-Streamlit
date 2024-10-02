@@ -108,34 +108,144 @@ def main():
         st.text(f"版本: {VERSION}")
 
 def handle_login(auth_manager):
-    st.title("欢迎登录")
-    st.write("请登录以访问更多精彩内容。")
+    st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
     
-    username = st.text_input("用户名", placeholder="请输入用户名", key="username_input")
-    password = st.text_input("密码", type="password", placeholder="请输入密码", key="password_input")
+    .login-container {
+        font-family: 'Roboto', sans-serif;
+        background: linear-gradient(145deg, #f0f0f0, #ffffff);
+        border-radius: 20px;
+        box-shadow: 20px 20px 60px #d0d0d0, -20px -20px 60px #ffffff;
+        padding: 30px;
+        max-width: 400px;
+        margin: 0 auto;
+        animation: fadeIn 0.5s ease-out;
+    }
     
-    remember_me = st.checkbox("记住我")
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
     
-    if st.button("登录", key="login_submit"):
-        if username and password:
-            user = auth_manager.authenticate_user(username, password)
-            if user:
-                st.balloons()
-                st.success("登录成功！正在跳转...")
-                st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
-            else:
-                st.error("用户名或密码无效")
+    .login-title {
+        color: #0066cc;
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .login-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #f5f5f5;
+        transition: all 0.3s ease;
+    }
+    
+    .login-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #0066cc;
+    }
+    
+    .login-button {
+        width: 100%;
+        padding: 10px;
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .login-button:hover {
+        background-color: #004499;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .login-options {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    
+    .login-option {
+        color: #0066cc;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .login-option:hover {
+        color: #004499;
+        text-decoration: underline;
+    }
+    </style>
+    
+    <div class="login-container">
+        <h1 class="login-title">欢迎登录</h1>
+        <p style="text-align: center; margin-bottom: 20px;">请登录以访问更多精彩内容。</p>
+        <input type="text" id="username" class="login-input" placeholder="请输入用户名">
+        <input type="password" id="password" class="login-input" placeholder="请输入密码">
+        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <input type="checkbox" id="remember-me" style="margin-right: 10px;">
+            <label for="remember-me">记住我</label>
+        </div>
+        <button id="login-button" class="login-button">登录</button>
+        <div class="login-options">
+            <a href="#" class="login-option" id="forgot-password">忘记密码？</a>
+            <a href="#" class="login-option" id="register">没有账号？注册</a>
+        </div>
+    </div>
+    
+    <script>
+    const loginButton = document.getElementById('login-button');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const forgotPassword = document.getElementById('forgot-password');
+    const register = document.getElementById('register');
+    
+    loginButton.addEventListener('click', () => {
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        if (username && password) {
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
+            loginButton.disabled = true;
+            setTimeout(() => {
+                window.parent.postMessage({type: 'streamlit:setComponentValue', value: {username, password}}, '*');
+            }, 1000);
+        } else {
+            alert('用户名和密码不能为空');
+        }
+    });
+    
+    forgotPassword.addEventListener('click', () => {
+        alert('请联系管理员重置密码');
+    });
+    
+    register.addEventListener('click', () => {
+        alert('请联系管理员创建新账号');
+    });
+    </script>
+    """, unsafe_allow_html=True)
+    
+    result = st.empty()
+    
+    if 'username' in st.session_state:
+        username = st.session_state.username
+        password = st.session_state.password
+        user = auth_manager.authenticate_user(username, password)
+        if user:
+            result.success("登录成功！正在跳转...")
+            st.balloons()
+            st.session_state.update({'username': username, 'role': user['role'], 'login_page': False})
         else:
-            st.warning("用户名和密码不能为空")
-
-    st.markdown("---")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("忘记密码？"):
-            st.info("请联系管理员重置密码")
-    with col2:
-        if st.button("没有账号？注册"):
-            st.info("请联系管理员创建新账号")
+            result.error("用户名或密码无效")
 
 def handle_logout():
     st.session_state.update({'username': None, 'role': None, 'login_page': False})
