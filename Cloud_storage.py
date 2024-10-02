@@ -390,7 +390,7 @@ def cloud_storage_page(username=None):
     # 页脚
     st.markdown("---")
     st.markdown(
-        "<p style='text-align: center; color: #888;'>© 2024 智能云存储管理系统 | 技术支持：AI实验室</p>", 
+        "<p style='text-align: center; color: #888;'>© 2024 智能云存储管理系统 | 技术支持：ModernY团队</p>", 
         unsafe_allow_html=True
     )
 
