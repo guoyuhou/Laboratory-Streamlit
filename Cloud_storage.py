@@ -6,6 +6,9 @@ from pdf2image import convert_from_path
 import logging
 import random
 from datetime import datetime, timedelta
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 
 # 设置日志
 logging.basicConfig(level=logging.INFO)
@@ -32,6 +35,7 @@ def handle_file(file, operation):
     try:
         bucket.put_object(file.name, file)
         st.success(f'文件 {file.name} {operation} 成功', icon="✅")
+        operation_log.append({"time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "action": f"{operation}文件 {file.name}"})
     except Exception as e:
         logging.error(f'操作文件 {file.name} 时出错: {e}')
         st.error(f'操作文件时出错: {e}')
@@ -48,6 +52,7 @@ def upload_zip_file(uploaded_file):
                 progress_bar.progress(i / total_files)
                 st.write(f'文件 {file_info.filename} 上传成功')
         st.success('ZIP文件中的所有文件已成功上传到 OSS', icon="✅")
+        operation_log.append({"time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "action": f"上传ZIP文件 {uploaded_file.name}"})
     except Exception as e:
         logging.error(f'处理ZIP文件时出错: {e}')
         st.error(f'处理ZIP文件时出错: {e}')
@@ -79,6 +84,7 @@ def download_file():
                     file_name=file_name,
                     mime='application/octet-stream'
                 )
+                operation_log.append({"time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "action": f"下载文件 {file_name}"})
             except Exception as e:
                 logging.error(f'下载文件 {file_name} 时出错: {e}')
                 st.error(f'下载文件时出错: {e}')
@@ -109,6 +115,7 @@ def delete_file():
         try:
             bucket.delete_object(file_name)
             st.success(f'文件 {file_name} 已成功删除', icon="✅")
+            operation_log.append({"time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "action": f"删除文件 {file_name}"})
         except Exception as e:
             logging.error(f'删除文件 {file_name} 时出错: {e}')
             st.error(f'删除文件时出错: {e}')
@@ -133,6 +140,7 @@ def preview_file():
                     st.image(image, caption=file_name)
             else:
                 st.write(f'无法预览此文件类型：{file_name}')
+            operation_log.append({"time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "action": f"预览文件 {file_name}"})
         except Exception as e:
             logging.error(f'预览文件 {file_name} 时出错: {e}')
             st.error(f'预览文件时出错: {e}')
@@ -163,6 +171,7 @@ def batch_delete_files():
             for file_name in selected_files:
                 bucket.delete_object(file_name)
             st.success(f'已成功删除 {len(selected_files)} 个文件', icon="✅")
+            operation_log.append({"time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "action": f"批量删除 {len(selected_files)} 个文件"})
         except Exception as e:
             logging.error(f'批量删除文件时出错: {e}')
             st.error(f'批量删除文件时出错: {e}')
@@ -186,38 +195,51 @@ def generate_simulated_data():
 
     return daily_data
 
-# 在 display_statistics 中调用生成的数据
 def display_statistics():
     """展示云服务使用频率和占用率"""
     st.subheader('云服务统计信息')
 
     daily_data = generate_simulated_data()
-    
-    # 转换为 DataFrame 以便绘图
-    import pandas as pd
     df = pd.DataFrame(daily_data)
 
-    # 使用折线图显示数据
-    st.line_chart(df.set_index('日期'))
+    # 使用Plotly创建交互式图表
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=df['日期'], y=df['流量'], mode='lines+markers', name='流量 (MB)'))
+    fig.add_trace(go.Scatter(x=df['日期'], y=df['文件总数'], mode='lines+markers', name='文件总数'))
+    fig.add_trace(go.Scatter(x=df['日期'], y=df['占用率'], mode='lines+markers', name='占用率 (%)'))
+
+    fig.update_layout(
+        title='云服务使用统计',
+        xaxis_title='日期',
+        yaxis_title='数值',
+        hovermode='x unified',
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
 
     # 显示操作日志
-    st.write('操作日志:')
-    for log in operation_log:
-        st.write(f"{log['time']} - {log['action']}")
+    st.subheader('最近操作日志')
+    log_df = pd.DataFrame(operation_log[-10:])  # 只显示最近10条日志
+    st.table(log_df)
+
 def cloud_storage_page(username=None):
     """显示云存储页面"""
-    st.title("云存储")
+    st.title("智能云存储管理系统")
     
     # 自定义CSS样式
     st.markdown("""
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+        
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: #f0f2f5;
             color: #333;
         }
         .main {
             padding: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
         }
         .stButton > button {
             background-color: #4285f4;
@@ -227,9 +249,12 @@ def cloud_storage_page(username=None):
             padding: 0.5rem 1rem;
             font-weight: bold;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .stButton > button:hover {
             background-color: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         .sidebar .sidebar-content {
             background-color: #ffffff;
@@ -239,30 +264,59 @@ def cloud_storage_page(username=None):
             padding-top: 3rem;
         }
         h1, h2, h3 {
-            color: #333;
+            color: #1a73e8;
+            font-weight: 700;
+        }
+        .stSelectbox, .stTextInput {
+            background-color: #ffffff;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .stSelectbox:focus, .stTextInput:focus {
+            border-color: #4285f4;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .file-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
     </style>
     """, unsafe_allow_html=True)
 
     # 页面标题和欢迎信息
-    st.title("实验室云存储服务")
+    st.title("智能云存储管理系统")
     if username:
         st.write(f"欢迎回来，{username}！")
     
     # 添加使用说明
-    with st.expander("关于实验室云服务", expanded=False):
+    with st.expander("关于智能云存储管理系统", expanded=False):
         st.write("""
-        欢迎使用实验室云服务平台！我们提供安全、高效的文件管理解决方案，支持多种文件格式。
+        欢迎使用智能云存储管理系统！我们提供安全、高效的文件管理解决方案，支持多种文件格式。
         
         主要功能：
-        - 文件上传：支持ZIP、PDF、图片等多种格式
-        - 文件下载：快速获取您需要的文件
-        - 文件更新：方便地更新已存在的文件
-        - 文件删除：单个或批量删除不再需要的文件
-        - 文件预览：直接在平台上预览文件内容
-        - 文件搜索：快速定位您需要的文件
+        - 智能文件上传：支持ZIP、PDF、图片等多种格式，自动分类
+        - 快速文件下载：便捷获取您需要的文件
+        - 实时文件更新：轻松更新已存在的文件
+        - 批量文件管理：单个或批量删除不再需要的文件
+        - 智能文件预览：直接在平台上预览文件内容
+        - 高级文件搜索：快速定位您需要的文件
+        - 数据可视化：直观展示云存储使用情况
         
-        请使用左侧导航栏选择所需的操作。如有任何问题，请联系实验室管理员。
+        使用左侧导航栏选择所需的操作。如有任何问题，请联系系统管理员。
         """)
 
     # 显示统计信息
@@ -271,10 +325,10 @@ def cloud_storage_page(username=None):
         display_statistics()
     with col2:
         st.subheader("快速操作")
-        if st.button("上传新文件"):
-            upload_files_with_progress()
-        if st.button("查看所有文件"):
-            download_file()
+        if st.button("上传新文件", key="upload_button"):
+            st.session_state.current_operation = "文件上传"
+        if st.button("查看所有文件", key="view_files_button"):
+            st.session_state.current_operation = "文件下载"
 
     # 侧边栏导航
     st.sidebar.title("功能导航")
@@ -291,19 +345,96 @@ def cloud_storage_page(username=None):
         "批量删除": batch_delete_files
     }
     
-    operation_function = operations.get(options)
+    if 'current_operation' not in st.session_state:
+        st.session_state.current_operation = options
+
+    operation_function = operations.get(st.session_state.current_operation)
     if operation_function:
-        st.subheader(options)
+        st.subheader(st.session_state.current_operation)
         operation_function()
+
+    # 添加文件分类展示
+    st.subheader("文件分类")
+    file_types = {
+        "文档": ["pdf", "doc", "docx", "txt"],
+        "图片": ["jpg", "jpeg", "png", "gif"],
+        "压缩文件": ["zip", "rar"],
+        "其他": []
+    }
+    
+    all_files = list_files()
+    categorized_files = {category: [] for category in file_types}
+    
+    for file in all_files:
+        file_ext = file.split('.')[-1].lower()
+        categorized = False
+        for category, extensions in file_types.items():
+            if file_ext in extensions:
+                categorized_files[category].append(file)
+                categorized = True
+                break
+        if not categorized:
+            categorized_files["其他"].append(file)
+    
+    for category, files in categorized_files.items():
+        with st.expander(f"{category} ({len(files)})"):
+            for file in files:
+                st.markdown(f"""
+                <div class="file-card">
+                    <h4>{file}</h4>
+                    <p>大小: {bucket.get_object_meta(file).content_length / 1024:.2f} KB</p>
+                    <p>上传时间: {bucket.get_object_meta(file).last_modified}</p>
+                </div>
+                """, unsafe_allow_html=True)
 
     # 页脚
     st.markdown("---")
     st.markdown(
-        "<p style='text-align: center; color: #888;'>© 2024 实验室云存储服务 | 技术支持：实验室IT团队</p>", 
+        "<p style='text-align: center; color: #888;'>© 2024 智能云存储管理系统 | 技术支持：AI实验室</p>", 
         unsafe_allow_html=True
     )
 
+# 添加JavaScript动画效果
+st.markdown("""
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    // 添加淡入效果
+    document.body.style.opacity = 0;
+    let opacity = 0;
+    let fadeIn = setInterval(() => {
+        if (opacity >= 1) {
+            clearInterval(fadeIn);
+        }
+        document.body.style.opacity = opacity;
+        opacity += 0.1;
+    }, 50);
 
+    // 为按钮添加点击动画
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+    });
+
+    // 为文件卡片添加悬停效果
+    const fileCards = document.querySelectorAll('.file-card');
+    fileCards.forEach(card => {
+        card.addEventListener('mouseover', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+        });
+        card.addEventListener('mouseout', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+        });
+    });
+});
+</script>
+""", unsafe_allow_html=True)
 
 # Run the cloud storage page
 if __name__ == "__main__":
