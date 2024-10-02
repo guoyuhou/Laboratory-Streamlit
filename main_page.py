@@ -26,119 +26,82 @@ def set_page_style():
             @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
             
             body {
-                background-color: #000000;
-                color: #ffffff;
+                background-color: #ffffff;
+                color: #000000;
                 font-family: 'Orbitron', sans-serif;
             }
 
             .main-title {
                 font-size: 4rem;
                 text-align: center;
-                color: #00ffff;
+                color: #0066cc;
                 animation: glow 2s ease-in-out infinite alternate;
             }
 
             @keyframes glow {
                 from {
-                    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+                    text-shadow: 0 0 5px #0066cc, 0 0 10px #0066cc;
                 }
                 to {
-                    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+                    text-shadow: 0 0 10px #0066cc, 0 0 20px #0066cc;
                 }
             }
 
             .section-title {
-                color: #00ffff;
-                border-bottom: 2px solid #00ffff;
+                color: #0066cc;
+                border-bottom: 2px solid #0066cc;
                 padding-bottom: 10px;
                 margin-bottom: 20px;
             }
 
             .content-box {
-                background-color: rgba(0, 255, 255, 0.1);
-                border: 1px solid #00ffff;
+                background-color: #f0f8ff;
+                border: 1px solid #0066cc;
                 border-radius: 10px;
                 padding: 20px;
                 margin-bottom: 20px;
-                box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+                box-shadow: 0 0 15px rgba(0, 102, 204, 0.3);
+            }
+
+            /* 新增：悬浮效果 */
+            .hover-effect {
                 transition: all 0.3s ease;
             }
 
-            .content-box:hover {
+            .hover-effect:hover {
                 transform: translateY(-5px);
-                box-shadow: 0 5px 15px rgba(0, 255, 255, 0.5);  
+                box-shadow: 0 5px 15px rgba(0, 102, 204, 0.5);  
             }
 
-            .team-member-img {
-                width: 150px;
-                height: 150px;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 3px solid #00ffff;
-                transition: all 0.3s ease;
-            }
-
-            .team-member-img:hover {
-                transform: scale(1.1);
-                box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
-            }
-
-            /* 新增：星空背景 */
-            #stars {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
-            }
-
-            /* 新增：粒子效果 */
-            #particles-js {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
-            }
-
-            /* 新增：3D翻转卡片效果 */
-            .flip-card {
-                background-color: transparent;
-                width: 300px;
-                height: 200px;
+            /* 新增：3D卡片效果 */
+            .card-3d {
                 perspective: 1000px;
-                margin: 20px auto;
             }
 
-            .flip-card-inner {
+            .card-3d-inner {
+                transition: transform 0.6s;
+                transform-style: preserve-3d;
                 position: relative;
                 width: 100%;
                 height: 100%;
-                text-align: center;
-                transition: transform 0.6s;
-                transform-style: preserve-3d;
             }
 
-            .flip-card:hover .flip-card-inner {
+            .card-3d:hover .card-3d-inner {
                 transform: rotateY(180deg);
             }
 
-            .flip-card-front, .flip-card-back {
+            .card-3d-front, .card-3d-back {
                 position: absolute;
                 width: 100%;
                 height: 100%;
                 backface-visibility: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 10px;
             }
 
-            .flip-card-front {
-                background-color: rgba(0, 255, 255, 0.2);
-                color: #00ffff;
+            .card-3d-back {
+                transform: rotateY(180deg);
+                background-color: rgba(0, 102, 204, 0.1);
+                border-radius: 10px;
+                padding: 10px;
             }
 
             /* 新增：圆形团队照片 */
@@ -150,71 +113,6 @@ def set_page_style():
                 border: 3px solid #0066cc;
             }
         </style>
-
-        <!-- 添加粒子效果库 -->
-        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
-        <!-- 添加星空背景 -->
-        <canvas id="stars"></canvas>
-
-        <!-- 添加粒子效果容器 -->
-        <div id="particles-js"></div>
-
-        <script>
-            // 星空背景动画
-            const canvas = document.getElementById('stars');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const stars = [];
-            for (let i = 0; i < 200; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    vx: Math.floor(Math.random() * 50) - 25,
-                    vy: Math.floor(Math.random() * 50) - 25
-                });
-            }
-
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.globalCompositeOperation = "lighter";
-                for (let i = 0; i < stars.length; i++) {
-                    const s = stars[i];
-                    ctx.fillStyle = "#00ffff";
-                    ctx.beginPath();
-                    ctx.arc(s.x, s.y, s.radius, 0, 2 * Math.PI);
-                    ctx.fill();
-                    s.x += s.vx / 100;
-                    s.y += s.vy / 100;
-                    if (s.x < 0 || s.x > canvas.width) s.vx = -s.vx;
-                    if (s.y < 0 || s.y > canvas.height) s.vy = -s.vy;
-                }
-                requestAnimationFrame(draw);
-            }
-            draw();
-
-            // 粒子效果配置
-            particlesJS("particles-js", {
-                particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
-                    color: { value: "#00ffff" },
-                    shape: { type: "circle" },
-                    opacity: { value: 0.5, random: false },
-                    size: { value: 3, random: true },
-                    line_linked: { enable: true, distance: 150, color: "#00ffff", opacity: 0.4, width: 1 },
-                    move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
-                    modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
-                },
-                retina_detect: true
-            });
-        </script>
     """, unsafe_allow_html=True)
 
 # 实验室简介
@@ -223,7 +121,7 @@ def lab_introduction():
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown("""
-            <div class="content-box">
+            <div class="content-box hover-effect">
                 <p>Cosmos Lab 是一个致力于海洋科学前沿研究的世界级实验室。我们通过创新的科学方法和尖端技术，深入探索海洋生态系统，推动环境保护和可持续资源管理。</p>
                 <p>我们的主要研究方向包括：</p>
                 <ul>
@@ -522,35 +420,6 @@ def main_page():
     partners()
     news_and_updates()
     footer()
-
-    # 新增：滚动动画效果
-    st.markdown("""
-        <script>
-            function isElementInViewport(el) {
-                var rect = el.getBoundingClientRect();
-                return (
-                    rect.top >= 0 &&
-                    rect.left >= 0 &&
-                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-                );
-            }
-
-            function handleScroll() {
-                var elements = document.querySelectorAll('.content-box');
-                elements.forEach(function(element) {
-                    if (isElementInViewport(element)) {
-                        element.style.opacity = '1';
-
-                        element.style.transform = 'translateY(0)';
-                    }
-                });
-            }
-
-            window.addEventListener('scroll', handleScroll);
-            handleScroll(); // 初始检查
-        </script>
-    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main_page()
