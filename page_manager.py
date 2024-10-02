@@ -634,11 +634,12 @@ class PageManager:
         .contact-container {
             font-family: 'Roboto', sans-serif;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             margin-top: 2rem;
             perspective: 1000px;
         }
-        .contact-info, .contact-form {
+        .contact-info, .contact-form, .faq-section, .social-media {
             width: 48%;
             padding: 30px;
             background: linear-gradient(145deg, #f0f0f0, #ffffff);
@@ -646,26 +647,27 @@ class PageManager:
             box-shadow: 20px 20px 60px #d0d0d0, -20px -20px 60px #ffffff;
             transition: transform 0.6s;
             transform-style: preserve-3d;
+            margin-bottom: 2rem;
         }
-        .contact-info:hover, .contact-form:hover {
+        .contact-info:hover, .contact-form:hover, .faq-section:hover, .social-media:hover {
             transform: rotateY(10deg);
         }
-        .contact-info h3, .contact-form h3 {
+        .contact-info h3, .contact-form h3, .faq-section h3, .social-media h3 {
             color: #0066cc;
             margin-bottom: 1.5rem;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        .contact-item {
+        .contact-item, .faq-item, .social-item {
             display: flex;
             align-items: center;
             margin-bottom: 1.5rem;
             transition: all 0.3s ease;
         }
-        .contact-item:hover {
+        .contact-item:hover, .faq-item:hover, .social-item:hover {
             transform: translateX(10px);
         }
-        .contact-icon {
+        .contact-icon, .faq-icon, .social-icon {
             margin-right: 15px;
             color: #0066cc;
             font-size: 1.5em;
@@ -697,11 +699,33 @@ class PageManager:
             background-color: #004499;
             transform: scale(1.05);
         }
+        .faq-answer {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .social-item a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .social-item a:hover {
+            color: #004499;
+        }
+        .map-container {
+            width: 100%;
+            height: 300px;
+            margin-top: 2rem;
+            border-radius: 20px;
+            overflow: hidden;
+        }
         </style>
         <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            const contactItems = document.querySelectorAll('.contact-item');
-            contactItems.forEach((item, index) => {
+            const items = document.querySelectorAll('.contact-item, .faq-item, .social-item');
+            items.forEach((item, index) => {
                 item.style.opacity = '0';
                 item.style.transform = 'translateY(20px)';
                 setTimeout(() => {
@@ -721,6 +745,14 @@ class PageManager:
                     button.innerHTML = '发送成功！';
                     button.style.backgroundColor = '#00cc66';
                 }, 2000);
+            });
+
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const answer = item.querySelector('.faq-answer');
+                    answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
+                });
             });
         });
         </script>
@@ -762,6 +794,46 @@ class PageManager:
                     <button type="submit">发送消息</button>
                 </form>
             </div>
+            <div class="faq-section">
+                <h3>常见问题</h3>
+                <div class="faq-item">
+                    <span class="faq-icon">❓</span>
+                    <span>如何申请加入实验室？</span>
+                    <div class="faq-answer">请发送您的简历和研究兴趣到我们的邮箱。我们会在收到后尽快回复您。</div>
+                </div>
+                <div class="faq-item">
+                    <span class="faq-icon">❓</span>
+                    <span>实验室是否提供实习机会？</span>
+                    <div class="faq-answer">是的，我们每年夏季都会提供实习机会。请关注我们的网站获取最新信息。</div>
+                </div>
+                <div class="faq-item">
+                    <span class="faq-icon">❓</span>
+                    <span>如何获取实验室的最新研究进展？</span>
+                    <div class="faq-answer">您可以订阅我们的电子简报或关注我们的社交媒体账号。</div>
+                </div>
+            </div>
+            <div class="social-media">
+                <h3>关注我们</h3>
+                <div class="social-item">
+                    <span class="social-icon">🐦</span>
+                    <a href="https://twitter.com/frontierlab" target="_blank">Twitter</a>
+                </div>
+                <div class="social-item">
+                    <span class="social-icon">📘</span>
+                    <a href="https://www.facebook.com/frontierlab" target="_blank">Facebook</a>
+                </div>
+                <div class="social-item">
+                    <span class="social-icon">🔬</span>
+                    <a href="https://www.researchgate.net/lab/frontierlab" target="_blank">ResearchGate</a>
+                </div>
+                <div class="social-item">
+                    <span class="social-icon">📺</span>
+                    <a href="https://www.youtube.com/frontierlab" target="_blank">YouTube</a>
+                </div>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.540494861871!2d122.05945731525902!3d37.53291797980501!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3590f8d5d3b4b1e3%3A0x3f3c3e8d3d3d3d3d!2s山东大学威海校区!5e0!3m2!1szh-CN!2scn!4v1625123456789!5m2!1szh-CN!2scn" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
         """, unsafe_allow_html=True)
 
