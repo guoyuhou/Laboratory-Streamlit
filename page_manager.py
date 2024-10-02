@@ -322,48 +322,77 @@ class PageManager:
         
         st.markdown("""
         <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
         .publication-card {
-            background-color: #f9f9f9;
-            border-left: 5px solid #0066cc;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-left: 5px solid #4a90e2;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 10px 10px 20px #d9d9d9, -10px -10px 20px #ffffff;
+            border-radius: 15px;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
         }
         .publication-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 15px 15px 30px #d9d9d9, -15px -15px 30px #ffffff;
         }
         .pub-title {
-            color: #0066cc;
-            font-size: 20px;
+            color: #4a90e2;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         .pub-authors {
             font-style: italic;
             color: #555;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
         .pub-journal {
             color: #333;
             font-weight: 500;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .pub-year {
-            background-color: #0066cc;
+            background: linear-gradient(45deg, #4a90e2, #63b3ed);
             color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
+            padding: 5px 12px;
+            border-radius: 20px;
             font-size: 14px;
-            float: right;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
         }
         </style>
+        <script>
+        function animatePublications() {
+            const cards = document.querySelectorAll('.publication-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+        }
+        document.addEventListener('DOMContentLoaded', animatePublications);
+        </script>
         """, unsafe_allow_html=True)
         
         publications = [
-            {"title": "人工智能在医疗诊断中的应用", "authors": "张三, 李四", "journal": "Nature", "year": 2023},
-            {"title": "量子计算在密码学中的突破", "authors": "王五, 赵六", "journal": "Science", "year": 2022},
-            {"title": "新型基因编辑技术的伦理考量", "authors": "刘七, 陈八", "journal": "Cell", "year": 2021},
+            {"title": "人工智能在海洋生态系统监测中的创新应用", "authors": "张海洋, 李智能", "journal": "Nature Sustainability", "year": 2023},
+            {"title": "深海能源开发的突破性技术：模块化海洋能源转换装置", "authors": "王波浪, 赵潮汐", "journal": "Renewable Energy", "year": 2022},
+            {"title": "新型深海无人探测器在海底矿产勘探中的应用与环境影响评估", "authors": "刘深海, 陈探索", "journal": "Ocean Engineering", "year": 2021},
         ]
         
         for pub in publications:
@@ -371,7 +400,10 @@ class PageManager:
             <div class="publication-card">
                 <div class="pub-title">{pub['title']}</div>
                 <div class="pub-authors">{pub['authors']}</div>
-                <div class="pub-journal">{pub['journal']} <span class="pub-year">{pub['year']}</span></div>
+                <div class="pub-journal">
+                    <span>{pub['journal']}</span>
+                    <span class="pub-year">{pub['year']}</span>
+                </div>
             </div>
             """, unsafe_allow_html=True)
 
