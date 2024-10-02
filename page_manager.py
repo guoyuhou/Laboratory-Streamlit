@@ -76,10 +76,10 @@ class PageManager:
 
         # 团队成员数据
         members = [
-            {"name": "陈浩", "title": "实验室主任", "image": "Images/example1.jpg", "description": "海洋生态学教授，专注于海洋生物多样性研究", "quote": "海洋是地球的生命之源，我们的使命是守护这片蓝色家园。"},
-            {"name": "李明", "title": "副教授", "image": "Images/example2.jpg", "description": "海洋化学专家，研究海洋污染物的迁移转化", "quote": "每一滴水都讲述着海洋的故事，我们要倾听并理解它们。"},
-            {"name": "王芳", "title": "博士后", "image": "Images/example3.jpg", "description": "海洋微生物学研究者，探索深海极端环境微生物", "quote": "在最极端的环境中，生命总能找到方式绽放。"},
-            {"name": "张伟", "title": "博士生", "image": "Images/example4.jpg", "description": "海洋地质学方向，研究海底地貌演变", "quote": "海底的每一寸变化都是地球历史的见证。"},
+            {"name": "陈浩", "title": "实验室主任", "image": "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80", "description": "海洋生态学教授，专注于海洋生物多样性研究", "quote": "海洋是地球的生命之源，我们的使命是守护这片蓝色家园。"},
+            {"name": "李明", "title": "副教授", "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80", "description": "海洋化学专家，研究海洋污染物的迁移转化", "quote": "每一滴水都讲述着海洋的故事，我们要倾听并理解它们。"},
+            {"name": "王芳", "title": "博士后", "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80", "description": "海洋微生物学研究者，探索深海极端环境微生物", "quote": "在最极端的环境中，生命总能找到方式绽放。"},
+            {"name": "张伟", "title": "博士生", "image": "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1234&q=80", "description": "海洋地质学方向，研究海底地貌演变", "quote": "海底的每一寸变化都是地球历史的见证。"},
         ]
         
         # 使用高级卡片布局展示团队成员
@@ -134,19 +134,19 @@ class PageManager:
             <h2 style="color: #003366; font-size: 2.5em; margin-bottom: 30px; text-align: center; text-shadow: 2px 2px 4px #aaa;">全球合作网络</h2>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://via.placeholder.com/150x150?text=OUC" style="border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/4/4e/Ocean_University_of_China_logo.svg/1200px-Ocean_University_of_China_logo.svg.png" style="width: 150px; height: 150px; object-fit: contain; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">中国海洋大学</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://via.placeholder.com/150x150?text=FIO" style="border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://www.fio.org.cn/images/logo.png" style="width: 150px; height: 150px; object-fit: contain; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">国家海洋局第一海洋研究所</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://via.placeholder.com/150x150?text=WHOI" style="border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://www.whoi.edu/wp-content/themes/whoi-home/images/logo-whoi-blue.svg" style="width: 150px; height: 150px; object-fit: contain; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">美国伍兹霍尔海洋研究所</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://via.placeholder.com/150x150?text=AORI" style="border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://www.aori.u-tokyo.ac.jp/wp-content/themes/aori/images/logo.png" style="width: 150px; height: 150px; object-fit: contain; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">日本东京大学大气与海洋研究所</p>
                 </div>
             </div>
