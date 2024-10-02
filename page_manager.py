@@ -191,61 +191,131 @@ class PageManager:
         
         st.markdown("""
         <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .project-card {
-            background-color: #f0f8ff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+            animation: fadeIn 0.8s ease-out;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 102, 0.2);
         }
         .project-title {
-            color: #0066cc;
-            font-size: 24px;
+            color: #003366;
+            font-size: 28px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .project-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #0066cc;
+            transition: width 0.3s ease;
+        }
+        .project-card:hover .project-title::after {
+            width: 100px;
         }
         .project-description {
-            font-size: 16px;
+            font-size: 18px;
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
         .project-progress {
             font-style: italic;
-            color: #666;
+            color: #0066cc;
+            font-weight: 500;
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #e6f2ff;
+            border-radius: 20px;
+        }
+        .project-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        .project-image:hover {
+            transform: scale(1.05);
         }
         </style>
+        <script>
+        function animateProgress(element) {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                element.style.width = `${progress}%`;
+                if (progress >= 100) clearInterval(interval);
+            }, 20);
+        }
+        </script>
         """, unsafe_allow_html=True)
         
         projects = [
             {
                 "name": "海洋生态系统监测",
-                "description": "利用先进的传感器技术和人工智能算法，实时监测和分析海洋生态系统的变化，为海洋保护和可持续发展提供科学依据。",
+                "description": "利用先进的传感器技术和人工智能算法，实时监测和分析海洋生态系统的变化，为海洋保护和可持续发展提供科学依据。我们的团队正在开发一套革命性的水下传感网络，结合机器学习技术，能够实时捕捉海洋环境的微小变化。",
                 "image": "Images/ocean_ecosystem.jpg",
-                "progress": "正在进行数据收集和算法优化"
+                "progress": "数据收集和算法优化进行中",
+                "percent": 65
             },
             {
                 "name": "海洋能源开发",
-                "description": "研究和开发新型海洋能源技术，包括波浪能、潮汐能和海流能的高效转换系统，推动清洁能源的广泛应用。",
+                "description": "研究和开发新型海洋能源技术，包括波浪能、潮汐能和海流能的高效转换系统，推动清洁能源的广泛应用。我们的最新突破是一种模块化的海洋能源转换装置，可以适应不同海域环境，大幅提高能源转换效率。",
                 "image": "Images/ocean_energy.jpg",
-                "progress": "完成初步原型设计，准备进行实地测试"
+                "progress": "原型设计完成，准备实地测试",
+                "percent": 80
             },
             {
                 "name": "深海资源勘探",
-                "description": "开发先进的深海探测设备和分析技术，用于发现和评估深海矿产资源，同时最小化对海洋环境的影响。",
+                "description": "开发先进的深海探测设备和分析技术，用于发现和评估深海矿产资源，同时最小化对海洋环境的影响。我们正在研发一种革命性的深海无人探测器，配备高精度声呐和光学系统，可以在极端压力下工作。",
                 "image": "Images/deep_sea_exploration.jpg",
-                "progress": "正在进行设备改进和环境影响评估"
+                "progress": "设备改进和环境影响评估中",
+                "percent": 45
             },
         ]
         
         for project in projects:
             st.markdown(f"""
             <div class="project-card">
-                <div class="project-title">{project["name"]}</div>
-                <img src="{project["image"]}" style="width:100%; max-width:400px; border-radius:5px; margin-bottom:15px;">
-                <div class="project-description">{project["description"]}</div>
-                <div class="project-progress">项目进展：{project["progress"]}</div>
+                <h2 class="project-title">{project["name"]}</h2>
+                <img src="{project["image"]}" class="project-image" alt="{project["name"]}">
+                <p class="project-description">{project["description"]}</p>
+                <div class="project-progress">{project["progress"]}</div>
+                <div style="background-color: #e6e6e6; height: 10px; border-radius: 5px; margin-top: 15px;">
+                    <div style="width: 0%; height: 100%; background-color: #0066cc; border-radius: 5px;" id="progress-{project['name']}"></div>
+                </div>
             </div>
+            <script>
+                animateProgress(document.getElementById('progress-{project["name"]}'));
+            </script>
             """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+        </script>
+        """, unsafe_allow_html=True)
 
     def publications_page(self, username=None):
         st.title("发表论文")
