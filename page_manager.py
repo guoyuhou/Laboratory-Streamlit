@@ -333,49 +333,55 @@ class PageManager:
             }
         }
         .publication-card {
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            background-color: #ffffff;
             border-left: 5px solid #4a90e2;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 10px 10px 20px #d9d9d9, -10px -10px 20px #ffffff;
-            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             animation: fadeInUp 0.6s ease-out;
             animation-fill-mode: both;
         }
         .publication-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 15px 15px 30px #d9d9d9, -15px -15px 30px #ffffff;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         .pub-title {
             color: #4a90e2;
             font-size: 22px;
-            font-weight: bold;
+            font-weight: 700;
             margin-bottom: 15px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            transition: color 0.3s ease;
+        }
+        .publication-card:hover .pub-title {
+            color: #2c3e50;
         }
         .pub-authors {
             font-style: italic;
-            color: #555;
+            color: #7f8c8d;
             margin-bottom: 10px;
             font-size: 16px;
         }
         .pub-journal {
-            color: #333;
-            font-weight: 500;
+            color: #34495e;
+            font-weight: 600;
             font-size: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .pub-year {
-            background: linear-gradient(45deg, #4a90e2, #63b3ed);
+            background-color: #4a90e2;
             color: white;
             padding: 5px 12px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .publication-card:hover .pub-year {
+            background-color: #2c3e50;
+            transform: scale(1.1);
         }
         </style>
         <script>
@@ -390,9 +396,9 @@ class PageManager:
         """, unsafe_allow_html=True)
         
         publications = [
-            {"title": "人工智能在海洋生态系统监测中的创新应用", "authors": "张海洋, 李智能", "journal": "Nature Sustainability", "year": 2023},
-            {"title": "深海能源开发的突破性技术：模块化海洋能源转换装置", "authors": "王波浪, 赵潮汐", "journal": "Renewable Energy", "year": 2022},
-            {"title": "新型深海无人探测器在海底矿产勘探中的应用与环境影响评估", "authors": "刘深海, 陈探索", "journal": "Ocean Engineering", "year": 2021},
+            {"title": "人工智能在医疗诊断中的应用：深度学习模型的突破性进展", "authors": "张三, 李四, 王五", "journal": "Nature Medicine", "year": 2023},
+            {"title": "量子计算在密码学中的革命性应用：后量子时代的安全挑战与机遇", "authors": "王五, 赵六, 孙七", "journal": "Science", "year": 2022},
+            {"title": "CRISPR-Cas9基因编辑技术的伦理考量：平衡科技进步与社会责任", "authors": "刘七, 陈八, 周九", "journal": "Cell", "year": 2021},
         ]
         
         for pub in publications:
