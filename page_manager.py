@@ -270,21 +270,21 @@ class PageManager:
             {
                 "name": "海洋生态系统监测",
                 "description": "利用先进的传感器技术和人工智能算法，实时监测和分析海洋生态系统的变化，为海洋保护和可持续发展提供科学依据。我们的团队正在开发一套革命性的水下传感网络，结合机器学习技术，能够实时捕捉海洋环境的微小变化。",
-                "image": "Images/ocean_ecosystem.jpg",
+                "image": "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
                 "progress": "数据收集和算法优化进行中",
                 "percent": 65
             },
             {
                 "name": "海洋能源开发",
                 "description": "研究和开发新型海洋能源技术，包括波浪能、潮汐能和海流能的高效转换系统，推动清洁能源的广泛应用。我们的最新突破是一种模块化的海洋能源转换装置，可以适应不同海域环境，大幅提高能源转换效率。",
-                "image": "Images/ocean_energy.jpg",
+                "image": "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
                 "progress": "原型设计完成，准备实地测试",
                 "percent": 80
             },
             {
                 "name": "深海资源勘探",
                 "description": "开发先进的深海探测设备和分析技术，用于发现和评估深海矿产资源，同时最小化对海洋环境的影响。我们正在研发一种革命性的深海无人探测器，配备高精度声呐和光学系统，可以在极端压力下工作。",
-                "image": "Images/deep_sea_exploration.jpg",
+                "image": "https://images.unsplash.com/photo-1551244072-5d12893278ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
                 "progress": "设备改进和环境影响评估中",
                 "percent": 45
             },
