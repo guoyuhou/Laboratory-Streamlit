@@ -133,7 +133,7 @@ def handle_login(auth_manager):
     password = st.empty()
     remember_me = st.checkbox("记住我", key="remember_me")
 
-    if st.button("登录", key="login_submit", style="display:none;"):
+    if st.button("登录", key="login_submit"):
         username_value = username.text_input("", key="username_input")
         password_value = password.text_input("", type="password", key="password_input")
         if username_value and password_value:
