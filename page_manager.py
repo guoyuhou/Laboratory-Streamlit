@@ -38,38 +38,52 @@ class PageManager:
         }
 
     def display_pages(self):
-        st.sidebar.markdown("""
+        st.sidebar.title("导航")
+        
+        # 创建一个包含所有页面的字典
+        all_pages = self.public_pages.copy()
+        
+        # 如果用户已登录，添加受保护的页面
+        if self.role:
+            all_pages.update(self.protected_pages)
+        
+        # 添加CSS样式
+        st.markdown("""
         <style>
         .sidebar .sidebar-content {
-            background-image: linear-gradient(#f0f8ff, #e6f3ff);
-        }
-        .sidebar .sidebar-content .block-container {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
+            background-image: linear-gradient(#2e7bcf,#2a71b8);
         }
         .sidebar .sidebar-content .stRadio > label {
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
+            color: white !important;
+            font-weight: bold;
             transition: all 0.3s ease;
         }
         .sidebar .sidebar-content .stRadio > label:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(10px);
+            color: #ffd700 !important;
         }
         </style>
         """, unsafe_allow_html=True)
         
-        st.sidebar.title("导航")
+        # 添加JavaScript动画
+        st.markdown("""
+        <script>
+        const sidebarItems = document.querySelectorAll('.sidebar .sidebar-content .stRadio > label');
+        sidebarItems.forEach(item => {
+            item.addEventListener('mouseover', () => {
+                item.style.animation = 'pulse 0.5s';
+            });
+            item.addEventListener('animationend', () => {
+                item.style.animation = '';
+            });
+        });
+        </script>
+        """, unsafe_allow_html=True)
         
-        all_pages = self.public_pages.copy()
+        # 使用单个radio按钮显示所有可用页面
+        page_name = st.sidebar.radio('选择页面', list(all_pages.keys()))
         
-        if self.role:
-            all_pages.update(self.protected_pages)
-        
-        page_name = st.sidebar.radio('选择页面', list(all_pages.keys()), format_func=lambda x: f"<span style='font-size:18px;'>{x}</span>")
-        
+        # 显示选中的页面
         if page_name in self.public_pages:
             self.public_pages[page_name]()
         elif page_name in self.protected_pages:
