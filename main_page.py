@@ -265,9 +265,9 @@ def research_team():
     st.markdown('<h2 class="section-title">研究团队</h2>', unsafe_allow_html=True)
     team_members = {
         '陈浩': {
-            'description': '实验室主任，研究方向:(1)海洋天然产物开发,(2)功能性食品技术(3)营养/药物递送体系构建及传质规律研究',
-            'image': 'https://img1.baidu.com/it/u=1978093910,2102820411&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
-        }, 
+            'description': '实验室主任，研究方向:(1)海洋天然产物开发,',
+            'image': 'https://img0.baidu.com/it/u=2521851051,2189866243&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500'
+        },
         '王普': {
             'description': '博士研究生，研究方向：海洋生物多样性',
             'image': 'https://img2.baidu.com/it/u=2521851051,2189866243&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500'
