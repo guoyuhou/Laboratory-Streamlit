@@ -191,77 +191,146 @@ class PageManager:
         
         st.markdown("""
         <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
         }
         .project-card {
             background-color: #ffffff;
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.5s ease;
-            animation: fadeIn 0.8s ease-out;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            animation: fadeInScale 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(30deg);
+            opacity: 0;
+            transition: opacity 0.6s;
         }
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 102, 0.2);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 102, 0.2);
+        }
+        .project-card:hover::after {
+            animation: shimmer 2s infinite;
+            opacity: 1;
         }
         .project-title {
             color: #003366;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             position: relative;
+            display: inline-block;
         }
-        .project-title::after {
+        .project-title::before {
             content: '';
             position: absolute;
             bottom: -5px;
             left: 0;
-            width: 50px;
+            width: 0;
             height: 3px;
-            background-color: #0066cc;
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, #003366, #0066cc);
+            transition: width 0.6s ease;
         }
-        .project-card:hover .project-title::after {
-            width: 100px;
+        .project-card:hover .project-title::before {
+            width: 100%;
         }
         .project-description {
             font-size: 18px;
             color: #333;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            margin-bottom: 25px;
+            line-height: 1.8;
+            text-align: justify;
         }
         .project-progress {
             font-style: italic;
-            color: #0066cc;
+            color: #ffffff;
             font-weight: 500;
             display: inline-block;
-            padding: 8px 15px;
-            background-color: #e6f2ff;
-            border-radius: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #003366, #0066cc);
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+            transition: all 0.3s ease;
+        }
+        .project-progress:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
         }
         .project-image {
             width: 100%;
             max-width: 500px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         .project-image:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        .progress-bar {
+            background-color: #e6e6e6;
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #003366, #0066cc);
+            border-radius: 5px;
+            transition: width 1.5s ease-out;
+            position: relative;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(255,255,255,0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255,255,255,0.2) 50%,
+                rgba(255,255,255,0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 50px 50px;
+            animation: stripes 1s linear infinite;
+        }
+        @keyframes stripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 0; }
         }
         </style>
         <script>
-        function animateProgress(element) {
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 1;
-                element.style.width = `${progress}%`;
-                if (progress >= 100) clearInterval(interval);
-            }, 20);
+        function animateProgress(element, targetWidth) {
+            element.style.width = '0%';
+            setTimeout(() => {
+                element.style.width = targetWidth + '%';
+            }, 100);
         }
         </script>
         """, unsafe_allow_html=True)
@@ -290,28 +359,38 @@ class PageManager:
             },
         ]
         
-        for project in projects:
+        for index, project in enumerate(projects):
             st.markdown(f"""
-            <div class="project-card">
+            <div class="project-card" style="animation-delay: {index * 0.2}s;">
                 <h2 class="project-title">{project["name"]}</h2>
-                <img src="{project["image"]}" class="project-image" alt="{project["name"]}">
+                <img src="{project["image"]}" class="project-image" alt="{project["name"]}" loading="lazy">
                 <p class="project-description">{project["description"]}</p>
                 <div class="project-progress">{project["progress"]}</div>
-                <div style="background-color: #e6e6e6; height: 10px; border-radius: 5px; margin-top: 15px;">
-                    <div style="width: 0%; height: 100%; background-color: #0066cc; border-radius: 5px;" id="progress-{project['name']}"></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-{index}"></div>
                 </div>
             </div>
             <script>
-                animateProgress(document.getElementById('progress-{project["name"]}'));
+                animateProgress(document.getElementById('progress-{index}'), {project["percent"]});
             </script>
             """, unsafe_allow_html=True)
         
         st.markdown("""
         <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            const cards = document.querySelectorAll('.project-card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.2}s`;
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.project-card').forEach(card => {
+                observer.observe(card);
             });
         });
         </script>
