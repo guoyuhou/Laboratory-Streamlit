@@ -83,19 +83,95 @@ class PageManager:
         ]
         
         # 使用高级卡片布局展示团队成员
+        st.markdown("""
+        <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 102, 204, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0); }
+        }
+        .team-member {
+            background: linear-gradient(45deg, #ffffff, #f0f8ff);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: all 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+        .team-member:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .team-member img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+            border: 5px solid #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .team-member:hover img {
+            animation: pulse 2s infinite;
+        }
+        .team-member h3 {
+            text-align: center;
+            color: #003366;
+            margin-top: 20px;
+            font-size: 1.8em;
+            transition: all 0.3s ease;
+        }
+        .team-member:hover h3 {
+            color: #0066cc;
+            transform: scale(1.1);
+        }
+        .team-member p {
+            text-align: center;
+            color: #333;
+            font-size: 1em;
+            margin: 15px 0;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .team-member:hover p {
+            opacity: 1;
+        }
+        .team-member blockquote {
+            font-style: italic;
+            color: #666;
+            border-left: 4px solid #0066cc;
+            padding-left: 15px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        .team-member:hover blockquote {
+            border-left-width: 8px;
+            padding-left: 20px;
+            color: #0066cc;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
         st.markdown("<h2 style='text-align: center; color: #003366; font-size: 2.5em; margin: 40px 0; text-shadow: 2px 2px 4px #aaa;'>核心成员</h2>", unsafe_allow_html=True)
+        
         cols = st.columns(2)  # 每行显示2个成员
         for i, member in enumerate(members):
             with cols[i % 2]:
                 st.markdown(f"""
-                <div style="background: linear-gradient(45deg, #ffffff, #f0f8ff); padding: 30px; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); margin-bottom: 30px; transition: all 0.3s ease;">
-                    <img src="{member['image']}" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 5px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.2);">
-                    <h3 style="text-align: center; color: #003366; margin-top: 20px; font-size: 1.8em;">{member['name']}</h3>
-                    <p style="text-align: center; font-weight: bold; color: #0066cc; font-size: 1.2em;">{member['title']}</p>
-                    <p style="text-align: center; color: #333; font-size: 1em; margin: 15px 0;">{member['description']}</p>
-                    <blockquote style="font-style: italic; color: #666; border-left: 4px solid #0066cc; padding-left: 15px; margin: 20px 0;">
-                        "{member['quote']}"
-                    </blockquote>
+                <div class="team-member">
+                    <img src="{member['image']}">
+                    <h3>{member['name']}</h3>
+                    <p style="font-weight: bold; color: #0066cc; font-size: 1.2em;">{member['title']}</p>
+                    <p>{member['description']}</p>
+                    <blockquote>"{member['quote']}"</blockquote>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -130,23 +206,36 @@ class PageManager:
 
         # 合作伙伴
         st.markdown("""
+        <style>
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .partner-logo {
+            transition: all 0.3s ease;
+        }
+        .partner-logo:hover {
+            transform: scale(1.1);
+            animation: rotate 2s linear infinite;
+        }
+        </style>
         <div style="background: linear-gradient(135deg, #f0f8ff, #e6f3ff); padding: 30px; border-radius: 15px; margin-top: 40px; box-shadow: 0 15px 30px rgba(0,0,0,0.1);">
             <h2 style="color: #003366; font-size: 2.5em; margin-bottom: 30px; text-align: center; text-shadow: 2px 2px 4px #aaa;">全球合作网络</h2>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" class="partner-logo" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">中国海洋大学</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://images.unsplash.com/photo-1527100673774-cce25eafaf7f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1527100673774-cce25eafaf7f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" class="partner-logo" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">国家海洋局第一海洋研究所</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" class="partner-logo" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">美国伍兹霍尔海洋研究所</p>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                    <img src="https://images.unsplash.com/photo-1484291470158-b8f8d608850d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1484291470158-b8f8d608850d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" class="partner-logo" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                     <p style="margin-top: 15px; font-weight: bold; color: #0066cc;">日本东京大学大气与海洋研究所</p>
                 </div>
             </div>
@@ -155,13 +244,58 @@ class PageManager:
 
         # 加入我们
         st.markdown("""
-        <div style="background: linear-gradient(135deg, #003366, #0066cc); padding: 40px; border-radius: 15px; margin-top: 40px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+        <style>
+        @keyframes wave {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+        .join-us {
+            background: linear-gradient(135deg, #003366, #0066cc);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .join-us::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: wave 8s linear infinite;
+        }
+        .join-us-button {
+            background-color: #ffffff;
+            color: #003366;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .join-us-button:hover {
+            background-color: #003366;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        </style>
+        <div class="join-us">
             <h2 style="color: #ffffff; font-size: 2.5em; margin-bottom: 20px; text-shadow: 2px 2px 4px #000;">与我们一起探索海洋的奥秘</h2>
             <p style="font-size: 18px; line-height: 1.8; color: #ffffff; margin-bottom: 30px;">
             我们正在寻找充满激情、勇于创新的海洋科学家。如果你梦想着在这片蓝色疆域中留下自己的足迹，
             如果你渴望为保护海洋、造福人类贡献自己的力量，那么，加入我们吧！
             </p>
-            <a href="mailto:recruitment@oceanlab.edu.cn" style="background-color: #ffffff; color: #003366; padding: 15px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 18px; transition: all 0.3s ease;">
+            <a href="mailto:recruitment@oceanlab.edu.cn" class="join-us-button">
                 开启你的海洋之旅
             </a>
         </div>
