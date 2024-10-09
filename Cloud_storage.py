@@ -318,10 +318,7 @@ def cloud_storage_page(username=None):
         使用左侧导航栏选择所需的操作。如有任何问题，请联系系统管理员。
         """)
 
-    # 显示统计信息
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        display_statistics()
+    
 
     # 侧边栏导航
     st.sidebar.title("功能导航")
