@@ -320,11 +320,13 @@ def cloud_storage_page(username=None):
 
     
 
-    # 侧边栏导航
-    st.sidebar.title("功能导航")
+    # 修改侧边栏导航部分
     options = st.sidebar.radio("选择操作", 
         ("文件上传", "文件下载", "文件更新", "文件删除", "文件预览", "文件搜索", "批量删除"))
-    
+
+    # 更新当前操作
+    st.session_state.current_operation = options
+
     operations = {
         "文件上传": upload_files_with_progress,
         "文件下载": download_file,
@@ -334,7 +336,6 @@ def cloud_storage_page(username=None):
         "文件搜索": search_files,
         "批量删除": batch_delete_files
     }
-
 
     operation_function = operations.get(st.session_state.current_operation)
     if operation_function:
