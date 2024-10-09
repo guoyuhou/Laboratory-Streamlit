@@ -334,9 +334,7 @@ def cloud_storage_page(username=None):
         "文件搜索": search_files,
         "批量删除": batch_delete_files
     }
-    
-    if 'current_operation' not in st.session_state:
-        st.session_state.current_operation = options
+
 
     operation_function = operations.get(st.session_state.current_operation)
     if operation_function:
