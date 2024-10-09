@@ -322,12 +322,6 @@ def cloud_storage_page(username=None):
     col1, col2 = st.columns([2, 1])
     with col1:
         display_statistics()
-    with col2:
-        st.subheader("快速操作")
-        if st.button("上传新文件", key="upload_button"):
-            st.session_state.current_operation = "文件上传"
-        if st.button("查看所有文件", key="view_files_button"):
-            st.session_state.current_operation = "文件下载"
 
     # 侧边栏导航
     st.sidebar.title("功能导航")

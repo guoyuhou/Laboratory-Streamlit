@@ -47,39 +47,6 @@ class PageManager:
         if self.role:
             all_pages.update(self.protected_pages)
         
-        # 添加CSS样式
-        st.markdown("""
-        <style>
-        .sidebar .sidebar-content {
-            background-image: linear-gradient(#2e7bcf,#2a71b8);
-        }
-        .sidebar .sidebar-content .stRadio > label {
-            color: white !important;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .sidebar .sidebar-content .stRadio > label:hover {
-            transform: translateX(10px);
-            color: #ffd700 !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # 添加JavaScript动画
-        st.markdown("""
-        <script>
-        const sidebarItems = document.querySelectorAll('.sidebar .sidebar-content .stRadio > label');
-        sidebarItems.forEach(item => {
-            item.addEventListener('mouseover', () => {
-                item.style.animation = 'pulse 0.5s';
-            });
-            item.addEventListener('animationend', () => {
-                item.style.animation = '';
-            });
-        });
-        </script>
-        """, unsafe_allow_html=True)
-        
         # 使用单个radio按钮显示所有可用页面
         page_name = st.sidebar.radio('选择页面', list(all_pages.keys()))
         

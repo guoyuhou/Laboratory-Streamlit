@@ -29,10 +29,10 @@
 
 [1]对于葡萄糖而言，其自身结构中存在C―O、O-H与C―H键。由于葡萄糖与水分子均为极性分子，随着微波能量的输入，作用于分子产生加热作用，待达到所需反应活性时，葡萄糖将逐步发生官能团反应。反应生成了C＝O与C＝C键，并且具有芳香族特征，表明葡萄糖单体发生了交联。葡萄糖具有诸多的OH键，伴随微波加热过程很容易发生脱水反应，因此不同单体之间很快便会通过单体间脱水发生聚合反应形成一定聚合度的多糖。随着微波能量的不断积累，不同聚合度的多糖将发生显著的碳化过程，形成芳香族碳氢化合物，从反应产物的官能团来看，这一过程类似于诸多其他碳氢化合物以及水热法中碳化产物的转变过程24。
 
-反应过程中，由于葡萄糖多聚体内仍然存有较多OH键，这些OH键在加热升温过程中可能发生如下反应，首先羟基间脱水，使得其中一羟基中O与同一碳原子形成酮基，如图8中第1和第2步所示。生成酮基后的多聚体有可能会发生酮基与临近碳原子上的H连接，形成C＝C同时保留OH键，这也是形成芳香族碳氢化合物的基本反应25，如图8中第3步所示。而C＝C键也可以通过OH与临近H直接脱水，直接形成C＝C双键，但是这个反应要在更高温度进行，同时可能伴随多聚体的竞争重组过程。因此对于增加微波加热功率而言，在C＝O键减少的同时，多聚体的竞争重组占据优势，因此出现C＝C键也减少的现象。
+
 
 ### 碳点抗菌的原理:
-1. [2][4]CD 可以通过扩散和静电相互作用吸附到细菌和真菌细胞壁上。静电效应导致与生长的细菌进行生物隔离，防止细菌传播或消耗营养物质并干扰其生理代谢。或者，CDs 富含细菌壁/膜，可能浸润细菌并抑制细菌生物膜的形成，导致细菌细胞质渗漏和细胞凋亡。CDs 还可以穿透细菌壁和膜，并通过非共价相互作用与细菌和真菌中的 DNA 和 RNA 结合，改变 DNA（二级构象）和 RNA 的结构，导致 DNA 双螺旋分离。最后，细菌的生长受到许多因素的影响，以达到抗菌效果。在这个过程中，CDs始终具有良好的生物相容性，并且对正常细胞无毒。
+1. 已经有广泛的研究说明碳点具有优秀的抗菌性质[9]。[2][4]CD 可以通过扩散和静电相互作用吸附到细菌和真菌细胞壁上。静电效应导致与生长的细菌进行生物隔离，防止细菌传播或消耗营养物质并干扰其生理代谢。或者，CDs 富含细菌壁/膜，可能浸润细菌并抑制细菌生物膜的形成，导致细菌细胞质渗漏和细胞凋亡。CDs 还可以穿透细菌壁和膜，并通过非共价相互作用与细菌和真菌中的 DNA 和 RNA 结合，改变 DNA（二级构象）和 RNA 的结构，导致 DNA 双螺旋分离。最后，细菌的生长受到许多因素的影响，以达到抗菌效果。在这个过程中，CDs始终具有良好的生物相容性，并且对正常细胞无毒。
 
 ### 如何确定碳点的原理:
 1. TEM和SEM: TEM和SEM能够提供碳点的形貌、尺寸和分布信息。碳点通常表现为纳米级别的球形或类球形颗粒，具有良好的分散性。通过TEM和SEM观察，可以直观地确认实验产物的形貌是否符合碳点的特征。
@@ -69,6 +69,7 @@
 ### 结果分析：
 协同指数SI测定：采用棋盘稀释法，分别选取其MIC的2倍、1 倍及1/4、1/2 共4个水平，每个实验均重复3次，联合MIC计算见下式：IS = ρMICU（A）/ρMICS（A）+ ρMICU（B）/ρMICS（B），式中：IS 为协同指数（SI值）；ρMICS为植物精油单独使用下的MIC，g/L；ρMICU 为植物精油复配后抑菌效果最佳的MIC的倍数，g/L。
   
+精油2ml - 1.5g -> 
 
 
 [1]Liu, J.-L., Lin, L.-Z., Hu, J.-F., Bai, M.-J., Chen, L.-X., Wei, J.-J., Hei, L.-F., & Li, C.-M. (2018). Reaction Process and Luminescence Mechanism of Carbon Nanodots Prepared by Microwave Synthesis. 物理化学学报 (Acta Physico-Chimica Sinica), 34(1), 92-98. doi: 10.3866/PKU.WHXB201706221.
@@ -86,3 +87,8 @@
 [7]G. Jeong, J.M. Lee, J. Lee, J. Praneerad, C.A. Choi, P. Supchocksoonthorn, A.K. Roy, W. Chae, P. Paoprasert, M.K. Yeo, G. Murali, S.Y. Park, D. Lee, I. In, "Microwave-assisted synthesis of multifunctional fluorescent carbon quantum dots from A4/B2 polyamidation monomer sets," *Applied Surface Science*, vol. 542, p. 148471, 2021. doi: 10.1016/j.apsusc.2020.148471.
 
 [8]H. Li, Y. Xu, J. Ding, L. Zhao, T. Zhou, H. Ding, Y. Chen, L. Ding, "Microwave-assisted synthesis of highly luminescent N- and S-co-doped carbon dots as a ratiometric fluorescent probe for levofloxacin," *Microchimica Acta*, vol. 185, article 104, 2018. doi: 10.1007/s00604-017-2600-2.
+
+[9]Ghirardello, M.; Ramos-Soriano, J.; Galan, M. C. Carbon Dots as an Emergent Class of Antimicrobial Agents. Nanomaterials 2021, 11(8), 1877. https://doi.org/10.3390/nano11081877
+
+200ml 1ml tuwen 0.5ml/ml
+0.05g/ml - 0.12ml/ml
